@@ -1,6 +1,4 @@
-﻿using WineCellar.Domain.Repositories;
-
-namespace WineCellar.Application.Grapes.Queries.GetGrapes;
+﻿namespace WineCellar.Application.Grapes.Queries.GetGrapes;
 
 public record GetGrapesQuery : IRequest<List<Grape>>;
 
