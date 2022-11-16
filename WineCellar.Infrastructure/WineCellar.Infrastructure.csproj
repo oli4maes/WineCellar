@@ -20,4 +20,10 @@
     <ProjectReference Include="..\WineCellar.Application\WineCellar.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Persistence\Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Persistence\Repositories\" />
+  </ItemGroup>
 </Project>

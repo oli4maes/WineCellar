@@ -4,15 +4,17 @@ public record GetGrapesQuery : IRequest<List<Grape>>;
 
 public class GetGrapesHandler : IRequestHandler<GetGrapesQuery, List<Grape>>
 {
-    private readonly IGrapeRepository _grapeRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public GetGrapesHandler(IGrapeRepository grapeRepository)
+    public GetGrapesHandler(IUnitOfWork unitOfWork)
     {
-        _grapeRepository = grapeRepository;
+        _unitOfWork = unitOfWork;
     }
 
-    public Task<List<Grape>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
+    public async Task<List<Grape>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
     {
-        return _grapeRepository.GetGrapes();
+        var grapes = await _unitOfWork.Grapes.All();
+
+        return grapes.ToList();
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WineCellar.Application.Common.Interfaces;
-using WineCellar.Infrastructure.Persistence;
 
 namespace WineCellar.Infrastructure;
 
@@ -13,6 +11,7 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+        services.AddScoped<IUnitOfWork, UnitOfWork>();        
 
         return services;
     }

@@ -4,11 +4,11 @@ public record CreateGrapeCommand(string Name, string Description) : IRequest<Gra
 
 public class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Grape>
 {
-    private readonly IGrapeRepository _grapeRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateGrapeHandler(IGrapeRepository grapeRepository)
+    public CreateGrapeHandler(IUnitOfWork unitOfWork)
     {
-        _grapeRepository = grapeRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Grape> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
@@ -17,7 +17,8 @@ public class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Grape>
         entity.Name = request.Name;
         entity.Description = request.Description;
 
-        _grapeRepository.Add(entity);
+        await _unitOfWork.Grapes.Create(entity);
+        await _unitOfWork.CompleteAsync();
 
         return entity;
     }
