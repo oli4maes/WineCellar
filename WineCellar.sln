@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Blazor", "WineCellar.Blazor\WineCellar.Blazor.csproj", "{DC73C698-A146-4B0E-BBB8-19D9C5448692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor", "WineCellar.Blazor\WineCellar.Blazor.csproj", "{DC73C698-A146-4B0E-BBB8-19D9C5448692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Application", "WineCellar.Application\WineCellar.Application.csproj", "{98426510-5168-40AB-835F-2B08555C0142}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Application", "WineCellar.Application\WineCellar.Application.csproj", "{98426510-5168-40AB-835F-2B08555C0142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Domain", "WineCellar.Domain\WineCellar.Domain.csproj", "{6F53CF91-9203-4387-B436-8B82F28BE321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Domain", "WineCellar.Domain\WineCellar.Domain.csproj", "{6F53CF91-9203-4387-B436-8B82F28BE321}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Infrastructure", "WineCellar.Infrastructure\WineCellar.Infrastructure.csproj", "{7C43BFC2-E169-4AA2-827D-5E451723CA25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Infrastructure", "WineCellar.Infrastructure\WineCellar.Infrastructure.csproj", "{7C43BFC2-E169-4AA2-827D-5E451723CA25}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D2DC0A4A-7452-4467-BE28-63DF1BA1985C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{01A0B25C-7F3D-4AB7-A015-6855B5B98EE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +40,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC73C698-A146-4B0E-BBB8-19D9C5448692} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
+		{98426510-5168-40AB-835F-2B08555C0142} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
+		{6F53CF91-9203-4387-B436-8B82F28BE321} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
+		{7C43BFC2-E169-4AA2-827D-5E451723CA25} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AFE95D6-FF37-419F-BC51-8460BC1394FC}

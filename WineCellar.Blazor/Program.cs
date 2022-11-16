@@ -1,6 +1,11 @@
+using WineCellar.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+// Add services to the container
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

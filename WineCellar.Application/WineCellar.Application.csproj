@@ -6,4 +6,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Grapes\Commands\CreateGrape\" />
+    <Folder Include="Grapes\Commands\DeleteGrape\" />
+    <Folder Include="Grapes\Commands\UpdateGrape\" />
+    <Folder Include="Grapes\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WineCellar.Domain\WineCellar.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
