@@ -10,10 +10,10 @@
     <Folder Include="Grapes\Commands\CreateGrape\" />
     <Folder Include="Grapes\Commands\DeleteGrape\" />
     <Folder Include="Grapes\Commands\UpdateGrape\" />
-    <Folder Include="Grapes\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
   </ItemGroup>
 

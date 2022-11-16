@@ -1,3 +1,20 @@
 ﻿@page "/"
+@using WineCellar.Application.Grapes.Queries.GetGrapes;
+@inject MediatR.IMediator _mediator
 
 <h1>Hello, world!</h1>
+<ul>
+    @foreach(var g in grapes)
+    {
+        <li>@g.Name</li>
+    }
+</ul>
+
+@code {
+    List<Grape> grapes = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        grapes = await _mediator.Send(new GetGrapesQuery());
+    }
+}
