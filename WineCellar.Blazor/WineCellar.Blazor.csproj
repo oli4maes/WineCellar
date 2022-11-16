@@ -22,11 +22,15 @@
 
   <ItemGroup>
     <None Remove="MudBlazor" />
+    <None Remove="Pages\Administration\" />
+    <None Remove="Pages\Administration\Grapes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\css\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
+    <Folder Include="Pages\Administration\" />
+    <Folder Include="Pages\Administration\Grapes\" />
   </ItemGroup>
 </Project>
