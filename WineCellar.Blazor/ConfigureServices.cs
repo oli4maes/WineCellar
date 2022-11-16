@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Blazor;
+﻿using MudBlazor.Services;
+
+namespace WineCellar.Blazor;
 
 public static class ConfigureServices
 {
@@ -6,6 +8,8 @@ public static class ConfigureServices
     {
         services.AddRazorPages();
         services.AddServerSideBlazor();
+
+        services.AddMudServices();
 
         return services;
     }
