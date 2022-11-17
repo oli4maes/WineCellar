@@ -1,17 +1,19 @@
 ﻿namespace WineCellar.Application.Grapes.Commands.CreateGrape;
 
-public record CreateGrapeCommand(string Name, string Description) : IRequest<Grape>;
+public sealed record CreateGrapeCommand(string Name, string Description) : IRequest<GrapeDto>;
 
-public class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Grape>
+public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, GrapeDto>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public CreateGrapeHandler(IUnitOfWork unitOfWork)
+    public CreateGrapeHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task<Grape> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
+    public async Task<GrapeDto> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
     {
         var entity = new Grape();
         entity.Name = request.Name;
@@ -20,6 +22,6 @@ public class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Grape>
         await _unitOfWork.Grapes.Create(entity);
         await _unitOfWork.CompleteAsync();
 
-        return entity;
+        return _mapper.Map<GrapeDto>(entity);
     }
 }

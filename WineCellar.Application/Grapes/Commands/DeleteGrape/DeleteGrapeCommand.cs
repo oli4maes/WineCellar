@@ -1,8 +1,8 @@
 ﻿namespace WineCellar.Application.Grapes.Commands.DeleteGrape;
 
-public record DeleteGrapeCommand(int id) : IRequest<bool>;
+public sealed record DeleteGrapeCommand(int id) : IRequest<bool>;
 
-public class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, bool>
+public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, bool>
 {
     private readonly IUnitOfWork _unitOfWork;
 

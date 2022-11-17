@@ -18,11 +18,11 @@ public partial class Overview : ComponentBase
     [Inject]
     private IDialogService _dialogService { get; set; }
 
-    private IEnumerable<Grape> _grapes = Enumerable.Empty<Grape>();
+    private IEnumerable<GrapeDto> _grapes = Enumerable.Empty<GrapeDto>();
     private string _searchString = String.Empty;
 
     // Quick filter - filter globally across multiple columns (Name) with the same input
-    private Func<Grape, bool> QuickFilter => x =>
+    private Func<GrapeDto, bool> QuickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
@@ -38,7 +38,7 @@ public partial class Overview : ComponentBase
         _grapes = await _mediator.Send(new GetGrapesQuery());
     }
 
-    private void OpenGrape(Grape grape)
+    private void OpenGrape(GrapeDto grape)
     {
         _navManager.NavigateTo($"/Administration/Grapes/{grape.Id}");
     }
@@ -48,7 +48,7 @@ public partial class Overview : ComponentBase
         _navManager.NavigateTo($"/Administration/Grapes/0");
     }
 
-    private async Task DeleteGrape(Grape grape)
+    private async Task DeleteGrape(GrapeDto grape)
     {
         DialogParameters parameters = new();
         parameters.Add("ContentText", $"Do your really want ot delete grape {grape.Name}?");

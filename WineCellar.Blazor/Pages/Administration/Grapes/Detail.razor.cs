@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using WineCellar.Application.Grapes.Commands.CreateGrape;
 using WineCellar.Application.Grapes.Commands.UpdateGrape;
 using WineCellar.Application.Grapes.Queries.GetGrapeById;
@@ -19,7 +18,7 @@ public partial class Detail : ComponentBase
     [Inject]
     private ISnackbar _snackbar { get; set; }
 
-    private Grape _grape { get; set;} = new();
+    private GrapeDto _grape { get; set;} = new();
     private bool _editMode { get; set; } = false;
 
     protected override async Task OnInitializedAsync()

@@ -1,20 +1,22 @@
 ﻿namespace WineCellar.Application.Grapes.Queries.GetGrapes;
 
-public record GetGrapesQuery : IRequest<List<Grape>>;
+public sealed record GetGrapesQuery : IRequest<List<GrapeDto>>;
 
-public class GetGrapesHandler : IRequestHandler<GetGrapesQuery, List<Grape>>
+public sealed class GetGrapesHandler : IRequestHandler<GetGrapesQuery, List<GrapeDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public GetGrapesHandler(IUnitOfWork unitOfWork)
+    public GetGrapesHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task<List<Grape>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
+    public async Task<List<GrapeDto>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
     {
-        var grapes = await _unitOfWork.Grapes.All();
+        var grapes = await _unitOfWork.Grapes.All();        
 
-        return grapes.ToList();
+        return _mapper.Map<List<GrapeDto>>(grapes);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace WineCellar.Application.Grapes.Queries.GetGrapeById;
 
-public record GetGrapeByIdQuery(int id) : IRequest<Grape>;
+public sealed record GetGrapeByIdQuery(int id) : IRequest<GrapeDto>;
 
-public class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, Grape>
+public sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, GrapeDto>
 {
     private readonly IMediator _mediator;
 
@@ -13,7 +13,7 @@ public class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, Grape>
         _mediator = mediator;
     }
 
-    public async Task<Grape> Handle(GetGrapeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GrapeDto> Handle(GetGrapeByIdQuery request, CancellationToken cancellationToken)
     {
         var results = await _mediator.Send(new GetGrapesQuery());
 
