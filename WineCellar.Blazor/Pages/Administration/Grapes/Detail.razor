@@ -1,1 +1,36 @@
 ﻿@page "/Administration/Grapes/{id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+
+<MudCard>
+    <EditForm Model="@_grape" OnValidSubmit="HandleValidSubmit">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@_grape.Name</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                @if (!_editMode)
+                {
+                    <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" @onclick="SetEditMode"></MudIconButton>
+                }
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudTextField @bind-Value="_grape.Name" Label="Name" Disabled="!_editMode" For="@(() => _grape.Name)" />
+            <MudTextField @bind-Value="_grape.Description" Label="Description" Disabled="!_editMode" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Button"
+                       Variant="Variant.Outlined"
+                       Color="Color.Error"
+                       OnClick="Back">Back</MudButton>
+            @if (_editMode)
+            {
+                <MudButton Class="ml-4"
+                       ButtonType="ButtonType.Submit"
+                       Variant="Variant.Outlined"
+                       StartIcon="@Icons.Material.Filled.Save"
+                       Color="Color.Primary">Save</MudButton>
+            }
+        </MudCardActions>
+    </EditForm>
+</MudCard>
