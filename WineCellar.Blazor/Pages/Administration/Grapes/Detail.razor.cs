@@ -1,6 +1,7 @@
 using WineCellar.Application.Grapes.Commands.CreateGrape;
 using WineCellar.Application.Grapes.Commands.UpdateGrape;
 using WineCellar.Application.Grapes.Queries.GetGrapeById;
+using WineCellar.Application.Grapes.Queries.GetGrapeByName;
 
 namespace WineCellar.Blazor.Pages.Administration.Grapes;
 
@@ -43,6 +44,14 @@ public partial class Detail : ComponentBase
     {
         if (Id == 0) // Insert
         {
+            // Check if there is an entity with the same name
+            var existingGrape = await _mediator.Send(new GetGrapeByNameQuery(_grape.Name));
+            if (existingGrape != null)
+            {
+                _snackbar.Add($"The grape with name: {existingGrape.Name} already exists.", Severity.Error);
+                return;
+            }
+
             _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description));
 
             Id = _grape.Id;

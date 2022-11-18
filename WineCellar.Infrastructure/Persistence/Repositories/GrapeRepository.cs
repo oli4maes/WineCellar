@@ -34,4 +34,9 @@ public class GrapeRepository : GenericRepository<Grape>, IGrapeRepository
         grapeModel.LastModified = DateTime.Now;
         grapeModel.LastModifiedBy = grape.LastModifiedBy;
     }
+
+    public override async Task<Grape> GetByName(string name)
+    {
+        return await dbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+    }
 }

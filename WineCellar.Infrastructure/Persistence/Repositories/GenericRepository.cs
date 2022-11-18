@@ -36,6 +36,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await dbSet.FindAsync(id);
     }
 
+    public virtual async Task<T> GetByName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual Task Update(T entity)
     {
         throw new NotImplementedException();
