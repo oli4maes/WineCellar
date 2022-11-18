@@ -45,6 +45,8 @@ public partial class Detail : ComponentBase
         {
             _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description));
 
+            Id = _grape.Id;
+
             if (_grape is not null)
             {
                 _editMode = false;
