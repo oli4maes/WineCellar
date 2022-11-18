@@ -1,5 +1,5 @@
 ﻿@page "/Administration/Grapes"
-@attribute [Authorize]
+@attribute [Authorize(Roles = "admin")]
 
 <MudCard>
     <MudCardHeader>

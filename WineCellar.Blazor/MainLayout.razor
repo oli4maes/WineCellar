@@ -10,11 +10,14 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <AccessControl></AccessControl>
-        <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End">            
-            <MudMenuItem Link="/administration/wineries">Wineries</MudMenuItem>
+        @if (_isAdmin)
+        {
+            <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End">            
+                <MudMenuItem Link="/administration/wineries">Wineries</MudMenuItem>
             <MudMenuItem Link="/administration/wines">Wines</MudMenuItem>
             <MudMenuItem Link="/administration/grapes">Grapes</MudMenuItem>
         </MudMenu>
+        }
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
         <MudDrawerHeader>
