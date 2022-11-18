@@ -1,5 +1,6 @@
 ﻿@page "/Administration/Grapes/{id:int}"
 @using Microsoft.AspNetCore.Components.Forms
+@attribute [Authorize]
 
 <MudCard>
     <EditForm Model="@_grape" OnValidSubmit="HandleValidSubmit">

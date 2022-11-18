@@ -17,10 +17,14 @@ public partial class Detail : ComponentBase
     private NavigationManager _navManager { get; set; }
 
     [Inject]
+    private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+
+    [Inject]
     private ISnackbar _snackbar { get; set; }
 
     private GrapeDto _grape { get; set; } = new();
     private bool _editMode { get; set; } = false;
+    private string _userName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,6 +46,9 @@ public partial class Detail : ComponentBase
 
     protected async void HandleValidSubmit()
     {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        _userName = authState.User.Identity.Name ?? string.Empty;
+
         if (Id == 0) // Insert
         {
             // Check if there is an entity with the same name
@@ -50,7 +57,7 @@ public partial class Detail : ComponentBase
             {
                 _snackbar.Add($"The grape with name: {existingGrape.Name} already exists.", Severity.Error);
                 return;
-            }
+            }           
 
             _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description));
 

@@ -1,5 +1,7 @@
 ﻿// Microsoft
 global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Components.Authorization;
 
 // MudBlazor
 global using MudBlazor;
