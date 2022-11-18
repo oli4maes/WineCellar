@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WineCellar.Domain.Entities;
 
 namespace WineCellar.Application.Common.Interfaces;
 

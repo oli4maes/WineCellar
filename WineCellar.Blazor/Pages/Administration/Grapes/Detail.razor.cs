@@ -18,7 +18,7 @@ public partial class Detail : ComponentBase
     [Inject]
     private ISnackbar _snackbar { get; set; }
 
-    private GrapeDto _grape { get; set;} = new();
+    private GrapeDto _grape { get; set; } = new();
     private bool _editMode { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
@@ -48,7 +48,9 @@ public partial class Detail : ComponentBase
             if (_grape is not null)
             {
                 _editMode = false;
-                _snackbar.Add("Saved", Severity.Success);                
+                _snackbar.Add("Saved", Severity.Success);
+
+                StateHasChanged();
             }
             else
             {
@@ -60,7 +62,9 @@ public partial class Detail : ComponentBase
             await _mediator.Send(new UpdateGrapeCommand(_grape));
 
             _editMode = false;
-            _snackbar.Add("Saved", Severity.Success);            
+            _snackbar.Add("Saved", Severity.Success);
+
+            StateHasChanged();
         }
     }
 

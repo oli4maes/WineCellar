@@ -19,7 +19,12 @@ public partial class Overview : ComponentBase
     private IDialogService _dialogService { get; set; }
 
     private IEnumerable<GrapeDto> _grapes = Enumerable.Empty<GrapeDto>();
-    private string _searchString = String.Empty;
+    private string _searchString = String.Empty;    
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetGrapes();
+    }
 
     // Quick filter - filter globally across multiple columns (Name) with the same input
     private Func<GrapeDto, bool> QuickFilter => x =>
@@ -32,11 +37,6 @@ public partial class Overview : ComponentBase
 
         return false;
     };
-
-    protected override async Task OnInitializedAsync()
-    {
-        _grapes = await _mediator.Send(new GetGrapesQuery());
-    }
 
     private void OpenGrape(GrapeDto grape)
     {
@@ -67,13 +67,18 @@ public partial class Overview : ComponentBase
             {
                 _snackbar.Add($"Grape {grape.Name} deleted.", Severity.Warning);
 
-                _grapes = await _mediator.Send(new GetGrapesQuery());
+                await GetGrapes();
             }
             else
             {
                 _snackbar.Add($"Could not delete grape {grape.Name}", Severity.Error);
             }
         }
+    }
+
+    private async Task GetGrapes()
+    {
+        _grapes = await _mediator.Send(new GetGrapesQuery());
     }
 }
 
