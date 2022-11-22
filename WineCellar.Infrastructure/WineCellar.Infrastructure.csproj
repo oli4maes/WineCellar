@@ -23,7 +23,4 @@
   <ItemGroup>
     <None Remove="Persistence\Repositories\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Persistence\Repositories\" />
-  </ItemGroup>
 </Project>

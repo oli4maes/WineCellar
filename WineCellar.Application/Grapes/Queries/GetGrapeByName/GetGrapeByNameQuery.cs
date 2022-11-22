@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Application.Grapes.Queries.GetGrapeByName;
 
-public sealed record GetGrapeByNameQuery(string name) : IRequest<GrapeDto?>;
+public sealed record GetGrapeByNameQuery(string Name) : IRequest<GrapeDto?>;
 
 public sealed class GetGrapeByNameHandler : IRequestHandler<GetGrapeByNameQuery, GrapeDto?>
 {
@@ -15,6 +15,6 @@ public sealed class GetGrapeByNameHandler : IRequestHandler<GetGrapeByNameQuery,
 
     public async Task<GrapeDto?> Handle(GetGrapeByNameQuery request, CancellationToken cancellationToken)
     {
-        return _mapper.Map<GrapeDto>(await _unitOfWork.Grapes.GetByName(request.name));
+        return _mapper.Map<GrapeDto>(await _unitOfWork.Grapes.GetByName(request.Name));
     }
 }

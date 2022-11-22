@@ -5,12 +5,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private readonly ApplicationDbContext _context;
 
     public IGrapeRepository Grapes { get; set; }
+    public IWineryRepository Wineries { get; set; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
 
         Grapes = new GrapeRepository(context);
+        Wineries = new WineryRepository(context);
     }      
 
     public async Task CompleteAsync()

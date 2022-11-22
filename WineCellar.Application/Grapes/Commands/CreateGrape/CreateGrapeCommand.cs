@@ -15,7 +15,7 @@ public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Gra
 
     public async Task<GrapeDto> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Grape();
+        Grape entity = new();
         entity.Name = request.Name;
         entity.Description = request.Description;
 

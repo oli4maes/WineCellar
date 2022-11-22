@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Application.Grapes.Commands.UpdateGrape;
 
-public sealed record UpdateGrapeCommand(GrapeDto grapeDto) : IRequest;
+public sealed record UpdateGrapeCommand(GrapeDto GrapeDto) : IRequest;
 
 public sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
 {
@@ -15,7 +15,7 @@ public sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
 
     public async Task<Unit> Handle(UpdateGrapeCommand request, CancellationToken cancellationToken)
     {
-        await _unitOfWork.Grapes.Update(_mapper.Map<Grape>(request.grapeDto));
+        await _unitOfWork.Grapes.Update(_mapper.Map<Grape>(request.GrapeDto));
         await _unitOfWork.CompleteAsync();
 
         return Unit.Value;

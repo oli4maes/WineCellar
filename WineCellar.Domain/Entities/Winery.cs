@@ -3,7 +3,7 @@ using WineCellar.Domain.Common;
 
 namespace WineCellar.Domain.Entities;
 
-public class Grape : BaseAuditableEntity
+public class Winery : BaseAuditableEntity
 {
     [MaxLength(250)]
     public string Name { get; set; } = String.Empty;

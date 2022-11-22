@@ -1,0 +1,47 @@
+﻿@page "/Administration/Wineries/{id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+
+<PageTitle>Administration - Wineries</PageTitle>
+
+<AuthorizeView Policy="AdminRole">
+    <Authorized>
+        <MudCard>
+            <EditForm Model="@_winery" OnValidSubmit="HandleValidSubmit" Context="EditContext">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h4">@_winery.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (!_editMode)
+                        {
+                            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" @onclick="SetEditMode"></MudIconButton>
+                        }
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" />
+                    <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Button"
+                               Variant="Variant.Outlined"
+                               Color="Color.Error"
+                               OnClick="Back">Back</MudButton>
+                    @if (_editMode)
+                    {
+                        <MudButton Class="ml-4"
+                               ButtonType="ButtonType.Submit"
+                               Variant="Variant.Outlined"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               Color="Color.Primary">Save</MudButton>
+                    }
+                </MudCardActions>
+            </EditForm>
+        </MudCard>
+    </Authorized>
+    <NotAuthorized>
+        <WineCellar.Blazor.Components.Common.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+

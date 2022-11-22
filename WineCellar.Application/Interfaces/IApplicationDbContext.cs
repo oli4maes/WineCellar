@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace WineCellar.Application.Common.Interfaces;
+namespace WineCellar.Application.Interfaces;
 
 public interface IApplicationDbContext
 {

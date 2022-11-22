@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Application.Grapes.Commands.DeleteGrape;
 
-public sealed record DeleteGrapeCommand(int id) : IRequest<bool>;
+public sealed record DeleteGrapeCommand(int Id) : IRequest<bool>;
 
 public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, bool>
 {
@@ -13,7 +13,7 @@ public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, boo
 
     public async Task<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
     {
-        bool succes = await _unitOfWork.Grapes.Delete(request.id);
+        bool succes = await _unitOfWork.Grapes.Delete(request.Id);
 
         await _unitOfWork.CompleteAsync();
 

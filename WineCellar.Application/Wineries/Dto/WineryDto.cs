@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WineCellar.Application.Grapes.Dto;
+namespace WineCellar.Application.Wineries.Dto;
 
-public class GrapeDto
+public class WineryDto
 {
     public int Id { get; set; }
 

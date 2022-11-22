@@ -2,7 +2,7 @@
 
 namespace WineCellar.Application.Grapes.Queries.GetGrapeById;
 
-public sealed record GetGrapeByIdQuery(int id) : IRequest<GrapeDto>;
+public sealed record GetGrapeByIdQuery(int Id) : IRequest<GrapeDto>;
 
 public sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, GrapeDto>
 {
@@ -17,8 +17,6 @@ public sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, Gra
     {
         var results = await _mediator.Send(new GetGrapesQuery());
 
-        var output = results.FirstOrDefault(x => x.Id == request.id);
-
-        return output;
+        return results.FirstOrDefault(x => x.Id == request.Id);
     }
 }

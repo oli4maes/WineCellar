@@ -9,7 +9,8 @@ global using AutoMapper;
 
 // WineCellar.Domain
 global using WineCellar.Domain.Entities;
-global using WineCellar.Domain.Common.Interface.Repositories;
+global using WineCellar.Domain.Interfaces.Repositories;
 
 // WineCellar.Application
 global using WineCellar.Application.Grapes.Dto;
+global using WineCellar.Application.Wineries.Dto;
