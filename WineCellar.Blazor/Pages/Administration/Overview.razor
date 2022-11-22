@@ -1,0 +1,23 @@
+﻿@page "/Administration"
+@attribute [Authorize(Roles = "admin")]
+
+<PageTitle>Administration</PageTitle>
+
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h4">Administration</MudText>
+        </CardHeaderContent>        
+    </MudCardHeader>
+    <MudCardContent>
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <MudText Typo="Typo.h6">Content</MudText>
+                <MudLink Href="/Administration/Grapes">Grapes</MudLink>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudText Typo="Typo.h6">Users</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
