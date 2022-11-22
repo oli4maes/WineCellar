@@ -1,7 +1,4 @@
 ﻿using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 
 namespace WineCellar.Blazor;
@@ -15,6 +12,12 @@ public static class ConfigureServices
         {
             options.Domain = configuration["Auth0:Domain"];
             options.ClientId = configuration["Auth0:ClientId"];
+        });
+
+        // Authorization policies
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminRole", policy => policy.RequireRole("admin"));
         });
 
         services.AddRazorPages();
