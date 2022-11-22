@@ -59,7 +59,7 @@ public partial class Detail : ComponentBase
                 return;
             }           
 
-            _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description));
+            _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description, _userName));
 
             Id = _grape.Id;
 
@@ -77,7 +77,7 @@ public partial class Detail : ComponentBase
         }
         else // Update
         {
-            await _mediator.Send(new UpdateGrapeCommand(_grape));
+            await _mediator.Send(new UpdateGrapeCommand(_grape, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
