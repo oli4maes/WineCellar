@@ -59,7 +59,7 @@ public partial class Detail : ComponentBase
                 return;
             }
 
-            _winery = await _mediator.Send(new CreateWineryCommand(_winery.Name, _winery.Description, _userName));
+            _winery = await _mediator.Send(new CreateWineryCommand(_winery, _userName));
 
             Id = _winery.Id;
 

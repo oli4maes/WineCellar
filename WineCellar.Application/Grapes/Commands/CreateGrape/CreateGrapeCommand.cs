@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Application.Grapes.Commands.CreateGrape;
 
-public sealed record CreateGrapeCommand(string Name, string Description, string UserName) : IRequest<GrapeDto>;
+public sealed record CreateGrapeCommand(GrapeDto GrapeDto, string UserName) : IRequest<GrapeDto>;
 
 public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, GrapeDto>
 {
@@ -16,8 +16,8 @@ public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Gra
     public async Task<GrapeDto> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
     {
         Grape entity = new();
-        entity.Name = request.Name;
-        entity.Description = request.Description;
+        entity.Name = request.GrapeDto.Name;
+        entity.Description = request.GrapeDto.Description;
         entity.CreatedBy = request.UserName;
 
         await _unitOfWork.Grapes.Create(entity);

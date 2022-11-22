@@ -17,7 +17,6 @@ public sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
     {
         Grape grapeEntity = _mapper.Map<Grape>(request.GrapeDto);
         grapeEntity.LastModifiedBy = request.UserName;
-        grapeEntity.LastModified = DateTime.UtcNow;
 
         await _unitOfWork.Grapes.Update(grapeEntity);
         await _unitOfWork.CompleteAsync();

@@ -17,7 +17,6 @@ public sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryCommand>
     {
         Winery wineryEntity = _mapper.Map<Winery>(request.WineryDto);
         wineryEntity.LastModifiedBy = request.UserName;
-        wineryEntity.LastModified = DateTime.UtcNow;
 
         await _unitOfWork.Wineries.Update(wineryEntity);
         await _unitOfWork.CompleteAsync();

@@ -48,11 +48,41 @@
                                      AdornmentColor="Color.Primary"
                                      ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
                                      Disabled="!_editMode"
-                                     For="@(() => _wine.Winery)"/>
+                                     For="@(() => _wine.Winery)" />
 
-                    <!-- TODO: Grapes -->
+                    <!-- Grapes -->
+                    <MudItem xs="12" sm="6">
+                        <MudAutocomplete T="GrapeDto"
+                                         Label="Grape"
+                                         @bind-Value="@_selectedGrape"
+                                         SearchFunc="SearchGrape"
+                                         ResetValueOnEmptyText=true
+                                         CoerceText=false
+                                         CoerceValue=false
+                                         AdornmentIcon="@Icons.Material.Filled.Search"
+                                         AdornmentColor="Color.Primary"
+                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                         Disabled="!_editMode" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudButton ButtonType="ButtonType.Button"
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Error"
+                                   OnClick="AddGrape">Add Grape</MudButton>
+                    </MudItem>
 
-
+                    @if (_wine.Grapes != null)
+                    {
+                        <MudList>
+                            @foreach (var grape in _wine.Grapes)
+                            {
+                                <MudListItem>
+                                    @grape.Name
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" />
+                                </MudListItem>
+                            }
+                        </MudList>
+                    }
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Button"

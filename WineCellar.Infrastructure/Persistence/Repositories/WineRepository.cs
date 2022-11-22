@@ -32,6 +32,7 @@ public class WineRepository : GenericRepository<Wine>, IWineRepository
         wineModel.Name = wine.Name;
         wineModel.WineryId = wine.WineryId;
         wineModel.WineType = wine.WineType;
+        wineModel.Grapes= wine.Grapes;
         wineModel.LastModified = DateTime.UtcNow;
         wineModel.LastModifiedBy = wine.LastModifiedBy;
     }

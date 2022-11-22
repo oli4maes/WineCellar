@@ -5,7 +5,6 @@ using WineCellar.Application.Wines.Commands.UpdateWine;
 using WineCellar.Application.Wines.Queries.GetWineById;
 using WineCellar.Application.Wines.Queries.GetWineByName;
 using WineCellar.Domain.Enums;
-using static MudBlazor.Colors;
 
 namespace WineCellar.Blazor.Pages.Administration.Wines;
 
@@ -30,10 +29,13 @@ public partial class Detail : ComponentBase
     private bool _editMode { get; set; } = false;
     private string _userName { get; set; } = string.Empty;
     private List<WineryDto> _wineries = new();
+    private List<GrapeDto> _grapes = new();
+    private GrapeDto _selectedGrape = new();
 
     protected override async Task OnInitializedAsync()
     {
         _wineries = await _mediator.Send(new GetWineriesQuery());
+        _grapes = await _mediator.Send(new GetGrapesQuery());
 
         if (Id != 0)
         {
@@ -56,7 +58,9 @@ public partial class Detail : ComponentBase
     protected async void HandleValidSubmit()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        _userName = authState.User.Identity.Name ?? string.Empty; 
+        _userName = authState.User.Identity.Name ?? string.Empty;
+
+        _wine.WineryId = _wine.Winery.Id;
 
         if (Id == 0) // Insert
         {
@@ -68,7 +72,7 @@ public partial class Detail : ComponentBase
                 return;
             }
 
-            _wine = await _mediator.Send(new CreateWineCommand(_wine.Name, _wine.WineType, _wine.WineryId, _wine.Grapes, _userName));
+            _wine = await _mediator.Send(new CreateWineCommand(_wine, _userName));
 
             Id = _wine.Id;
 
@@ -107,5 +111,24 @@ public partial class Detail : ComponentBase
             return new List<WineryDto>();
 
         return _wineries.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task<IEnumerable<GrapeDto>> SearchGrape(string value)
+    {
+        // if text is null or empty, don't return values (drop-down will not open)
+        if (string.IsNullOrEmpty(value))
+            return new List<GrapeDto>();
+
+        return _grapes.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private void RemoveGrape(GrapeDto grape)
+    {
+        _wine.Grapes.Remove(grape);
+    }
+
+    private void AddGrape()
+    {
+        _wine.Grapes.Add(_selectedGrape);
     }
 }

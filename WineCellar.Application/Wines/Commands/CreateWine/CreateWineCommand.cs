@@ -2,7 +2,7 @@
 
 namespace WineCellar.Application.Wines.Commands.CreateWine;
 
-public sealed record CreateWineCommand(string Name, WineType WineType, int WineryId, List<GrapeDto> Grapes, string UserName) : IRequest<WineDto>;
+public sealed record CreateWineCommand(WineDto WineDto, string UserName) : IRequest<WineDto>;
 
 public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineDto>
 {
@@ -18,10 +18,10 @@ public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineD
     public async Task<WineDto> Handle(CreateWineCommand request, CancellationToken cancellationToken)
     {
         Wine entity = new();
-        entity.Name = request.Name;
-        entity.WineType = request.WineType;
-        entity.WineryId = request.WineryId;
-        entity.Grapes = _mapper.Map<List<Grape>>(request.Grapes);
+        entity.Name = request.WineDto.Name;
+        entity.WineType = request.WineDto.WineType;
+        entity.WineryId = request.WineDto.WineryId;
+        entity.Grapes = _mapper.Map<List<Grape>>(request.WineDto.Grapes);
         entity.CreatedBy = request.UserName;
 
         await _unitOfWork.Wines.Create(entity);

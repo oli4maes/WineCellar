@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Application.Wineries.Commands.CreateWinery;
 
-public sealed record CreateWineryCommand(string Name, string Description, string UserName) : IRequest<WineryDto>;
+public sealed record CreateWineryCommand(WineryDto WineryDto, string UserName) : IRequest<WineryDto>;
 
 public sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, WineryDto>
 {
@@ -16,8 +16,8 @@ public sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, W
     public async Task<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
     {
         Winery entity = new();
-        entity.Name = request.Name;
-        entity.Description = request.Description;
+        entity.Name = request.WineryDto.Name;
+        entity.Description = request.WineryDto.Description;
         entity.CreatedBy = request.UserName;
 
         await _unitOfWork.Wineries.Create(entity);

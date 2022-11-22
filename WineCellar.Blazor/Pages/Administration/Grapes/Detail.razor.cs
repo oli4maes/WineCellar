@@ -59,7 +59,7 @@ public partial class Detail : ComponentBase
                 return;
             }           
 
-            _grape = await _mediator.Send(new CreateGrapeCommand(_grape.Name, _grape.Description, _userName));
+            _grape = await _mediator.Send(new CreateGrapeCommand(_grape, _userName));
 
             Id = _grape.Id;
 

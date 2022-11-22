@@ -1,6 +1,4 @@
-﻿using WineCellar.Domain.Interfaces.Repositories;
-
-namespace WineCellar.Infrastructure.Persistence.Repositories;
+﻿namespace WineCellar.Infrastructure.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
