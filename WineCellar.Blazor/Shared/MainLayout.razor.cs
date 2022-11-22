@@ -3,7 +3,6 @@
 public partial class MainLayout
 {
     bool _drawerOpen = false;
-    bool _isAdmin = false;
     bool _isDarkMode;
     MudThemeProvider _mudThemeProvider;
 

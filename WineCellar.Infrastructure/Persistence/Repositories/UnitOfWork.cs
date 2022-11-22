@@ -6,6 +6,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     public IGrapeRepository Grapes { get; set; }
     public IWineryRepository Wineries { get; set; }
+    public IWineRepository Wines { get; set; }
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -13,6 +14,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
         Grapes = new GrapeRepository(context);
         Wineries = new WineryRepository(context);
+        Wines = new WineRepository(context);
     }      
 
     public async Task CompleteAsync()

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WineCellar.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using WineCellar.Infrastructure.Persistence;
 namespace WineCellar.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221122101915_AddedWines")]
+    partial class AddedWines
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace WineCellar.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GrapeWine", b =>
-                {
-                    b.Property<int>("GrapesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WinesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GrapesId", "WinesId");
-
-                    b.HasIndex("WinesId");
-
-                    b.ToTable("GrapeWine");
-                });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Grape", b =>
                 {
@@ -147,21 +135,6 @@ namespace WineCellar.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Wineries");
-                });
-
-            modelBuilder.Entity("GrapeWine", b =>
-                {
-                    b.HasOne("WineCellar.Domain.Entities.Grape", null)
-                        .WithMany()
-                        .HasForeignKey("GrapesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WineCellar.Domain.Entities.Wine", null)
-                        .WithMany()
-                        .HasForeignKey("WinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Wine", b =>

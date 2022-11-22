@@ -10,4 +10,6 @@ public class Winery : BaseAuditableEntity
 
     [MaxLength(2000)]
     public string? Description { get; set; }
+
+    public List<Wine> Wines { get; set; }
 }

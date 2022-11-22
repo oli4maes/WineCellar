@@ -1,0 +1,60 @@
+﻿@page "/Administration/Wines"
+
+<PageTitle>Administration - Wines</PageTitle>
+
+<AuthorizeView Policy="AdminRole">
+    <Authorized>
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h4">Wines</MudText>
+                </CardHeaderContent>
+                <CardHeaderActions>
+                    <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="AddWine" Size="Size.Medium" />
+                </CardHeaderActions>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (_wines is not null)
+                {
+                    <MudDataGrid T="WineDto"
+                             Items="@_wines"
+                             SortMode="SortMode.Multiple"
+                             QuickFilter="QuickFilter"
+                             Hideable=true
+                             Bordered=true>
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Wines</MudText>
+                            <MudSpacer />
+                            <MudTextField @bind-Value="_searchString"
+                                      Placeholder="Search"
+                                      Adornment="Adornment.Start"
+                                      Immediate="true"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      IconSize="Size.Medium"
+                                      Class="mt-0"></MudTextField>
+                        </ToolBarContent>
+                        <Columns>
+                            <Column T="WineDto" Field="Id" Title="Id" Sortable="true" Filterable="false" IsEditable="false" />
+                            <Column T="WineDto" Field="Name" Title="Name" Sortable="true" Filterable="true" />
+                            <Column T="WineDto" Context="WineEditContext">
+                                <CellTemplate>
+                                    @{
+                                        var wine = WineEditContext.Item;
+                                    }
+                                    <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Edit" Color="Color.Primary" @onclick="() => OpenWine(wine)" />
+                                    <MudIconButton Size="Size.Small" Icon="@Icons.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteWine(wine)" />
+                                </CellTemplate>
+                            </Column>
+                        </Columns>
+                        <PagerContent>
+                            <MudDataGridPager T="WineDto" />
+                        </PagerContent>
+                    </MudDataGrid>
+                }
+            </MudCardContent>
+        </MudCard>
+    </Authorized>
+    <NotAuthorized>
+        <WineCellar.Blazor.Components.Common.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>

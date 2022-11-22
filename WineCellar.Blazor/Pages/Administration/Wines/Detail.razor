@@ -1,0 +1,79 @@
+﻿@page "/Administration/Wines/{id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+@using WineCellar.Domain.Enums;
+
+<PageTitle>Administration - Wines</PageTitle>
+
+<AuthorizeView Policy="AdminRole">
+    <Authorized>
+        <MudCard>
+            <EditForm Model="@_wine" OnValidSubmit="HandleValidSubmit" Context="EditContext">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h4">@_wine.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (!_editMode)
+                        {
+                            <MudIconButton Icon="@Icons.Filled.Edit" Color="Color.Default" @onclick="SetEditMode"></MudIconButton>
+                        }
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <!-- Name -->
+                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" />
+
+                    <!-- Wine Type-->
+                    <MudSelect T="WineType"
+                               @bind-Value="_wine.WineType"
+                               Placeholder="Select wine type"
+                               Label="Type"
+                               Disabled="!_editMode"
+                               For="@(() => _wine.WineType)">
+                        @foreach (var item in Enum.GetValues(typeof(WineType)))
+                        {
+                            <MudSelectItem T="WineType" Value="(WineType)item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    <!-- Winery -->
+                    <MudAutocomplete T="WineryDto"
+                                     Label="Winery"
+                                     @bind-Value="_wine.Winery"
+                                     SearchFunc="@SearchWinery"
+                                     ResetValueOnEmptyText=true
+                                     CoerceText=false
+                                     CoerceValue=false
+                                     AdornmentIcon="@Icons.Material.Filled.Search"
+                                     AdornmentColor="Color.Primary"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                     Disabled="!_editMode"
+                                     For="@(() => _wine.Winery)"/>
+
+                    <!-- TODO: Grapes -->
+
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Button"
+                               Variant="Variant.Outlined"
+                               Color="Color.Error"
+                               OnClick="Back">Back</MudButton>
+                    @if (_editMode)
+                    {
+                        <MudButton Class="ml-4"
+                               ButtonType="ButtonType.Submit"
+                               Variant="Variant.Outlined"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               Color="Color.Primary">Save</MudButton>
+                    }
+                </MudCardActions>
+            </EditForm>
+        </MudCard>
+    </Authorized>
+    <NotAuthorized>
+        <WineCellar.Blazor.Components.Common.NotAuthorized />
+    </NotAuthorized>
+</AuthorizeView>
+
+
