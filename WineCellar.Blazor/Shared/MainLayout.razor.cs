@@ -1,4 +1,4 @@
-﻿namespace WineCellar.Blazor;
+﻿namespace WineCellar.Blazor.Shared;
 
 public partial class MainLayout
 {
