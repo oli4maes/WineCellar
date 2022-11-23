@@ -1,6 +1,4 @@
-﻿using WineCellar.Domain.Enums;
-
-namespace WineCellar.Application.Wines.Commands.CreateWine;
+﻿namespace WineCellar.Application.Wines.Commands.CreateWine;
 
 public sealed record CreateWineCommand(WineDto WineDto, string UserName) : IRequest<WineDto>;
 

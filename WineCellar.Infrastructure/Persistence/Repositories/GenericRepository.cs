@@ -11,7 +11,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public virtual async Task<IEnumerable<T>> All()
     {
-        return await dbSet.ToListAsync();
+        return await dbSet.AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<T> Create(T entity)
