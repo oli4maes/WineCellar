@@ -34,7 +34,7 @@ namespace WineCellar.Infrastructure.Migrations
 
                     b.HasIndex("WinesId");
 
-                    b.ToTable("GrapeWine");
+                    b.ToTable("GrapeWine", (string)null);
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Grape", b =>
@@ -70,7 +70,7 @@ namespace WineCellar.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Grapes");
+                    b.ToTable("Grapes", (string)null);
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Wine", b =>
@@ -110,7 +110,7 @@ namespace WineCellar.Infrastructure.Migrations
 
                     b.HasIndex("WineryId");
 
-                    b.ToTable("Wines");
+                    b.ToTable("Wines", (string)null);
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Winery", b =>
@@ -146,7 +146,7 @@ namespace WineCellar.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Wineries");
+                    b.ToTable("Wineries", (string)null);
                 });
 
             modelBuilder.Entity("GrapeWine", b =>

@@ -15,7 +15,7 @@ public sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdQuery, WineD
 
     public async Task<WineDto> Handle(GetWineByIdQuery request, CancellationToken cancellationToken)
     {
-        var results = await _mediator.Send(new GetWinesQuery());
+        List<WineDto> results = await _mediator.Send(new GetWinesQuery());
 
         return results.FirstOrDefault(x => x.Id == request.Id);
     }

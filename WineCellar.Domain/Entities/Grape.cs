@@ -12,4 +12,6 @@ public class Grape : BaseAuditableEntity
     public string? Description { get; set; }
 
     public List<Wine> Wines { get; set; }
+
+    public List<GrapeWine> GrapeWines { get; set; }
 }

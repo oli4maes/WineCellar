@@ -14,4 +14,20 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         return await base.SaveChangesAsync(cancellationToken);
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Wine>()
+            .HasMany(p => p.Grapes)
+            .WithMany(p => p.Wines)
+            .UsingEntity<GrapeWine>(
+                j => j
+                    .HasOne(pt => pt.Grape)
+                    .WithMany(t => t.GrapeWines)
+                    .HasForeignKey(pt => pt.GrapesId),
+                j => j
+                    .HasOne(pt => pt.Wine)
+                    .WithMany(p => p.GrapeWines)
+                    .HasForeignKey(pt => pt.WinesId));
+    }
 }

@@ -15,4 +15,5 @@ public class Wine : BaseAuditableEntity
     public Winery Winery { get; set; }
 
     public List<Grape> Grapes { get; set; }
+    public List<GrapeWine> GrapeWines { get; set; }
 }

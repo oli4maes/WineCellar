@@ -1,16 +1,18 @@
-﻿namespace WineCellar.Application.Wines.Commands.CreateWine;
+﻿using WineCellar.Application.Wines.Queries.GetWineById;
+
+namespace WineCellar.Application.Wines.Commands.CreateWine;
 
 public sealed record CreateWineCommand(WineDto WineDto, string UserName) : IRequest<WineDto>;
 
 public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineDto>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public CreateWineHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateWineHandler(IUnitOfWork unitOfWork, IMediator mediator)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        _mediator = mediator;
     }
 
     public async Task<WineDto> Handle(CreateWineCommand request, CancellationToken cancellationToken)
@@ -19,12 +21,20 @@ public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineD
         entity.Name = request.WineDto.Name;
         entity.WineType = request.WineDto.WineType;
         entity.WineryId = request.WineDto.WineryId;
-        entity.Grapes = _mapper.Map<List<Grape>>(request.WineDto.Grapes);
         entity.CreatedBy = request.UserName;
+
+        entity.GrapeWines = new();
+
+        foreach (GrapeDto grape in request.WineDto.Grapes)
+        {
+            entity.GrapeWines.Add(new GrapeWine { GrapesId = grape.Id });
+        }
 
         await _unitOfWork.Wines.Create(entity);
         await _unitOfWork.CompleteAsync();
 
-        return _mapper.Map<WineDto>(entity);
+        WineDto wine = await _mediator.Send(new GetWineByIdQuery(entity.Id));
+
+        return wine;
     }
 }
