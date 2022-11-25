@@ -1,4 +1,5 @@
-﻿@using WineCellar.Blazor.Shared
+﻿@using WineCellar.Blazor.Components.Common
+@using WineCellar.Blazor.Shared
 @inherits LayoutComponentBase
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
@@ -20,7 +21,7 @@
         <MudDrawerHeader>
             <MudText Typo="Typo.h5" Class="mt-1">Wine Cellar</MudText>
         </MudDrawerHeader>
-        @*NavMenu*@
+        <NavMenu/>
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="pt-10 px-10">
