@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Grape> Grapes => Set<Grape>();
     public DbSet<Winery> Wineries => Set<Winery>();
     public DbSet<Wine> Wines => Set<Wine>();
+    public DbSet<UserWine> UserWines=> Set<UserWine>();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

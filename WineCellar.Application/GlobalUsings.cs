@@ -15,3 +15,4 @@ global using WineCellar.Domain.Interfaces.Repositories;
 global using WineCellar.Application.Wines.Dto;
 global using WineCellar.Application.Grapes.Dto;
 global using WineCellar.Application.Wineries.Dto;
+global using WineCellar.Application.UserWines.Dto;
