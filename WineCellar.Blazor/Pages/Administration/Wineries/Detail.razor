@@ -19,8 +19,8 @@
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" />
-                    <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" />
+                    <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" Class="mt-3" />
+                    <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" Class="mt-3" />
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Button"

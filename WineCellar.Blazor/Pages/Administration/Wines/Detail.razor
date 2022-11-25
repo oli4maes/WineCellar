@@ -21,7 +21,7 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <!-- Name -->
-                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" />
+                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" Class="mt-3" />
 
                     <!-- Wine Type-->
                     <MudSelect T="WineType"
@@ -29,7 +29,8 @@
                                Placeholder="Select wine type"
                                Label="Type"
                                Disabled="!_editMode"
-                               For="@(() => _wine.WineType)">
+                               For="@(() => _wine.WineType)"
+                               Class="mt-3">
                         @foreach (var item in Enum.GetValues(typeof(WineType)))
                         {
                             <MudSelectItem T="WineType" Value="(WineType)item">@item</MudSelectItem>
@@ -48,37 +49,46 @@
                                      AdornmentColor="Color.Primary"
                                      ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
                                      Disabled="!_editMode"
-                                     For="@(() => _wine.Winery)" />
+                                     For="@(() => _wine.Winery)"
+                                      Class="mt-3" />
 
                     <!-- Grapes -->
-                    <MudItem xs="12" sm="6">
+                    @if (_editMode)
+                    {
                         <MudAutocomplete T="GrapeDto"
-                                         Label="Grape"
-                                         @bind-Value="@_selectedGrape"
-                                         SearchFunc="SearchGrape"
-                                         ResetValueOnEmptyText=true
-                                         CoerceText=false
-                                         CoerceValue=false
-                                         AdornmentIcon="@Icons.Material.Filled.Search"
-                                         AdornmentColor="Color.Primary"
-                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                         Disabled="!_editMode" />
-                    </MudItem>
-                    <MudItem xs="12" sm="6">
+                                     Label="Grape"
+                                     @bind-Value="@_selectedGrape"
+                                     SearchFunc="SearchGrape"
+                                     ResetValueOnEmptyText=true
+                                     CoerceText=false
+                                     CoerceValue=false
+                                     AdornmentIcon="@Icons.Material.Filled.Search"
+                                     AdornmentColor="Color.Primary"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                     Disabled="!_editMode"
+                                     Class="mt-3" />
+
+
                         <MudButton ButtonType="ButtonType.Button"
-                                   Variant="Variant.Outlined"
-                                   Color="Color.Error"
-                                   OnClick="AddGrape">Add Grape</MudButton>
-                    </MudItem>
+                               Variant="Variant.Outlined"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Add"
+                               OnClick="AddGrape"
+                               Class="mt-3">Add Grape</MudButton>
+                    }
 
                     @if (_wine.Grapes != null)
                     {
-                        <MudList>
+                        <MudList Class="mt-3" Dense=true>
+                            <MudListSubheader>Grapes</MudListSubheader>
                             @foreach (var grape in _wine.Grapes)
                             {
                                 <MudListItem>
                                     @grape.Name
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" />
+                                    @if (_editMode)
+                                    {
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small" />
+                                    }
                                 </MudListItem>
                             }
                         </MudList>
