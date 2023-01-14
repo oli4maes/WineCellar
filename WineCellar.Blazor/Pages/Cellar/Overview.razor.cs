@@ -1,5 +1,6 @@
 using System.Security.Claims;
-using WineCellar.Application.UserWines.Queries.GetUserWines;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.UserWines.GetUserWines;
 
 namespace WineCellar.Blazor.Pages.Cellar;
 

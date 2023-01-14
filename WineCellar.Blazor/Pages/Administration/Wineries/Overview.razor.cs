@@ -1,5 +1,6 @@
-using WineCellar.Application.Wineries.Commands.DeleteWinery;
-using WineCellar.Application.Wineries.Queries.GetWineries;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Wineries.DeleteWinery;
+using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Administration.Wineries;

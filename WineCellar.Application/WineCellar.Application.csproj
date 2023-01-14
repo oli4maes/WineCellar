@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Grapes\Commands\DeleteGrape\" />
-    <Folder Include="Grapes\Commands\UpdateGrape\" />
+    <Folder Include="Features" />
   </ItemGroup>
 
   <ItemGroup>

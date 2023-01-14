@@ -1,5 +1,6 @@
-﻿using WineCellar.Application.Grapes.Queries.GetGrapes;
-using WineCellar.Application.Grapes.Commands.DeleteGrape;
+﻿using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Grapes.DeleteGrape;
+using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Administration.Grapes;
