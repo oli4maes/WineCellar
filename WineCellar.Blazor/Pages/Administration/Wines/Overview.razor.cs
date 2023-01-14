@@ -1,5 +1,6 @@
-using WineCellar.Application.Wines.Commands.DeleteWine;
-using WineCellar.Application.Wines.Queries.GetWines;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Wines.DeleteWine;
+using WineCellar.Application.Features.Wines.GetWines;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Administration.Wines;

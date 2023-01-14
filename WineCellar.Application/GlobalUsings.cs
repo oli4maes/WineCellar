@@ -12,7 +12,4 @@ global using WineCellar.Domain.Entities;
 global using WineCellar.Domain.Interfaces.Repositories;
 
 // WineCellar.Application
-global using WineCellar.Application.Wines.Dto;
-global using WineCellar.Application.Grapes.Dto;
-global using WineCellar.Application.Wineries.Dto;
-global using WineCellar.Application.UserWines.Dto;
+global using WineCellar.Application.Dtos;

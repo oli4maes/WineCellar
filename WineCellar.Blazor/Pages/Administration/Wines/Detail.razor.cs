@@ -1,29 +1,25 @@
-using WineCellar.Application.Grapes.Queries.GetGrapes;
-using WineCellar.Application.Wineries.Queries.GetWineries;
-using WineCellar.Application.Wines.Commands.CreateWine;
-using WineCellar.Application.Wines.Commands.UpdateWine;
-using WineCellar.Application.Wines.Queries.GetWineById;
-using WineCellar.Application.Wines.Queries.GetWineByName;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Grapes.GetGrapes;
+using WineCellar.Application.Features.Wineries.GetWineries;
+using WineCellar.Application.Features.Wines.CreateWine;
+using WineCellar.Application.Features.Wines.GetWineById;
+using WineCellar.Application.Features.Wines.GetWineByName;
+using WineCellar.Application.Features.Wines.UpdateWine;
 using WineCellar.Domain.Enums;
 
 namespace WineCellar.Blazor.Pages.Administration.Wines;
 
 public partial class Detail : ComponentBase
 {
-    [Parameter]
-    public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
-    [Inject]
-    MediatR.IMediator _mediator { get; set; }
+    [Inject] MediatR.IMediator _mediator { get; set; }
 
-    [Inject]
-    private NavigationManager _navManager { get; set; }
+    [Inject] private NavigationManager _navManager { get; set; }
 
-    [Inject]
-    private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
-    [Inject]
-    private ISnackbar _snackbar { get; set; }
+    [Inject] private ISnackbar _snackbar { get; set; }
 
     private WineDto _wine { get; set; } = new();
     private bool _editMode { get; set; } = false;
@@ -39,7 +35,8 @@ public partial class Detail : ComponentBase
 
         if (Id != 0)
         {
-            _wine = await _mediator.Send(new GetWineByIdQuery(Id));
+            var response = await _mediator.Send(new GetWineByIdQuery(Id));
+            _wine = response;
         }
         else
         {

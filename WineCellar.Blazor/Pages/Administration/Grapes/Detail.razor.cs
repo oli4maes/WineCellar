@@ -1,7 +1,8 @@
-using WineCellar.Application.Grapes.Commands.CreateGrape;
-using WineCellar.Application.Grapes.Commands.UpdateGrape;
-using WineCellar.Application.Grapes.Queries.GetGrapeById;
-using WineCellar.Application.Grapes.Queries.GetGrapeByName;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Grapes.CreateGrape;
+using WineCellar.Application.Features.Grapes.GetGrapeById;
+using WineCellar.Application.Features.Grapes.GetGrapeByName;
+using WineCellar.Application.Features.Grapes.UpdateGrape;
 
 namespace WineCellar.Blazor.Pages.Administration.Grapes;
 

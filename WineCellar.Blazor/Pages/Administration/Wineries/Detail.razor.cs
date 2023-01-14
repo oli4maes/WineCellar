@@ -1,7 +1,8 @@
-using WineCellar.Application.Wineries.Commands.CreateWinery;
-using WineCellar.Application.Wineries.Commands.UpdateWinery;
-using WineCellar.Application.Wineries.Queries.GetWineryById;
-using WineCellar.Application.Wineries.Queries.GetWineryByName;
+using WineCellar.Application.Dtos;
+using WineCellar.Application.Features.Wineries.CreateWinery;
+using WineCellar.Application.Features.Wineries.GetWineryById;
+using WineCellar.Application.Features.Wineries.GetWineryByName;
+using WineCellar.Application.Features.Wineries.UpdateWinery;
 
 namespace WineCellar.Blazor.Pages.Administration.Wineries;
 
