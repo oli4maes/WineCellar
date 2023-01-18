@@ -8,7 +8,7 @@ public class WineRepository : GenericRepository<Wine>, IWineRepository
 
     public override async Task<IEnumerable<Wine>> All()
     {
-        return await dbSet.Include(x => x.Grapes)
+        return await DbSet.Include(x => x.Grapes)
                           .Include(x => x.Winery)
                           .AsNoTracking()
                           .ToListAsync();
@@ -16,21 +16,21 @@ public class WineRepository : GenericRepository<Wine>, IWineRepository
 
     public override async Task<bool> Delete(int id)
     {
-        var wineModel = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        var wineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
 
         if (wineModel == null)
         {
             return false;
         }
 
-        dbSet.Remove(wineModel);
+        DbSet.Remove(wineModel);
 
         return true;
     }
 
     public override async Task Update(Wine wine)
     {
-        var wineModel = await dbSet.Include(x => x.GrapeWines).FirstOrDefaultAsync(x => x.Id == wine.Id);
+        var wineModel = await DbSet.Include(x => x.GrapeWines).FirstOrDefaultAsync(x => x.Id == wine.Id);
 
         if (wineModel == null)
         {
@@ -52,8 +52,8 @@ public class WineRepository : GenericRepository<Wine>, IWineRepository
         }
     }
 
-    public override async Task<Wine> GetByName(string name)
+    public override async Task<Wine?> GetByName(string name)
     {
-        return await dbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        return await DbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }

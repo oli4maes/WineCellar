@@ -8,7 +8,8 @@ public class UserWineDto
 
     [Required]
     public int WineId { get; set; }
-    public Wine Wine { get; set; }
+    
+    public Wine? Wine { get; set; }
 
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid amount. The minimum amount required is 1.")]
