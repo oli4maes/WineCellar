@@ -8,21 +8,21 @@ public class GrapeRepository : GenericRepository<Grape>, IGrapeRepository
 
     public override async Task<bool> Delete(int id)
     {
-        var grapeModel = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        var grapeModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
 
         if (grapeModel == null)
         {
             return false;
         }
 
-        dbSet.Remove(grapeModel);
+        DbSet.Remove(grapeModel);
 
         return true;
     }
 
     public override async Task Update(Grape grape)
     {
-        var grapeModel = await dbSet.FirstOrDefaultAsync(x => x.Id == grape.Id);
+        var grapeModel = await DbSet.FirstOrDefaultAsync(x => x.Id == grape.Id);
 
         if (grapeModel == null)
         {
@@ -35,8 +35,8 @@ public class GrapeRepository : GenericRepository<Grape>, IGrapeRepository
         grapeModel.LastModifiedBy = grape.LastModifiedBy;
     }
 
-    public override async Task<Grape> GetByName(string name)
+    public override async Task<Grape?> GetByName(string name)
     {
-        return await dbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        return await DbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }

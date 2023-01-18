@@ -1,11 +1,9 @@
-using WineCellar.Application.Dtos;
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Application.Features.Wines.CreateWine;
 using WineCellar.Application.Features.Wines.GetWineById;
 using WineCellar.Application.Features.Wines.GetWineByName;
 using WineCellar.Application.Features.Wines.UpdateWine;
-using WineCellar.Domain.Enums;
 
 namespace WineCellar.Blazor.Pages.Administration.Wines;
 

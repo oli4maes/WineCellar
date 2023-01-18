@@ -6,10 +6,10 @@ public interface IGenericRepository<T> where T : class
     Task<IEnumerable<T>> All();
 
     // Get specific entity by id
-    Task<T> GetById(int id);
+    Task<T?> GetById(int id);
 
     // Get specific entity by name
-    Task<T> GetByName(string name);
+    Task<T?> GetByName(string name);
 
     // Delete entity
     Task<bool> Delete(int id);

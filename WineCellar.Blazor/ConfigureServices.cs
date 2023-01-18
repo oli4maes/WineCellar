@@ -10,8 +10,8 @@ public static class ConfigureServices
         // Auth0
         services.AddAuth0WebAppAuthentication(options =>
         {
-            options.Domain = configuration["Auth0:Domain"];
-            options.ClientId = configuration["Auth0:ClientId"];
+            options.Domain = configuration["Auth0:Domain"] ?? throw new InvalidOperationException();
+            options.ClientId = configuration["Auth0:ClientId"] ?? throw new InvalidOperationException();
         });
 
         // Authorization policies

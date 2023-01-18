@@ -13,10 +13,10 @@ public sealed class DeleteWineryHandler : IRequestHandler<DeleteWineryCommand, b
 
     public async Task<bool> Handle(DeleteWineryCommand request, CancellationToken cancellationToken)
     {
-        bool succes = await _unitOfWork.Wineries.Delete(request.Id);
+        bool success = await _unitOfWork.Wineries.Delete(request.Id);
 
         await _unitOfWork.CompleteAsync();
 
-        return succes;
+        return success;
     }
 }

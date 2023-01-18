@@ -2,16 +2,16 @@
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    internal DbSet<T> dbSet;
+    internal DbSet<T> DbSet;
 
-    public GenericRepository(ApplicationDbContext context)
+    protected GenericRepository(ApplicationDbContext context)
     {
-        dbSet = context.Set<T>();
+        DbSet = context.Set<T>();
     }
 
     public virtual async Task<IEnumerable<T>> All()
     {
-        return await dbSet.AsNoTracking().ToListAsync();
+        return await DbSet.AsNoTracking().ToListAsync();
     }
 
     public virtual async Task<T> Create(T entity)
@@ -21,7 +21,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             throw new ArgumentNullException();
         }
 
-        await dbSet.AddAsync(entity);
+        await DbSet.AddAsync(entity);
 
         return entity;
     }
@@ -31,12 +31,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         throw new NotImplementedException();
     }
 
-    public virtual async Task<T> GetById(int id)
+    public virtual async Task<T?> GetById(int id)
     {
-        return await dbSet.FindAsync(id);
+        return await DbSet.FindAsync(id);
     }
 
-    public virtual async Task<T> GetByName(string name)
+    public virtual Task<T?> GetByName(string name)
     {
         throw new NotImplementedException();
     }

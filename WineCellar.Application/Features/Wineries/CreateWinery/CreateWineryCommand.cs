@@ -15,10 +15,12 @@ public sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, W
 
     public async Task<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
     {
-        Winery entity = new();
-        entity.Name = request.WineryDto.Name;
-        entity.Description = request.WineryDto.Description;
-        entity.CreatedBy = request.UserName;
+        Winery entity = new()
+        {
+            Name = request.WineryDto.Name,
+            Description = request.WineryDto.Description,
+            CreatedBy = request.UserName
+        };
 
         await _unitOfWork.Wineries.Create(entity);
         await _unitOfWork.CompleteAsync();

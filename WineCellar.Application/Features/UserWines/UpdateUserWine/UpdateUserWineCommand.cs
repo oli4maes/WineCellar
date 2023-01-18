@@ -6,7 +6,6 @@ public sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWine>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    private IRequestHandler<UpdateUserWine> _requestHandlerImplementation;
 
     public UpdateUserWineHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
