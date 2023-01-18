@@ -13,11 +13,11 @@ public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, boo
 
     public async Task<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
     {
-        bool succes = await _unitOfWork.Grapes.Delete(request.Id);
+        bool success = await _unitOfWork.Grapes.Delete(request.Id);
 
         await _unitOfWork.CompleteAsync();
 
-        return succes;
+        return success;
     }
 }
 

@@ -2,11 +2,11 @@ namespace WineCellar.Blazor.Components.Dialog;
 
 public partial class DeleteDialog : ComponentBase
 {
-    [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] 
+    private MudDialogInstance MudDialog { get; set; } = default!;
 
-    [Parameter]
-    public string ContentText { get; set; }
+    [Parameter] 
+    public string? ContentText { get; set; }
 
     private void Cancel()
     {
