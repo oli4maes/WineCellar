@@ -1,5 +1,4 @@
-﻿using WineCellar.Application.Dtos;
-using WineCellar.Application.Features.Grapes.DeleteGrape;
+﻿using WineCellar.Application.Features.Grapes.DeleteGrape;
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Blazor.Components.Dialog;
 
@@ -60,7 +59,7 @@ public partial class Overview : ComponentBase
 
         var result = await dialog.Result;
 
-        if (!result.Cancelled)
+        if (!result.Canceled)
         {
             bool deleteSucces = await _mediator.Send(new DeleteGrapeCommand(grape.Id));
 

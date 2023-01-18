@@ -1,4 +1,3 @@
-using WineCellar.Application.Dtos;
 using WineCellar.Application.Features.Grapes.CreateGrape;
 using WineCellar.Application.Features.Grapes.GetGrapeById;
 using WineCellar.Application.Features.Grapes.GetGrapeByName;
@@ -11,8 +10,8 @@ public partial class Detail : ComponentBase
     [Parameter]
     public int Id { get; set; }
 
-    [Inject]
-    MediatR.IMediator _mediator { get; set; }
+    [Inject] 
+    private MediatR.IMediator _mediator { get; set; }
 
     [Inject]
     private NavigationManager _navManager { get; set; }
@@ -21,7 +20,7 @@ public partial class Detail : ComponentBase
     private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
     [Inject]
-    private ISnackbar _snackbar { get; set; }
+    private ISnackbar _snackbar { get; set; } = default!;
 
     private GrapeDto _grape { get; set; } = new();
     private bool _editMode { get; set; } = false;

@@ -8,21 +8,21 @@ public class WineryRepository : GenericRepository<Winery>, IWineryRepository
 
 	public override async Task<bool> Delete(int id)
 	{
-		var wineryModel = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
+		var wineryModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
 
 		if (wineryModel == null)
 		{
 			return false;
 		}
 
-		dbSet.Remove(wineryModel);
+		DbSet.Remove(wineryModel);
 
 		return true;
 	}
 
 	public override async Task Update(Winery winery)
 	{
-		var wineryModel = await dbSet.FirstOrDefaultAsync(x => x.Id == winery.Id);
+		var wineryModel = await DbSet.FirstOrDefaultAsync(x => x.Id == winery.Id);
 
 		if (wineryModel == null)
 		{
@@ -35,8 +35,8 @@ public class WineryRepository : GenericRepository<Winery>, IWineryRepository
 		wineryModel.LastModifiedBy = winery.LastModifiedBy;
 	}
 
-	public override async Task<Winery> GetByName(string name)
+	public override async Task<Winery?> GetByName(string name)
 	{
-		return await dbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+		return await DbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
 	}
 }

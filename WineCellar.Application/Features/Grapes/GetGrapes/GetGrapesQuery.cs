@@ -15,7 +15,7 @@ public sealed class GetGrapesHandler : IRequestHandler<GetGrapesQuery, List<Grap
 
     public async Task<List<GrapeDto>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
     {
-        var grapes = await _unitOfWork.Grapes.All();        
+        var grapes = await _unitOfWork.Grapes.All();
 
         return _mapper.Map<List<GrapeDto>>(grapes);
     }

@@ -8,26 +8,26 @@ public class UserWineRepository : GenericRepository<UserWine>, IUserWineReposito
 
     public override async Task<bool> Delete(int id)
     {
-        var userWineModel = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        var userWineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
         {
             return false;
         }
 
-        dbSet.Remove(userWineModel);
+        DbSet.Remove(userWineModel);
 
         return true;
     }
 
     public async Task<IEnumerable<UserWine>> GetUserWines(string auth0Id)
     {
-        return await dbSet.Where(x => x.Auth0Id == auth0Id).AsNoTracking().ToListAsync();
+        return await DbSet.Where(x => x.Auth0Id == auth0Id).AsNoTracking().ToListAsync();
     }
 
     public override async Task Update(UserWine userWine)
     {
-        var userWineModel = await dbSet.FirstOrDefaultAsync(x => x.Id == userWine.Id);
+        var userWineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == userWine.Id);
 
         if (userWineModel == null)
         {

@@ -1,4 +1,3 @@
-using WineCellar.Application.Dtos;
 using WineCellar.Application.Features.Wineries.CreateWinery;
 using WineCellar.Application.Features.Wineries.GetWineryById;
 using WineCellar.Application.Features.Wineries.GetWineryByName;
