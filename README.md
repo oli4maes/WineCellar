@@ -3,10 +3,10 @@ WineCellar is a wine cellar management application. It's primary use is to track
 
 ## Tools
 ### Entity Framework Core
-Add migration
-`dotnet ef migrations add {{MIGRATIONNAME}} --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
-Update database
-`dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
+Add migration  
+`dotnet ef migrations add {{MIGRATIONNAME}} --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`  
+Update database  
+`dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`  
 
 ## Project Structure
 The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor in this case) layers.
