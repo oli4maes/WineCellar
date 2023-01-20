@@ -7,7 +7,10 @@ Add migration
 `dotnet ef migrations add {{MIGRATION_NAME}} --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
 
 Update database  
-`dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`  
+`dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
+
+### SQL Server 2022 in Docker
+`docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>" -p 1401:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest`
 
 ## Project Structure
 The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor in this case) layers.
