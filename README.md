@@ -10,6 +10,7 @@ Update database
 `dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
 
 ### SQL Server 2022 in Docker
+This will run a SQL Server container on localhost port 1401
 `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>" -p 1401:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest`
 
 ## Project Structure
