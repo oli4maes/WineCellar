@@ -3,7 +3,7 @@
 @using WineCellar.Application.Dtos
 @using WineCellar.Domain.Enums;
 
-<PageTitle>Administration - Wines</PageTitle>
+<PageTitle>Administration - Wine Detail</PageTitle>
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
@@ -16,7 +16,7 @@
                     <CardHeaderActions>
                         @if (!_editMode)
                         {
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" @onclick="SetEditMode"></MudIconButton>
+                            <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
                         }
                     </CardHeaderActions>
                 </MudCardHeader>

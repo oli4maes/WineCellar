@@ -1,6 +1,6 @@
 namespace WineCellar.Application.Features.UserWines.CreateUserWine;
 
-public sealed record CreateUserWineCommand(UserWineDto UserWineDto, string UserName, string Auth0Id) : IRequest<UserWineDto>;
+public sealed record CreateUserWineCommand(int WineId, int Amount, string UserName, string Auth0Id) : IRequest<UserWineDto>;
 
 public sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineCommand, UserWineDto>
 {
@@ -18,8 +18,8 @@ public sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineComman
         UserWine entity = new()
         {
             Auth0Id = request.Auth0Id,
-            WineId = request.UserWineDto.WineId,
-            Amount = request.UserWineDto.Amount,
+            WineId = request.WineId,
+            Amount = request.Amount,
             CreatedBy = request.UserName
         };
 
