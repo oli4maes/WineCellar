@@ -22,7 +22,7 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <!-- Name -->
-                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" Class="mt-3" />
+                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" Class="mt-3"/>
 
                     <!-- Wine Type-->
                     <MudSelect T="WineType"
@@ -51,31 +51,33 @@
                                      ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
                                      Disabled="!_editMode"
                                      For="@(() => _wine.Winery)"
-                                      Class="mt-3" />
+                                     Class="mt-3"/>
 
                     <!-- Grapes -->
                     @if (_editMode)
                     {
                         <MudAutocomplete T="GrapeDto"
-                                     Label="Grape"
-                                     @bind-Value="@_selectedGrape"
-                                     SearchFunc="SearchGrape"
-                                     ResetValueOnEmptyText=true
-                                     CoerceText=false
-                                     CoerceValue=false
-                                     AdornmentIcon="@Icons.Material.Filled.Search"
-                                     AdornmentColor="Color.Primary"
-                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                     Disabled="!_editMode"
-                                     Class="mt-3" />
+                                         Label="Grape"
+                                         @bind-Value="@_selectedGrape"
+                                         SearchFunc="SearchGrape"
+                                         ResetValueOnEmptyText=true
+                                         CoerceText=false
+                                         CoerceValue=false
+                                         AdornmentIcon="@Icons.Material.Filled.Search"
+                                         AdornmentColor="Color.Primary"
+                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                         Disabled="!_editMode"
+                                         Class="mt-3"/>
 
 
                         <MudButton ButtonType="ButtonType.Button"
-                               Variant="Variant.Outlined"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Material.Filled.Add"
-                               OnClick="AddGrape"
-                               Class="mt-3">Add Grape</MudButton>
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   OnClick="AddGrape"
+                                   Class="mt-3">
+                            Add Grape
+                        </MudButton>
                     }
 
                     @if (_wine.Grapes != null)
@@ -88,7 +90,7 @@
                                     @grape.Name
                                     @if (_editMode)
                                     {
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small" />
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small"/>
                                     }
                                 </MudListItem>
                             }
@@ -99,22 +101,24 @@
                     <MudButton ButtonType="ButtonType.Button"
                                Variant="Variant.Outlined"
                                Color="Color.Error"
-                               OnClick="Back">Back</MudButton>
+                               OnClick="Back">
+                        Back
+                    </MudButton>
                     @if (_editMode)
                     {
                         <MudButton Class="ml-4"
-                               ButtonType="ButtonType.Submit"
-                               Variant="Variant.Outlined"
-                               StartIcon="@Icons.Material.Filled.Save"
-                               Color="Color.Primary">Save</MudButton>
+                                   ButtonType="ButtonType.Submit"
+                                   Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Color="Color.Primary">
+                            Save
+                        </MudButton>
                     }
                 </MudCardActions>
             </EditForm>
         </MudCard>
     </Authorized>
     <NotAuthorized>
-        <WineCellar.Blazor.Components.Common.NotAuthorized />
+        <WineCellar.Blazor.Components.Common.NotAuthorized/>
     </NotAuthorized>
 </AuthorizeView>
-
-
