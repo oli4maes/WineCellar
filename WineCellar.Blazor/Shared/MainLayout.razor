@@ -2,18 +2,25 @@
 @using WineCellar.Blazor.Shared
 @inherits LayoutComponentBase
 
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
+        <MudSpacer/>
+        <AuthorizeView>
+            <Authorized>
+                <MudItem md="4">
+                    <WineSearchInput Dense="true" Margin="Margin.Dense"></WineSearchInput>
+                </MudItem>
+            </Authorized>
+        </AuthorizeView>
         <AccessControl></AccessControl>
         <AuthorizeView Policy="AdminRole">
             <Authorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End" Link="/administration" />
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End" Link="/administration"/>
             </Authorized>
         </AuthorizeView>
     </MudAppBar>
