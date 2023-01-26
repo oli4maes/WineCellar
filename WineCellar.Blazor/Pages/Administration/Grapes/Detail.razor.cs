@@ -7,20 +7,15 @@ namespace WineCellar.Blazor.Pages.Administration.Grapes;
 
 public partial class Detail : ComponentBase
 {
-    [Parameter]
-    public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
-    [Inject] 
-    private MediatR.IMediator _mediator { get; set; }
+    [Inject] private MediatR.IMediator _mediator { get; set; }
 
-    [Inject]
-    private NavigationManager _navManager { get; set; }
+    [Inject] private NavigationManager _navManager { get; set; }
 
-    [Inject]
-    private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
-    [Inject]
-    private ISnackbar _snackbar { get; set; } = default!;
+    [Inject] private ISnackbar _snackbar { get; set; } = default!;
 
     private GrapeDto _grape { get; set; } = new();
     private bool _editMode { get; set; } = false;
@@ -57,7 +52,7 @@ public partial class Detail : ComponentBase
             {
                 _snackbar.Add($"The grape with name: {existingGrape.Name} already exists.", Severity.Error);
                 return;
-            }           
+            }
 
             _grape = await _mediator.Send(new CreateGrapeCommand(_grape, _userName));
 

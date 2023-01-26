@@ -101,7 +101,6 @@ public partial class Detail : ComponentBase
 
     private async Task<IEnumerable<WineryDto>> SearchWinery(string value)
     {
-        // if text is null or empty, don't return values (drop-down will not open)
         if (string.IsNullOrEmpty(value))
             return new List<WineryDto>();
 
@@ -110,7 +109,6 @@ public partial class Detail : ComponentBase
 
     private async Task<IEnumerable<GrapeDto>> SearchGrape(string value)
     {
-        // if text is null or empty, don't return values (drop-down will not open)
         if (string.IsNullOrEmpty(value))
             return new List<GrapeDto>();
 
