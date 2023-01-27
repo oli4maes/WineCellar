@@ -2,14 +2,14 @@
 
 public sealed record CreateGrapeCommand(GrapeDto GrapeDto, string UserName) : IRequest<GrapeDto>;
 
-public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, GrapeDto>
+internal sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, GrapeDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGrapeRepository _grapeRepository;
     private readonly IMapper _mapper;
 
-    public CreateGrapeHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateGrapeHandler(IGrapeRepository grapeRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _grapeRepository = grapeRepository;
         _mapper = mapper;
     }
 
@@ -22,8 +22,7 @@ public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Gra
             CreatedBy = request.UserName
         };
 
-        await _unitOfWork.Grapes.Create(entity);
-        await _unitOfWork.CompleteAsync();
+        await _grapeRepository.Create(entity);
 
         return _mapper.Map<GrapeDto>(entity);
     }
