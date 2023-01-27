@@ -11,7 +11,7 @@ Update database
 
 ### SQL Server 2022 in Docker
 This will run a SQL Server container on localhost port 1401    
-`docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>" -p 1401:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest`
+`docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>" -p 1401:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/azure-sql-edge:latest`
 
 ## Project Structure
 The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor in this case) layers.
