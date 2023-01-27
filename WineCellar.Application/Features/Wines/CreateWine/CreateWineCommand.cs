@@ -4,14 +4,14 @@ namespace WineCellar.Application.Features.Wines.CreateWine;
 
 public sealed record CreateWineCommand(WineDto WineDto, string UserName) : IRequest<WineDto?>;
 
-public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineDto?>
+internal sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineDto?>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineRepository _wineRepository;
     private readonly IMediator _mediator;
 
-    public CreateWineHandler(IUnitOfWork unitOfWork, IMediator mediator)
+    public CreateWineHandler(IWineRepository wineRepository, IMediator mediator)
     {
-        _unitOfWork = unitOfWork;
+        _wineRepository = wineRepository;
         _mediator = mediator;
     }
 
@@ -33,8 +33,7 @@ public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineD
             entity.GrapeWines.Add(new GrapeWine { GrapesId = grape.Id });
         }
 
-        await _unitOfWork.Wines.Create(entity);
-        await _unitOfWork.CompleteAsync();
+        await _wineRepository.Create(entity);
 
         WineDto? wine = await _mediator.Send(new GetWineByIdQuery(entity.Id), cancellationToken);
 

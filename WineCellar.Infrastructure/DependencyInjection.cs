@@ -7,9 +7,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddDbContextFactory<ApplicationDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         
-        services.AddScoped<IUnitOfWork, UnitOfWork>();        
+        services.AddScoped<IGrapeRepository, GrapeRepository>();        
+        services.AddScoped<IUserWineRepository, UserWineRepository>();        
+        services.AddScoped<IWineRepository, WineRepository>();        
+        services.AddScoped<IWineryRepository, WineryRepository>();        
 
         return services;
     }

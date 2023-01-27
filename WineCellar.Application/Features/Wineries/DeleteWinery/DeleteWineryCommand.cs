@@ -2,20 +2,18 @@
 
 public sealed record DeleteWineryCommand(int Id) : IRequest<bool>;
 
-public sealed class DeleteWineryHandler : IRequestHandler<DeleteWineryCommand, bool>
+internal sealed class DeleteWineryHandler : IRequestHandler<DeleteWineryCommand, bool>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineryRepository _wineryRepository;
 
-    public DeleteWineryHandler(IUnitOfWork unitOfWork)
+    public DeleteWineryHandler(IWineryRepository wineryRepository)
     {
-        _unitOfWork = unitOfWork;
+        _wineryRepository = wineryRepository;
     }
 
     public async Task<bool> Handle(DeleteWineryCommand request, CancellationToken cancellationToken)
     {
-        bool success = await _unitOfWork.Wineries.Delete(request.Id);
-
-        await _unitOfWork.CompleteAsync();
+        bool success = await _wineryRepository.Delete(request.Id);
 
         return success;
     }
