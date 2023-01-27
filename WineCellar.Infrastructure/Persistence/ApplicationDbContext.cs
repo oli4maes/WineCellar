@@ -1,20 +1,18 @@
-﻿namespace WineCellar.Infrastructure.Persistence;
+﻿using System.Diagnostics;
+
+namespace WineCellar.Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
+        Debug.WriteLine($"{ContextId} context created.");
     }
 
-    public DbSet<Grape> Grapes => Set<Grape>();
-    public DbSet<Winery> Wineries => Set<Winery>();
-    public DbSet<Wine> Wines => Set<Wine>();
-    public DbSet<UserWine> UserWines=> Set<UserWine>();
-
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return await base.SaveChangesAsync(cancellationToken);
-    }
+    public DbSet<Grape>? Grapes { get; set; }
+    public DbSet<Winery>? Wineries { get; set; }
+    public DbSet<Wine>? Wines { get; set; }
+    public DbSet<UserWine>? UserWines { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,5 +28,17 @@ public class ApplicationDbContext : DbContext
                     .HasOne(pt => pt.Wine)
                     .WithMany(p => p.GrapeWines)
                     .HasForeignKey(pt => pt.WinesId));
+    }
+    
+    public override void Dispose()
+    {
+        Debug.WriteLine($"{ContextId} context disposed.");
+        base.Dispose();
+    }
+    
+    public override ValueTask DisposeAsync()
+    {
+        Debug.WriteLine($"{ContextId} context disposed async.");
+        return base.DisposeAsync();
     }
 }
