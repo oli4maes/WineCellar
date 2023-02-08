@@ -1,28 +1,40 @@
 ﻿namespace WineCellar.Infrastructure.Persistence.Repositories;
 
-public class GrapeRepository : GenericRepository<Grape>, IGrapeRepository
+public class GrapeRepository :  IGrapeRepository
 {
-    public GrapeRepository(ApplicationDbContext context) : base(context)
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+
+    public GrapeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
+        _dbContextFactory = dbContextFactory;
     }
 
-    public override async Task<bool> Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        var grapeModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var grapeModel = await context.Grapes.FirstOrDefaultAsync(x => x.Id == id);
 
         if (grapeModel == null)
         {
             return false;
         }
 
-        DbSet.Remove(grapeModel);
+        context.Grapes.Remove(grapeModel);
+        await context.SaveChangesAsync();
 
         return true;
     }
 
-    public override async Task Update(Grape grape)
+    public async Task Update(Grape grape)
     {
-        var grapeModel = await DbSet.FirstOrDefaultAsync(x => x.Id == grape.Id);
+        ArgumentNullException.ThrowIfNull(grape);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var grapeModel = await context.Grapes.FirstOrDefaultAsync(x => x.Id == grape.Id);
 
         if (grapeModel == null)
         {
@@ -33,10 +45,44 @@ public class GrapeRepository : GenericRepository<Grape>, IGrapeRepository
         grapeModel.Description = grape.Description;
         grapeModel.LastModified = DateTime.UtcNow;
         grapeModel.LastModifiedBy = grape.LastModifiedBy;
+
+        await context.SaveChangesAsync();
     }
 
-    public override async Task<Grape?> GetByName(string name)
+    public async Task<Grape> Create(Grape entity)
     {
-        return await DbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        await context.Grapes.AddAsync(entity);
+        await context.SaveChangesAsync();
+        
+        return entity;
+    }
+
+    public async Task<IEnumerable<Grape>> All()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Grapes.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<Grape?> GetById(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Grapes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Grape?> GetByName(string name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        return await context.Grapes.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }
