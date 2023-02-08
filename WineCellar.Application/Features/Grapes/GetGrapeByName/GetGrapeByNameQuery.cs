@@ -13,7 +13,7 @@ internal sealed class GetGrapeByNameHandler : IRequestHandler<GetGrapeByNameQuer
         _mapper = mapper;
     }
 
-    public async Task<GrapeDto?> Handle(GetGrapeByNameQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GrapeDto?> Handle(GetGrapeByNameQuery request, CancellationToken cancellationToken)
     {
         return _mapper.Map<GrapeDto>(await _grapeRepository.GetByName(request.Name));
     }

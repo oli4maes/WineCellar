@@ -13,7 +13,7 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesQuery, Lis
         _mapper = mapper;
     }
 
-    public async Task<List<WineryDto>> Handle(GetWineriesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<WineryDto>> Handle(GetWineriesQuery request, CancellationToken cancellationToken)
     {
         var wineries = await _wineryRepository.All();
 

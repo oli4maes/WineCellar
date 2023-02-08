@@ -11,7 +11,7 @@ internal sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, b
         _grapeRepository = grapeRepository;
     }
 
-    public async Task<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
     {
         bool success = await _grapeRepository.Delete(request.Id);
 

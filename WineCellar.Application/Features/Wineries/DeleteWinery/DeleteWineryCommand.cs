@@ -11,7 +11,7 @@ internal sealed class DeleteWineryHandler : IRequestHandler<DeleteWineryCommand,
         _wineryRepository = wineryRepository;
     }
 
-    public async Task<bool> Handle(DeleteWineryCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteWineryCommand request, CancellationToken cancellationToken)
     {
         bool success = await _wineryRepository.Delete(request.Id);
 

@@ -13,7 +13,7 @@ internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand,
         _mapper = mapper;
     }
 
-    public async Task<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
+    public async ValueTask<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
     {
         Winery entity = new()
         {

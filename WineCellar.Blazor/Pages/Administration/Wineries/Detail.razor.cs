@@ -11,7 +11,7 @@ public partial class Detail : ComponentBase
     public int Id { get; set; }
 
     [Inject]
-    MediatR.IMediator _mediator { get; set; }
+    Mediator.IMediator _mediator { get; set; }
 
     [Inject]
     private NavigationManager _navManager { get; set; }
