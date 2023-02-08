@@ -4,7 +4,7 @@ namespace WineCellar.Application.Features.Grapes.GetGrapeById;
 
 public sealed record GetGrapeByIdQuery(int Id) : IRequest<GrapeDto?>;
 
-public sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, GrapeDto?>
+internal sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, GrapeDto?>
 {
     private readonly IMediator _mediator;
 

@@ -2,20 +2,20 @@
 
 public sealed record GetWineriesQuery : IRequest<List<WineryDto>>;
 
-public sealed class GetWineriesHandler : IRequestHandler<GetWineriesQuery, List<WineryDto>>
+internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesQuery, List<WineryDto>>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineryRepository _wineryRepository;
     private readonly IMapper _mapper;
 
-    public GetWineriesHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetWineriesHandler(IWineryRepository wineryRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _wineryRepository = wineryRepository;
         _mapper = mapper;
     }
 
     public async ValueTask<List<WineryDto>> Handle(GetWineriesQuery request, CancellationToken cancellationToken)
     {
-        var wineries = await _unitOfWork.Wineries.All();
+        var wineries = await _wineryRepository.All();
 
         return _mapper.Map<List<WineryDto>>(wineries);
     }

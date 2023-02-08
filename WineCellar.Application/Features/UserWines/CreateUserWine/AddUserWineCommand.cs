@@ -2,14 +2,14 @@ namespace WineCellar.Application.Features.UserWines.CreateUserWine;
 
 public sealed record CreateUserWineCommand(UserWineDto UserWineDto, string UserName, string Auth0Id) : IRequest<UserWineDto>;
 
-public sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineCommand, UserWineDto>
+internal sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineCommand, UserWineDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserWineRepository _userWineRepository;
     private readonly IMapper _mapper;
 
-    public CreateUserWineHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateUserWineHandler(IUserWineRepository userWineRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _userWineRepository = userWineRepository;
         _mapper = mapper;
     }
 
@@ -23,8 +23,7 @@ public sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineComman
             CreatedBy = request.UserName
         };
 
-        await _unitOfWork.UserWines.Create(entity);
-        await _unitOfWork.CompleteAsync();
+        await _userWineRepository.Create(entity);
 
         return _mapper.Map<UserWineDto>(entity);
     }

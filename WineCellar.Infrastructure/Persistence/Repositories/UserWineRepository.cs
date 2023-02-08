@@ -1,33 +1,70 @@
 ﻿namespace WineCellar.Infrastructure.Persistence.Repositories;
 
-public class UserWineRepository : GenericRepository<UserWine>, IUserWineRepository
+public class UserWineRepository : IUserWineRepository
 {
-    public UserWineRepository(ApplicationDbContext context) : base(context)
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+
+    public UserWineRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
+        _dbContextFactory = dbContextFactory;
     }
 
-    public override async Task<bool> Delete(int id)
+    public async Task<IEnumerable<UserWine>> All()
     {
-        var userWineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.UserWines.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<UserWine?> GetById(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.UserWines.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public Task<UserWine?> GetByName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
         {
             return false;
         }
 
-        DbSet.Remove(userWineModel);
+        context.UserWines.Remove(userWineModel);
+        await context.SaveChangesAsync();
 
         return true;
     }
 
     public async Task<IEnumerable<UserWine>> GetUserWines(string auth0Id)
     {
-        return await DbSet.Where(x => x.Auth0Id == auth0Id).AsNoTracking().ToListAsync();
+        ArgumentException.ThrowIfNullOrEmpty(auth0Id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        return await context.UserWines.Where(x => x.Auth0Id == auth0Id).AsNoTracking().ToListAsync();
     }
 
-    public override async Task Update(UserWine userWine)
+    public async Task Update(UserWine userWine)
     {
-        var userWineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == userWine.Id);
+        ArgumentNullException.ThrowIfNull(userWine);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == userWine.Id);
 
         if (userWineModel == null)
         {
@@ -38,5 +75,19 @@ public class UserWineRepository : GenericRepository<UserWine>, IUserWineReposito
         userWine.Amount = userWineModel.Amount;
         userWine.LastModified = DateTime.UtcNow;
         userWine.LastModifiedBy = userWineModel.LastModifiedBy;
+
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<UserWine> Create(UserWine entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        await context.UserWines.AddAsync(entity);
+        await context.SaveChangesAsync();
+        
+        return entity;
     }
 }

@@ -2,14 +2,14 @@
 
 public sealed record UpdateWineryCommand(WineryDto WineryDto, string UserName) : IRequest;
 
-public sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryCommand>
+internal sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineryRepository _wineryRepository;
     private readonly IMapper _mapper;
 
-    public UpdateWineryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateWineryHandler(IWineryRepository wineryRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _wineryRepository = wineryRepository;
         _mapper = mapper;
     }
 
@@ -18,8 +18,7 @@ public sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryCommand>
         Winery wineryEntity = _mapper.Map<Winery>(request.WineryDto);
         wineryEntity.LastModifiedBy = request.UserName;
 
-        await _unitOfWork.Wineries.Update(wineryEntity);
-        await _unitOfWork.CompleteAsync();
+        await _wineryRepository.Update(wineryEntity);
 
         return Unit.Value;
     }
