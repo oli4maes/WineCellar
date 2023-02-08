@@ -13,7 +13,7 @@ public sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeCommand, Gra
         _mapper = mapper;
     }
 
-    public async Task<GrapeDto> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<GrapeDto> Handle(CreateGrapeCommand request, CancellationToken cancellationToken)
     {
         Grape entity = new()
         {

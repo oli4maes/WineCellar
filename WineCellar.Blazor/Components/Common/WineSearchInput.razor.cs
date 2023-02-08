@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Mediator;
 using WineCellar.Application.Features.Wines.GetWines;
 
 namespace WineCellar.Blazor.Components.Common;

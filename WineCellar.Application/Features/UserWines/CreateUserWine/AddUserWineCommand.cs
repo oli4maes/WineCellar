@@ -13,7 +13,7 @@ public sealed class CreateUserWineHandler : IRequestHandler<CreateUserWineComman
         _mapper = mapper;
     }
 
-    public async Task<UserWineDto> Handle(CreateUserWineCommand request, CancellationToken cancellationToken)
+    public async ValueTask<UserWineDto> Handle(CreateUserWineCommand request, CancellationToken cancellationToken)
     {
         UserWine entity = new()
         {

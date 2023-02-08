@@ -6,7 +6,7 @@ namespace WineCellar.Blazor.Pages.Cellar;
 public partial class Overview : ComponentBase
 {
     [Inject]
-    private MediatR.IMediator _mediator { get; set; }
+    private Mediator.IMediator _mediator { get; set; }
 
     [Inject]
     private AuthenticationStateProvider _authenticationStateProvider { get; set; }

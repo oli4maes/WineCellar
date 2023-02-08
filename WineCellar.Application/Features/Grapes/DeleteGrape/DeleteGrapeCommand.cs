@@ -11,7 +11,7 @@ public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, boo
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
     {
         bool success = await _unitOfWork.Grapes.Delete(request.Id);
 

@@ -11,7 +11,7 @@ public sealed class DeleteUserWineHandler : IRequestHandler<DeleteUserWineComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(DeleteUserWineCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteUserWineCommand request, CancellationToken cancellationToken)
     {
         bool success = await _unitOfWork.UserWines.Delete(request.Id);
 

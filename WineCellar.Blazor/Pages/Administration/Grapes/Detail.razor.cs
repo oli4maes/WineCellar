@@ -9,7 +9,7 @@ public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
 
-    [Inject] private MediatR.IMediator _mediator { get; set; }
+    [Inject] private Mediator.IMediator _mediator { get; set; }
 
     [Inject] private NavigationManager _navManager { get; set; }
 
