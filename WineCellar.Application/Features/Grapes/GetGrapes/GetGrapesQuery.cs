@@ -13,7 +13,7 @@ internal sealed class GetGrapesHandler : IRequestHandler<GetGrapesQuery, List<Gr
         _mapper = mapper;
     }
 
-    public async Task<List<GrapeDto>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<GrapeDto>> Handle(GetGrapesQuery request, CancellationToken cancellationToken)
     {
         var grapes = await _grapeRepository.All();
 
