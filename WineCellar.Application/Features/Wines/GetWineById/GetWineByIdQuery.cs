@@ -13,7 +13,7 @@ public sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdQuery, WineD
         _mediator = mediator;
     }
 
-    public async Task<WineDto?> Handle(GetWineByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<WineDto?> Handle(GetWineByIdQuery request, CancellationToken cancellationToken)
     {
         List<WineDto> results = await _mediator.Send(new GetWinesQuery());
 

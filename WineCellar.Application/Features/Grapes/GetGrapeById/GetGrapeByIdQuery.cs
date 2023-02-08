@@ -13,7 +13,7 @@ public sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdQuery, Gra
         _mediator = mediator;
     }
 
-    public async Task<GrapeDto?> Handle(GetGrapeByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GrapeDto?> Handle(GetGrapeByIdQuery request, CancellationToken cancellationToken)
     {
         var results = await _mediator.Send(new GetGrapesQuery(), cancellationToken);
 

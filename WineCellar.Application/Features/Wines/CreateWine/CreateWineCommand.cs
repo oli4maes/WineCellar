@@ -15,7 +15,7 @@ public sealed class CreateWineHandler : IRequestHandler<CreateWineCommand, WineD
         _mediator = mediator;
     }
 
-    public async Task<WineDto?> Handle(CreateWineCommand request, CancellationToken cancellationToken)
+    public async ValueTask<WineDto?> Handle(CreateWineCommand request, CancellationToken cancellationToken)
     {
         Wine entity = new()
         {

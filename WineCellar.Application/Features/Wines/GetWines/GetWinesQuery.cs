@@ -13,7 +13,7 @@ public sealed class GetWinesHandler : IRequestHandler<GetWinesQuery, List<WineDt
         _mapper = mapper;
     }
 
-    public async Task<List<WineDto>> Handle(GetWinesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<List<WineDto>> Handle(GetWinesQuery request, CancellationToken cancellationToken)
     {
         var wines = await _unitOfWork.Wines.All();
 

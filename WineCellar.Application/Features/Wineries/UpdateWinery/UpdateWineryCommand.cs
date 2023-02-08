@@ -13,7 +13,7 @@ public sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryCommand>
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateWineryCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(UpdateWineryCommand request, CancellationToken cancellationToken)
     {
         Winery wineryEntity = _mapper.Map<Winery>(request.WineryDto);
         wineryEntity.LastModifiedBy = request.UserName;

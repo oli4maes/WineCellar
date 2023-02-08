@@ -13,7 +13,7 @@ public sealed class GetWineryByNameHandler : IRequestHandler<GetWineryByNameQuer
         _mapper = mapper;
     }
 
-    public async Task<WineryDto?> Handle(GetWineryByNameQuery request, CancellationToken cancellationToken)
+    public async ValueTask<WineryDto?> Handle(GetWineryByNameQuery request, CancellationToken cancellationToken)
     {
         return _mapper.Map<WineryDto>(await _unitOfWork.Wineries.GetByName(request.Name));
     }

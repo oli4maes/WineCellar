@@ -13,7 +13,7 @@ public sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(UpdateGrapeCommand request, CancellationToken cancellationToken)
     {
         Grape grapeEntity = _mapper.Map<Grape>(request.GrapeDto);
         grapeEntity.LastModifiedBy = request.UserName;
