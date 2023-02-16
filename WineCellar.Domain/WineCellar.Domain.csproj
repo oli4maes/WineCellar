@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="11.1.0" />
+    <None Remove="Common\Interfaces\" />
+    <None Remove="Interfaces\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Common\Interfaces\" />
-    <None Remove="Interfaces\Repositories\" />
+    <PackageReference Include="Mediator.Abstractions" Version="2.0.30" />
   </ItemGroup>
 </Project>

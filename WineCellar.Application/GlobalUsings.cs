@@ -1,8 +1,8 @@
 ﻿// System
 global using System.Linq;
 
-// MediatR
-global using MediatR;
+// Mediator
+global using Mediator;
 
 // AutoMapper
 global using AutoMapper;

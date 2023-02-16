@@ -2,20 +2,18 @@ namespace WineCellar.Application.Features.UserWines.DeleteUserWine;
 
 public sealed record DeleteUserWineCommand(int Id) : IRequest<bool>;
 
-public sealed class DeleteUserWineHandler : IRequestHandler<DeleteUserWineCommand, bool> 
+internal sealed class DeleteUserWineHandler : IRequestHandler<DeleteUserWineCommand, bool> 
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserWineRepository _userWineRepository;
 
-    public DeleteUserWineHandler(IUnitOfWork unitOfWork)
+    public DeleteUserWineHandler(IUserWineRepository userWineRepository)
     {
-        _unitOfWork = unitOfWork;
+        _userWineRepository = userWineRepository;
     }
 
-    public async Task<bool> Handle(DeleteUserWineCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteUserWineCommand request, CancellationToken cancellationToken)
     {
-        bool success = await _unitOfWork.UserWines.Delete(request.Id);
-
-        await _unitOfWork.CompleteAsync();
+        bool success = await _userWineRepository.Delete(request.Id);
 
         return success;
     }

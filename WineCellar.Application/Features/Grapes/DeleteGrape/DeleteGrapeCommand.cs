@@ -2,20 +2,18 @@
 
 public sealed record DeleteGrapeCommand(int Id) : IRequest<bool>;
 
-public sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, bool>
+internal sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeCommand, bool>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGrapeRepository _grapeRepository;
 
-    public DeleteGrapeHandler(IUnitOfWork unitOfWork)
+    public DeleteGrapeHandler(IGrapeRepository grapeRepository)
     {
-        _unitOfWork = unitOfWork;
+        _grapeRepository = grapeRepository;
     }
 
-    public async Task<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<bool> Handle(DeleteGrapeCommand request, CancellationToken cancellationToken)
     {
-        bool success = await _unitOfWork.Grapes.Delete(request.Id);
-
-        await _unitOfWork.CompleteAsync();
+        bool success = await _grapeRepository.Delete(request.Id);
 
         return success;
     }

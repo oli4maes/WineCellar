@@ -2,18 +2,18 @@
 
 public sealed record CreateWineryCommand(WineryDto WineryDto, string UserName) : IRequest<WineryDto>;
 
-public sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, WineryDto>
+internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, WineryDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineryRepository _wineryRepository;
     private readonly IMapper _mapper;
 
-    public CreateWineryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateWineryHandler(IWineryRepository wineryRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _wineryRepository = wineryRepository;
         _mapper = mapper;
     }
 
-    public async Task<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
+    public async ValueTask<WineryDto> Handle(CreateWineryCommand request, CancellationToken cancellationToken)
     {
         Winery entity = new()
         {
@@ -22,8 +22,7 @@ public sealed class CreateWineryHandler : IRequestHandler<CreateWineryCommand, W
             CreatedBy = request.UserName
         };
 
-        await _unitOfWork.Wineries.Create(entity);
-        await _unitOfWork.CompleteAsync();
+        await _wineryRepository.Create(entity);
 
         return _mapper.Map<WineryDto>(entity);
     }
