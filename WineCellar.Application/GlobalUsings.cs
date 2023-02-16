@@ -1,7 +1,7 @@
 ﻿// System
 global using System.Linq;
 
-// MediatR
+// Mediator
 global using Mediator;
 
 // AutoMapper
