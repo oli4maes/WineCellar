@@ -7,7 +7,7 @@ public partial class WineSearchInput : ComponentBase
 {
     [Parameter] public bool Dense { get; set; }
     [Parameter] public Margin Margin { get; set; }
-    
+
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
 
@@ -17,7 +17,7 @@ public partial class WineSearchInput : ComponentBase
     {
         _wines = await _mediator.Send(new GetWinesQuery());
     }
-    
+
     private async Task<IEnumerable<WineDto>> SearchWine(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -30,6 +30,9 @@ public partial class WineSearchInput : ComponentBase
 
     private void SelectedWineChanged(WineDto wine)
     {
-     _navManager.NavigateTo($"/Wines/{wine.Id}");   
+        if (wine is not null)
+        {
+            _navManager.NavigateTo($"/Wines/{wine.Id}");
+        }
     }
 }
