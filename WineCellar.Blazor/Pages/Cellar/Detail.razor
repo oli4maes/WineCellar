@@ -1,0 +1,61 @@
+﻿@page "/Cellar/UserWine/{id:int}"
+@using Microsoft.AspNetCore.Components.Forms
+@using WineCellar.Application.Dtos
+
+<PageTitle>Wine in cellar</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <MudCard>
+            <EditForm Model="@_userWine" OnValidSubmit="HandleValidSubmit" Context="EditContext">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h4">@_userWine.Wine.Name</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                        @if (!_editMode)
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" @onclick="SetEditMode"></MudIconButton>
+                        }
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudAutocomplete T="WineDto"
+                                     Label="Wine"
+                                     @bind-Value="_userWine.Wine"
+                                     SearchFunc="@SearchWine"
+                                     ResetValueOnEmptyText=true
+                                     CoerceText=false
+                                     CoerceValue=false
+                                     AdornmentIcon="@Icons.Material.Filled.Search"
+                                     AdornmentColor="Color.Primary"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                     Disabled="!_editMode"
+                                     For="@(() => _userWine.Wine)"
+                                     Class="mt-3"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Button"
+                               Variant="Variant.Outlined"
+                               Color="Color.Error"
+                               OnClick="Back">
+                        Back
+                    </MudButton>
+                    @if (_editMode)
+                    {
+                        <MudButton Class="ml-4"
+                                   ButtonType="ButtonType.Submit"
+                                   Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Color="Color.Primary">
+                            Save
+                        </MudButton>
+                    }
+                </MudCardActions>
+            </EditForm>
+        </MudCard>
+    </Authorized>
+    <NotAuthorized>
+        <WineCellar.Blazor.Components.Common.NotAuthorized/>
+    </NotAuthorized>
+</AuthorizeView>

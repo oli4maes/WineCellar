@@ -1,8 +1,9 @@
 namespace WineCellar.Application.Features.UserWines.UpdateUserWine;
 
-public sealed record UpdateUserWine(UserWineDto UserWineDto, string UserName) : IRequest;
+public sealed record UpdateUserWineCommand(UserWineDto UserWineDto, string UserName) : IRequest;
 
 internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWine>
+
 {
     private readonly IUserWineRepository _userWineRepository;
     private readonly IMapper _mapper;

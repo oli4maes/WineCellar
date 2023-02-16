@@ -23,7 +23,7 @@ public partial class Detail : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        if (Id != 0)
+        if (Id is not 0)
         {
             _grape = await _mediator.Send(new GetGrapeByIdQuery(Id));
         }
@@ -39,7 +39,7 @@ public partial class Detail : ComponentBase
         _editMode = true;
     }
 
-    protected async void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity.Name ?? string.Empty;
