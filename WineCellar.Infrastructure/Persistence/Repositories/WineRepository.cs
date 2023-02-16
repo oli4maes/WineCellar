@@ -1,36 +1,58 @@
 ﻿namespace WineCellar.Infrastructure.Persistence.Repositories;
 
-public class WineRepository : GenericRepository<Wine>, IWineRepository
+public class WineRepository : IWineRepository
 {
-    public WineRepository(ApplicationDbContext context) : base(context)
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+
+    public WineRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
+        _dbContextFactory = dbContextFactory;
     }
 
-    public override async Task<IEnumerable<Wine>> All()
+    public async Task<IEnumerable<Wine>> All()
     {
-        return await DbSet.Include(x => x.Grapes)
-                          .Include(x => x.Winery)
-                          .AsNoTracking()
-                          .ToListAsync();
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wines.Include(x => x.Winery)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
-    public override async Task<bool> Delete(int id)
+    public async Task<Wine?> GetById(int id)
     {
-        var wineModel = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wines.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var wineModel = await context.Wines.FirstOrDefaultAsync(x => x.Id == id);
 
         if (wineModel == null)
         {
             return false;
         }
 
-        DbSet.Remove(wineModel);
+        context.Wines.Remove(wineModel);
+        await context.SaveChangesAsync();
 
         return true;
     }
 
-    public override async Task Update(Wine wine)
+    public async Task Update(Wine wine)
     {
-        var wineModel = await DbSet.Include(x => x.GrapeWines).FirstOrDefaultAsync(x => x.Id == wine.Id);
+        ArgumentNullException.ThrowIfNull(wine);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var wineModel = await context.Wines.Include(x => x.GrapeWines).FirstOrDefaultAsync(x => x.Id == wine.Id);
 
         if (wineModel == null)
         {
@@ -50,10 +72,28 @@ public class WineRepository : GenericRepository<Wine>, IWineRepository
         {
             wineModel.GrapeWines.Add(new GrapeWine { GrapesId = grape.Id, WinesId = wine.Id });
         }
+
+        await context.SaveChangesAsync();
     }
 
-    public override async Task<Wine?> GetByName(string name)
+    public async Task<Wine> Create(Wine entity)
     {
-        return await DbSet.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        await context.Wines.AddAsync(entity);
+        await context.SaveChangesAsync();
+        
+        return entity;
+    }
+
+    public async Task<Wine?> GetByName(string name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        return await context.Wines.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }

@@ -4,7 +4,7 @@ namespace WineCellar.Application.Features.Wineries.GetWineryById;
 
 public sealed record GetWineryByIdQuery(int Id) : IRequest<WineryDto?>;
 
-public sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdQuery, WineryDto?>
+internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdQuery, WineryDto?>
 {
     private readonly IMediator _mediator;
 
@@ -13,7 +13,7 @@ public sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdQuery, W
         _mediator = mediator;
     }
 
-    public async Task<WineryDto?> Handle(GetWineryByIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<WineryDto?> Handle(GetWineryByIdQuery request, CancellationToken cancellationToken)
     {
         var results = await _mediator.Send(new GetWineriesQuery(), cancellationToken);
 

@@ -11,12 +11,10 @@ public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
 
-    [Inject] MediatR.IMediator _mediator { get; set; }
+    [Inject] Mediator.IMediator _mediator { get; set; }
 
     [Inject] private NavigationManager _navManager { get; set; }
-
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
-
     [Inject] private ISnackbar _snackbar { get; set; }
 
     private WineDto _wine { get; set; } = new();
@@ -57,9 +55,8 @@ public partial class Detail : ComponentBase
 
         _wine.WineryId = _wine.Winery.Id;
 
-        if (Id == 0) // Insert
+        if (Id == 0)
         {
-            // Check if there is an entity with the same name
             var existingWine = await _mediator.Send(new GetWineByNameQuery(_wine.Name));
             if (existingWine != null)
             {
@@ -83,7 +80,7 @@ public partial class Detail : ComponentBase
                 _snackbar.Add("Could not save the wine.", Severity.Error);
             }
         }
-        else // Update
+        else
         {
             await _mediator.Send(new UpdateWineCommand(_wine, _userName));
 
