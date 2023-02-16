@@ -19,7 +19,7 @@ public class UserWineRepository : IUserWineRepository
     public async Task<UserWine?> GetById(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
-        
+
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.UserWines.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
@@ -33,9 +33,9 @@ public class UserWineRepository : IUserWineRepository
     public async Task<bool> Delete(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
-        
+
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
+
         var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
@@ -52,18 +52,22 @@ public class UserWineRepository : IUserWineRepository
     public async Task<IEnumerable<UserWine>> GetUserWines(string auth0Id)
     {
         ArgumentException.ThrowIfNullOrEmpty(auth0Id);
-        
+
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        return await context.UserWines.Where(x => x.Auth0Id == auth0Id).AsNoTracking().ToListAsync();
+
+        return await context.UserWines
+            .Include(x => x.Wine)
+            .Where(x => x.Auth0Id == auth0Id)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task Update(UserWine userWine)
     {
         ArgumentNullException.ThrowIfNull(userWine);
-        
+
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
+
         var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == userWine.Id);
 
         if (userWineModel == null)
@@ -82,12 +86,12 @@ public class UserWineRepository : IUserWineRepository
     public async Task<UserWine> Create(UserWine entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        
+
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         await context.UserWines.AddAsync(entity);
         await context.SaveChangesAsync();
-        
+
         return entity;
     }
 }
