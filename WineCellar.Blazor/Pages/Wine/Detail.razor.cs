@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using MediatR;
 using WineCellar.Application.Features.UserWines.CreateUserWine;
 using WineCellar.Application.Features.UserWines.GetUserWineByWineId;
 using WineCellar.Application.Features.Wines.GetWineById;

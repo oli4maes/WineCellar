@@ -3,6 +3,9 @@ global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Components.Authorization;
 
+// Mediator
+global using Mediator;
+
 // MudBlazor
 global using MudBlazor;
 

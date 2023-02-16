@@ -13,7 +13,7 @@ public sealed class GetUserWineByWineIdHandler : IRequestHandler<GetUserWineByWi
         _mediator = mediator;
     }
     
-    public async Task<UserWineDto?> Handle(GetUserWineByWineIdQuery request, CancellationToken cancellationToken)
+    public async ValueTask<UserWineDto?> Handle(GetUserWineByWineIdQuery request, CancellationToken cancellationToken)
     {
         List<UserWineDto> userWines = await _mediator.Send(new GetUserWinesQuery(request.Auth0Id));
 
