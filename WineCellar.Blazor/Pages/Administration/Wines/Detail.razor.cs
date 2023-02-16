@@ -10,7 +10,9 @@ namespace WineCellar.Blazor.Pages.Administration.Wines;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
-    [Inject] MediatR.IMediator _mediator { get; set; }
+
+    [Inject] Mediator.IMediator _mediator { get; set; }
+
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }

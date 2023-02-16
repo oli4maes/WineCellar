@@ -2,24 +2,23 @@
 
 public sealed record UpdateWineCommand(WineDto WineDto, string UserName) : IRequest;
 
-public sealed class UpdateWineHandler : IRequestHandler<UpdateWineCommand>
+internal sealed class UpdateWineHandler : IRequestHandler<UpdateWineCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineRepository _wineRepository;
     private readonly IMapper _mapper;
 
-    public UpdateWineHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateWineHandler(IWineRepository wineRepository, IMapper mapper)
 	{
-        _unitOfWork = unitOfWork;
+        _wineRepository = wineRepository;
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateWineCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(UpdateWineCommand request, CancellationToken cancellationToken)
     {
         Wine wineEntity = _mapper.Map<Wine>(request.WineDto);
         wineEntity.LastModifiedBy = request.UserName;
 
-        await _unitOfWork.Wines.Update(wineEntity);
-        await _unitOfWork.CompleteAsync();
+        await _wineRepository.Update(wineEntity);
 
         return Unit.Value;
     }

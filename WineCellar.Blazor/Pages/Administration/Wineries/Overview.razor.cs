@@ -7,7 +7,7 @@ namespace WineCellar.Blazor.Pages.Administration.Wineries;
 public partial class Overview : ComponentBase
 {
     [Inject]
-    private MediatR.IMediator _mediator { get; set; }
+    private Mediator.IMediator _mediator { get; set; }
 
     [Inject]
     private ISnackbar _snackbar { get; set; }
