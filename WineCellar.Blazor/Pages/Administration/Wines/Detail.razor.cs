@@ -18,7 +18,7 @@ public partial class Detail : ComponentBase
     [Inject] private ISnackbar _snackbar { get; set; }
 
     private WineDto _wine { get; set; } = new();
-    private bool _editMode { get; set; } = false;
+    private bool _editMode { get; set; }
     private string _userName { get; set; } = string.Empty;
     private List<WineryDto> _wineries = new();
     private List<GrapeDto> _grapes = new();
@@ -48,7 +48,7 @@ public partial class Detail : ComponentBase
         _editMode = true;
     }
 
-    protected async void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity?.Name ?? string.Empty;
