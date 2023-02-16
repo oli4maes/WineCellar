@@ -2,20 +2,20 @@
 
 public sealed record GetWineByNameQuery(string Name) : IRequest<WineDto?>;
 
-public sealed class GetWineByNameHandler : IRequestHandler<GetWineByNameQuery, WineDto?>
+internal sealed class GetWineByNameHandler : IRequestHandler<GetWineByNameQuery, WineDto?>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWineRepository _wineRepository;
     private readonly IMapper _mapper;
 
-    public GetWineByNameHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public GetWineByNameHandler(IWineRepository wineRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _wineRepository = wineRepository;
         _mapper = mapper;
     }
 
-    public async Task<WineDto?> Handle(GetWineByNameQuery request, CancellationToken cancellationToken)
+    public async ValueTask<WineDto?> Handle(GetWineByNameQuery request, CancellationToken cancellationToken)
     {
-        return _mapper.Map<WineDto>(await _unitOfWork.Wines.GetByName(request.Name));
+        return _mapper.Map<WineDto>(await _wineRepository.GetByName(request.Name));
     }
 }
 

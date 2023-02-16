@@ -2,24 +2,23 @@
 
 public sealed record UpdateGrapeCommand(GrapeDto GrapeDto, string UserName) : IRequest;
 
-public sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
+internal sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeCommand>
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IGrapeRepository _grapeRepository;
     private readonly IMapper _mapper;
 
-    public UpdateGrapeHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateGrapeHandler(IGrapeRepository grapeRepository, IMapper mapper)
     {
-        _unitOfWork = unitOfWork;
+        _grapeRepository = grapeRepository;
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(UpdateGrapeCommand request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(UpdateGrapeCommand request, CancellationToken cancellationToken)
     {
         Grape grapeEntity = _mapper.Map<Grape>(request.GrapeDto);
         grapeEntity.LastModifiedBy = request.UserName;
 
-        await _unitOfWork.Grapes.Update(grapeEntity);
-        await _unitOfWork.CompleteAsync();
+        await _grapeRepository.Update(grapeEntity);
 
         return Unit.Value;
     }
