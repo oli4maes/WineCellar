@@ -9,7 +9,7 @@ namespace WineCellar.Blazor.Pages.Cellar;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
-    [Inject] private MediatR.IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
@@ -53,8 +53,7 @@ public partial class Detail : ComponentBase
         if (Id is 0)
         {
             // TODO: Check if the user already has this wine.
-
-            _userWine = await _mediator.Send(new CreateUserWineCommand(_userWine, _userName, _userId));
+            _userWine = await _mediator.Send(new CreateUserWineCommand(Id, 1, _userName, _userId));
 
             Id = _userWine.Id;
 
