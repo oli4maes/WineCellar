@@ -1,4 +1,5 @@
 ﻿@page "/Cellar"
+@using WineCellar.Application.Features.UserWines.GetUserWinesOverview
 
 <PageTitle>Cellar</PageTitle>
 
@@ -7,16 +8,13 @@
         <MudCard>
             <MudCardHeader>
                 <CardHeaderContent>
-                    <MudText Typo="Typo.h4">Wines</MudText>
+                    <MudText Typo="Typo.h4">Cellar</MudText>
                 </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="AddUserWine" Size="Size.Medium"/>
-                </CardHeaderActions>
             </MudCardHeader>
             <MudCardContent>
                 @if (_userWines is not null)
                 {
-                    <MudDataGrid T="UserWineDto"
+                    <MudDataGrid T="GetUserWinesOverviewResponse.UserWineOverviewDto"
                                  Items="@_userWines"
                                  SortMode="SortMode.Multiple"
                                  QuickFilter="QuickFilter"
@@ -35,9 +33,11 @@
                             </MudTextField>
                         </ToolBarContent>
                         <Columns>
-                            <Column T="UserWineDto" Field="Wine" Title="Wine" Sortable="true" Filterable="true"/>
-                            <Column T="UserWineDto" Field="Amount" Title="Amount" Sortable="true" Filterable="true"/>
-                            <Column T="UserWineDto" Context="UserWineEditContext">
+                            <Column T="GetUserWinesOverviewResponse.UserWineOverviewDto" Field="WineryName" Title="Winery" Sortable="true" Filterable="true"/>
+                            <Column T="GetUserWinesOverviewResponse.UserWineOverviewDto" Field="WineName" Title="Wine" Sortable="true" Filterable="true"/>
+                             <Column T="GetUserWinesOverviewResponse.UserWineOverviewDto" Field="WineType" Title="Type" Sortable="true" Filterable="true"/>
+                            <Column T="GetUserWinesOverviewResponse.UserWineOverviewDto" Field="Amount" Title="Amount" Sortable="true" Filterable="true"/>
+                            <Column T="GetUserWinesOverviewResponse.UserWineOverviewDto" Context="UserWineEditContext">
                                 <CellTemplate>
                                     @{
                                         var userWine = UserWineEditContext.Item;
@@ -48,7 +48,7 @@
                             </Column>
                         </Columns>
                         <PagerContent>
-                            <MudDataGridPager T="UserWineDto"/>
+                            <MudDataGridPager T="GetUserWinesOverviewResponse.UserWineOverviewDto"/>
                         </PagerContent>
                     </MudDataGrid>
                 }

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 using WineCellar.Application.Features.UserWines.DeleteUserWine;
-using WineCellar.Application.Features.UserWines.GetUserWines;
+using WineCellar.Application.Features.UserWines.GetUserWinesOverview;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Cellar;
@@ -13,7 +13,7 @@ public partial class Overview : ComponentBase
     [Inject] private IDialogService _dialogService { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
 
-    private IEnumerable<UserWineDto> _userWines { get; set; }
+    private IEnumerable<GetUserWinesOverviewResponse.UserWineOverviewDto> _userWines { get; set; }
     private string _userId { get; set; } = String.Empty;
     private string _searchString = String.Empty;
 
@@ -27,22 +27,19 @@ public partial class Overview : ComponentBase
 
     private async Task GetUserWines()
     {
-        _userWines = await _mediator.Send(new GetUserWinesQuery(_userId));
+        var response = await _mediator.Send(new GetUserWinesOverviewQuery(_userId));
+        _userWines = response.UserWines;
     }
 
-    private void AddUserWine()
-    {
-    }
-
-    private void OpenUserWine(UserWineDto userWine)
+    private void OpenUserWine(GetUserWinesOverviewResponse.UserWineOverviewDto userWine)
     {
         _navManager.NavigateTo($"/Cellar/UserWine/{userWine.Id}");
     }
 
-    private async Task DeleteUserWine(UserWineDto userWine)
+    private async Task DeleteUserWine(GetUserWinesOverviewResponse.UserWineOverviewDto userWine)
     {
         DialogParameters parameters = new();
-        parameters.Add("ContentText", $"Do your really want to remove {userWine.Wine.Name} from your cellar?");
+        parameters.Add("ContentText", $"Do your really want to remove {userWine.WineName} from your cellar?");
 
         DialogOptions options = new() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
@@ -56,24 +53,25 @@ public partial class Overview : ComponentBase
 
             if (deleteSucces)
             {
-                _snackbar.Add($"{userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
+                _snackbar.Add($"{userWine.WineName} was removed from your cellar.", Severity.Warning);
 
                 await GetUserWines();
             }
             else
             {
-                _snackbar.Add($"Could not remove {userWine.Wine.Name} from your cellar.", Severity.Error);
+                _snackbar.Add($"Could not remove {userWine.WineName} from your cellar.", Severity.Error);
             }
         }
     }
 
     // Quick filter - filter globally across multiple columns (Name) with the same input
-    private Func<UserWineDto, bool> QuickFilter => x =>
+    private Func<GetUserWinesOverviewResponse.UserWineOverviewDto, bool> QuickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
 
-        if (x.Wine.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+        if (x.WineName.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+            x.WineryName.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

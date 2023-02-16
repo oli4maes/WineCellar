@@ -13,7 +13,9 @@ public class UserWineRepository : IUserWineRepository
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.UserWines.AsNoTracking().ToListAsync();
+        return await context.UserWines!
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<UserWine?> GetById(int id)
@@ -22,7 +24,11 @@ public class UserWineRepository : IUserWineRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.UserWines.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        return await context.UserWines!
+            .Include(x => x.Wine)
+            .ThenInclude(w => w.Winery)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public Task<UserWine?> GetByName(string name)
@@ -36,14 +42,15 @@ public class UserWineRepository : IUserWineRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == id);
+        var userWineModel = await context.UserWines!
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
         {
             return false;
         }
 
-        context.UserWines.Remove(userWineModel);
+        context.UserWines!.Remove(userWineModel);
         await context.SaveChangesAsync();
 
         return true;
@@ -55,11 +62,25 @@ public class UserWineRepository : IUserWineRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.UserWines
+        return await context.UserWines!
             .Include(x => x.Wine)
+            .ThenInclude(w => w.Winery)
             .Where(x => x.Auth0Id == auth0Id)
             .AsNoTracking()
             .ToListAsync();
+    }
+
+    public async Task<UserWine?> GetByWineId(int wineId)
+    {
+        ArgumentNullException.ThrowIfNull(wineId);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.UserWines!
+            .Include(x => x.Wine)
+            .ThenInclude(w => w.Winery)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Wine.Id == wineId);
     }
 
     public async Task Update(UserWine userWine)
@@ -68,7 +89,8 @@ public class UserWineRepository : IUserWineRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        var userWineModel = await context.UserWines.FirstOrDefaultAsync(x => x.Id == userWine.Id);
+        var userWineModel = await context.UserWines!
+            .FirstOrDefaultAsync(x => x.Id == userWine.Id);
 
         if (userWineModel == null)
         {
@@ -89,7 +111,7 @@ public class UserWineRepository : IUserWineRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        await context.UserWines.AddAsync(entity);
+        await context.UserWines!.AddAsync(entity);
         await context.SaveChangesAsync();
 
         return entity;
