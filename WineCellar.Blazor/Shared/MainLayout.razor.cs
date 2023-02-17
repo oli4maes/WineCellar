@@ -3,7 +3,7 @@
 public partial class MainLayout
 {
     bool _drawerOpen = false;
-    bool _isDarkMode;
+    bool _isDarkMode = false;
     MudThemeProvider _mudThemeProvider;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

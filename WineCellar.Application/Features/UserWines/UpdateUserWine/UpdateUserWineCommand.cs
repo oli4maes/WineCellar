@@ -2,7 +2,7 @@ namespace WineCellar.Application.Features.UserWines.UpdateUserWine;
 
 public sealed record UpdateUserWineCommand(UserWineDto UserWineDto, string UserName) : IRequest;
 
-internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWine>
+internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWineCommand>
 
 {
     private readonly IUserWineRepository _userWineRepository;
@@ -14,7 +14,7 @@ internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWine>
         _mapper = mapper;
     }
 
-    public async ValueTask<Unit> Handle(UpdateUserWine request, CancellationToken cancellationToken)
+    public async ValueTask<Unit> Handle(UpdateUserWineCommand request, CancellationToken cancellationToken)
     {
         UserWine userWineEntity = _mapper.Map<UserWine>(request.UserWineDto);
         userWineEntity.LastModifiedBy = request.UserName;
