@@ -7,20 +7,12 @@ namespace WineCellar.Blazor.Pages.Administration.Wineries;
 
 public partial class Detail : ComponentBase
 {
-    [Parameter]
-    public int Id { get; set; }
+    [Parameter] public int Id { get; set; }
 
-    [Inject]
-    Mediator.IMediator _mediator { get; set; }
-
-    [Inject]
-    private NavigationManager _navManager { get; set; }
-
-    [Inject]
-    private AuthenticationStateProvider _authenticationStateProvider { get; set; }
-
-    [Inject]
-    private ISnackbar _snackbar { get; set; }
+    [Inject] Mediator.IMediator _mediator { get; set; }
+    [Inject] private NavigationManager _navManager { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] private ISnackbar _snackbar { get; set; }
 
     private WineryDto _winery { get; set; } = new();
     private bool _editMode { get; set; } = false;
@@ -30,7 +22,8 @@ public partial class Detail : ComponentBase
     {
         if (Id != 0)
         {
-            _winery = await _mediator.Send(new GetWineryByIdQuery(Id));
+            var response = await _mediator.Send(new GetWineryByIdRequest(Id));
+            _winery = response.Winery ?? new WineryDto();
         }
         else
         {
@@ -49,22 +42,22 @@ public partial class Detail : ComponentBase
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity.Name ?? string.Empty;
 
-        if (Id == 0) // Insert
+        if (Id == 0)
         {
-            // Check if there is an entity with the same name
-            var existingWinery = await _mediator.Send(new GetWineryByNameQuery(_winery.Name));
-            if (existingWinery != null)
+            var getWineryByNameResponse = await _mediator.Send(new GetWineryByNameRequest(_winery.Name));
+            if (getWineryByNameResponse.Winery != null)
             {
-                _snackbar.Add($"The winery with name: {existingWinery.Name} already exists.", Severity.Error);
+                _snackbar.Add($"The winery with name: {getWineryByNameResponse.Winery.Name} already exists.", Severity.Error);
                 return;
             }
 
-            _winery = await _mediator.Send(new CreateWineryCommand(_winery, _userName));
+            var response = await _mediator.Send(new CreateWineryRequest(_winery, _userName));
+            _winery = response.Winery;
 
-            Id = _winery.Id;
-
-            if (_winery is not null)
+            if (_winery.Id is not 0)
             {
+                Id = _winery.Id;
+
                 _editMode = false;
                 _snackbar.Add("Saved", Severity.Success);
 
@@ -75,9 +68,9 @@ public partial class Detail : ComponentBase
                 _snackbar.Add("Could not save the grape.", Severity.Error);
             }
         }
-        else // Update
+        else
         {
-            await _mediator.Send(new UpdateWineryCommand(_winery, _userName));
+            await _mediator.Send(new UpdateWineryRequest(_winery, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);

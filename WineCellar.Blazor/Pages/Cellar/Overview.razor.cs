@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using WineCellar.Application.Features.UserWines.DeleteUserWine;
-using WineCellar.Application.Features.UserWines.GetUserWinesOverview;
+using WineCellar.Application.Features.Cellar.GetCellarOverview;
+using WineCellar.Application.Features.Cellar.RemoveWineFromCellar;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Cellar;
@@ -13,7 +13,7 @@ public partial class Overview : ComponentBase
     [Inject] private IDialogService _dialogService { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
 
-    private IEnumerable<GetUserWinesOverviewResponse.UserWineOverviewDto> _userWines { get; set; }
+    private IEnumerable<GetCellarOverviewResponse.UserWineOverviewDto> _userWines { get; set; }
     private string _userId { get; set; } = String.Empty;
     private string _searchString = String.Empty;
 
@@ -27,16 +27,16 @@ public partial class Overview : ComponentBase
 
     private async Task GetUserWines()
     {
-        var response = await _mediator.Send(new GetUserWinesOverviewQuery(_userId));
+        var response = await _mediator.Send(new GetCellarOverviewRequest(_userId));
         _userWines = response.UserWines;
     }
 
-    private void OpenUserWine(GetUserWinesOverviewResponse.UserWineOverviewDto userWine)
+    private void OpenUserWine(GetCellarOverviewResponse.UserWineOverviewDto userWine)
     {
         _navManager.NavigateTo($"/Cellar/UserWine/{userWine.Id}");
     }
 
-    private async Task DeleteUserWine(GetUserWinesOverviewResponse.UserWineOverviewDto userWine)
+    private async Task DeleteUserWine(GetCellarOverviewResponse.UserWineOverviewDto userWine)
     {
         DialogParameters parameters = new();
         parameters.Add("ContentText", $"Do your really want to remove {userWine.WineName} from your cellar?");
@@ -49,9 +49,9 @@ public partial class Overview : ComponentBase
 
         if (!result.Canceled)
         {
-            bool deleteSucces = await _mediator.Send(new DeleteUserWineCommand(userWine.Id));
+            var response = await _mediator.Send(new RemoveWineFromCellarRequest(userWine.Id));
 
-            if (deleteSucces)
+            if (response.SuccessfulDelete)
             {
                 _snackbar.Add($"{userWine.WineName} was removed from your cellar.", Severity.Warning);
 
@@ -65,7 +65,7 @@ public partial class Overview : ComponentBase
     }
 
     // Quick filter - filter globally across multiple columns (Name) with the same input
-    private Func<GetUserWinesOverviewResponse.UserWineOverviewDto, bool> QuickFilter => x =>
+    private Func<GetCellarOverviewResponse.UserWineOverviewDto, bool> QuickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
