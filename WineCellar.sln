@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D2DC0A4A-745
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{01A0B25C-7F3D-4AB7-A015-6855B5B98EE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Application.UnitTests", "WineCellar.Application.UnitTests\WineCellar.Application.UnitTests.csproj", "{5B64A0B6-3DB2-4B19-973B-26685C83D663}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{7C43BFC2-E169-4AA2-827D-5E451723CA25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C43BFC2-E169-4AA2-827D-5E451723CA25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C43BFC2-E169-4AA2-827D-5E451723CA25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B64A0B6-3DB2-4B19-973B-26685C83D663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B64A0B6-3DB2-4B19-973B-26685C83D663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B64A0B6-3DB2-4B19-973B-26685C83D663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B64A0B6-3DB2-4B19-973B-26685C83D663}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{98426510-5168-40AB-835F-2B08555C0142} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
 		{6F53CF91-9203-4387-B436-8B82F28BE321} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
 		{7C43BFC2-E169-4AA2-827D-5E451723CA25} = {D2DC0A4A-7452-4467-BE28-63DF1BA1985C}
+		{5B64A0B6-3DB2-4B19-973B-26685C83D663} = {01A0B25C-7F3D-4AB7-A015-6855B5B98EE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AFE95D6-FF37-419F-BC51-8460BC1394FC}
