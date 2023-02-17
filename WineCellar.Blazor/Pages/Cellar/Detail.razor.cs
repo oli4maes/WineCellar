@@ -1,5 +1,8 @@
 ﻿using System.Security.Claims;
+using WineCellar.Application.Features.UserWines.DeleteUserWine;
 using WineCellar.Application.Features.UserWines.GetUserWineDetail;
+using WineCellar.Application.Features.UserWines.UpdateUserWine;
+using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Cellar;
 
@@ -10,6 +13,7 @@ public partial class Detail : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
 
     private UserWineDto _userWine { get; set; } = new();
     private string _userId { get; set; } = string.Empty;
@@ -27,12 +31,54 @@ public partial class Detail : ComponentBase
         }
     }
 
-    private async Task ChangeAmount()
+    private async Task RemoveBottle()
     {
-        
+        if (_userWine.Amount > 1)
+        {
+            _userWine.Amount--;
+            await UpdateAmount();
+        }
+        else
+        {
+            DialogParameters parameters = new();
+            parameters.Add("ContentText", $"Do your really want to remove {_userWine.Wine.Name} from your cellar?");
+
+            DialogOptions options = new() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+            var dialog = _dialogService.Show<DeleteDialog>("Delete", parameters, options);
+
+            var result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                bool deleteSucces = await _mediator.Send(new DeleteUserWineCommand(_userWine.Id));
+
+                if (deleteSucces)
+                {
+                    _snackbar.Add($"{_userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
+
+                    NavigateBackToOvierview();
+                }
+                else
+                {
+                    _snackbar.Add($"Could not remove {_userWine.Wine.Name} from your cellar.", Severity.Error);
+                }
+            }
+        }
     }
 
-    private void Back()
+    private async Task AddBottle()
+    {
+        _userWine.Amount++;
+        await UpdateAmount();
+    }
+
+    private async Task UpdateAmount()
+    {
+        await _mediator.Send(new UpdateUserWineCommand(_userWine, _userName));
+    }
+
+    private void NavigateBackToOvierview()
     {
         _navManager.NavigateTo("/Cellar");
     }
