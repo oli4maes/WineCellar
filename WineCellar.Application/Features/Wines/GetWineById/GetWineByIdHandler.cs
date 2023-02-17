@@ -4,20 +4,22 @@ namespace WineCellar.Application.Features.Wines.GetWineById;
 
 internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, GetWineByIdResponse>
 {
-    private readonly IMediator _mediator;
+    private readonly IWineRepository _wineRepository;
+    private readonly IMapper _mapper;
 
-    public GetWineByIdHandler(IMediator mediator)
+    public GetWineByIdHandler(IWineRepository wineRepository, IMapper mapper)
     {
-        _mediator = mediator;
+        _wineRepository = wineRepository;
+        _mapper = mapper;
     }
 
     public async ValueTask<GetWineByIdResponse> Handle(GetWineByIdRequest request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new GetWinesRequest());
+        var wine = await _wineRepository.GetById(request.Id);
 
         return new GetWineByIdResponse()
         {
-            Wine = response.Wines.FirstOrDefault(x => x.Id == request.Id)
+            Wine = _mapper.Map<WineDto>(wine)
         };
     }
 }
