@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using WineCellar.Application.Features.UserWines.CreateUserWine;
-using WineCellar.Application.Features.UserWines.GetUserWineByWineId;
+using WineCellar.Application.Features.Cellar.AddWineToCellar;
+using WineCellar.Application.Features.Cellar.GetUserWineByWineId;
 using WineCellar.Application.Features.Wines.GetWineById;
 
 namespace WineCellar.Blazor.Pages.Wine;
@@ -23,10 +23,12 @@ public partial class Detail : ComponentBase
         _userName = authState.User.Identity?.Name ?? string.Empty;
         _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-        _wine = await _mediator.Send(new GetWineByIdQuery(Id));
-        UserWineDto? result = await _mediator.Send(new GetUserWineByWineIdQuery(_auth0Id, _wine.Id));
+        var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
+        _wine = getWineByIdResponse.Wine ?? new WineDto();
+        
+        GetUserWineByWineIdResponse response = await _mediator.Send(new GetUserWineByWineIdRequest(_auth0Id, _wine.Id));
 
-        if (result is not null)
+        if (response?.UserWine is not null)
         {
             _isWineInUserWines = true;
         }
@@ -34,9 +36,9 @@ public partial class Detail : ComponentBase
 
     private async Task AddWineToCellar()
     {
-        UserWineDto result = await _mediator.Send(new CreateUserWineCommand(_wine.Id, 1, _userName, _auth0Id));
+        var response = await _mediator.Send(new AddWineToCellarRequest(_wine.Id, 1, _userName, _auth0Id));
 
-        if (result is not null)
+        if (response.UserWine is not null)
         {
             _snackbar.Add($"Added {_wine.Name} to your cellar.", Severity.Success);
         }

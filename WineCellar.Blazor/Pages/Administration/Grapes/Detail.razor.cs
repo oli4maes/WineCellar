@@ -8,13 +8,10 @@ namespace WineCellar.Blazor.Pages.Administration.Grapes;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
-
+    
     [Inject] private Mediator.IMediator _mediator { get; set; }
-
     [Inject] private NavigationManager _navManager { get; set; }
-
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
-
     [Inject] private ISnackbar _snackbar { get; set; } = default!;
 
     private GrapeDto _grape { get; set; } = new();
@@ -25,7 +22,8 @@ public partial class Detail : ComponentBase
     {
         if (Id is not 0)
         {
-            _grape = await _mediator.Send(new GetGrapeByIdQuery(Id));
+            var response = await _mediator.Send(new GetGrapeByIdRequest(Id));
+            _grape = response.Grape ?? new GrapeDto();
         }
         else
         {
@@ -44,17 +42,17 @@ public partial class Detail : ComponentBase
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity.Name ?? string.Empty;
 
-        if (Id == 0) // Insert
+        if (Id == 0)
         {
-            // Check if there is an entity with the same name
-            var existingGrape = await _mediator.Send(new GetGrapeByNameQuery(_grape.Name));
-            if (existingGrape != null)
+            var grapeByNameResponse = await _mediator.Send(new GetGrapeByNameRequest(_grape.Name));
+            if (grapeByNameResponse.Grape != null)
             {
-                _snackbar.Add($"The grape with name: {existingGrape.Name} already exists.", Severity.Error);
+                _snackbar.Add($"The grape with name: {grapeByNameResponse.Grape.Name} already exists.", Severity.Error);
                 return;
             }
 
-            _grape = await _mediator.Send(new CreateGrapeCommand(_grape, _userName));
+            var response = await _mediator.Send(new CreateGrapeRequest(_grape, _userName));
+            _grape = response.Grape;
 
             Id = _grape.Id;
 
@@ -70,9 +68,9 @@ public partial class Detail : ComponentBase
                 _snackbar.Add("Could not save the grape.", Severity.Error);
             }
         }
-        else // Update
+        else
         {
-            await _mediator.Send(new UpdateGrapeCommand(_grape, _userName));
+            await _mediator.Send(new UpdateGrapeRequest(_grape, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
