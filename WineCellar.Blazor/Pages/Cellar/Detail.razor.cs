@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using WineCellar.Application.Features.UserWines.DeleteUserWine;
-using WineCellar.Application.Features.UserWines.GetUserWineDetail;
-using WineCellar.Application.Features.UserWines.UpdateUserWine;
+using WineCellar.Application.Features.Cellar.GetUserWineDetail;
+using WineCellar.Application.Features.Cellar.RemoveWineFromCellar;
+using WineCellar.Application.Features.Cellar.UpdateUserWine;
 using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Cellar;
@@ -9,6 +9,7 @@ namespace WineCellar.Blazor.Pages.Cellar;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
+    
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
@@ -27,7 +28,8 @@ public partial class Detail : ComponentBase
 
         if (Id is not 0)
         {
-            _userWine = await _mediator.Send(new GetUserWineDetailRequest(Id, _userId));
+            var response = await _mediator.Send(new GetUserWineDetailRequest(Id, _userId));
+            _userWine = response.UserWine ?? new UserWineDto();
         }
     }
 
@@ -51,9 +53,9 @@ public partial class Detail : ComponentBase
 
             if (!result.Canceled)
             {
-                bool deleteSucces = await _mediator.Send(new DeleteUserWineCommand(_userWine.Id));
+                var response = await _mediator.Send(new RemoveWineFromCellarRequest(_userWine.Id));
 
-                if (deleteSucces)
+                if (response.SuccessfulDelete)
                 {
                     _snackbar.Add($"{_userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
 
@@ -75,7 +77,7 @@ public partial class Detail : ComponentBase
 
     private async Task UpdateAmount()
     {
-        await _mediator.Send(new UpdateUserWineCommand(_userWine, _userName));
+        await _mediator.Send(new UpdateUserWineRequest(_userWine, _userName));
     }
 
     private void NavigateBackToOvierview()

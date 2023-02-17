@@ -11,8 +11,7 @@ public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
 
-    [Inject] Mediator.IMediator _mediator { get; set; }
-
+    [Inject] IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
@@ -26,13 +25,16 @@ public partial class Detail : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        _wineries = await _mediator.Send(new GetWineriesQuery());
-        _grapes = await _mediator.Send(new GetGrapesQuery());
+        var getWineriesResponse = await _mediator.Send(new GetWineriesRequest());
+        _wineries = getWineriesResponse.Wineries.ToList();
+        
+        var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
+        _grapes = getGrapesResponse.Grapes;
 
         if (Id != 0)
         {
-            var response = await _mediator.Send(new GetWineByIdQuery(Id));
-            _wine = response;
+            var response = await _mediator.Send(new GetWineByIdRequest(Id));
+            _wine = response.Wine ?? new WineDto();
         }
         else
         {
@@ -57,19 +59,20 @@ public partial class Detail : ComponentBase
 
         if (Id == 0)
         {
-            var existingWine = await _mediator.Send(new GetWineByNameQuery(_wine.Name));
-            if (existingWine != null)
+            var getWineByNameResponse = await _mediator.Send(new GetWineByNameRequest(_wine.Name));
+            if (getWineByNameResponse.Wine != null)
             {
-                _snackbar.Add($"The wine with name: {existingWine.Name} already exists.", Severity.Error);
+                _snackbar.Add($"The wine with name: {getWineByNameResponse.Wine.Name} already exists.", Severity.Error);
                 return;
             }
 
-            _wine = await _mediator.Send(new CreateWineCommand(_wine, _userName));
+            var response = await _mediator.Send(new CreateWineRequest(_wine, _userName));
+            _wine = response.Wine ?? new WineDto();
 
-            Id = _wine.Id;
-
-            if (_wine is not null)
+            if (_wine.Id is not 0)
             {
+                Id = _wine.Id;
+                
                 _editMode = false;
                 _snackbar.Add("Saved", Severity.Success);
 
