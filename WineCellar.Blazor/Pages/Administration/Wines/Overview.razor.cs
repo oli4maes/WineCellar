@@ -61,9 +61,9 @@ public partial class Overview : ComponentBase
 
         if (!result.Canceled)
         {
-            bool deleteSucces = await _mediator.Send(new DeleteWineCommand(wine.Id));
+            var response = await _mediator.Send(new DeleteWineRequest(wine.Id));
 
-            if (deleteSucces)
+            if (response.SuccessfulDelete)
             {
                 _snackbar.Add($"Wine {wine.Name} deleted.", Severity.Warning);
 
@@ -78,6 +78,7 @@ public partial class Overview : ComponentBase
 
     private async Task GetWines()
     {
-        _wines = await _mediator.Send(new GetWinesQuery());
+        var response = await _mediator.Send(new GetWinesRequest());
+        _wines = response.Wines;
     }
 }
