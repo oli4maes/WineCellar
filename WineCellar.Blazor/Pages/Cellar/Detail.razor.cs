@@ -1,24 +1,23 @@
 ﻿using System.Security.Claims;
-using WineCellar.Application.Features.UserWines.CreateUserWine;
-using WineCellar.Application.Features.UserWines.GetUserWineById;
+using WineCellar.Application.Features.UserWines.DeleteUserWine;
+using WineCellar.Application.Features.UserWines.GetUserWineDetail;
 using WineCellar.Application.Features.UserWines.UpdateUserWine;
-using WineCellar.Application.Features.Wines.GetWines;
+using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Cellar;
 
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
-    [Inject] private MediatR.IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
 
     private UserWineDto _userWine { get; set; } = new();
-    private bool _editMode { get; set; }
     private string _userId { get; set; } = string.Empty;
     private string _userName { get; set; } = string.Empty;
-    private List<WineDto> _wines = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,64 +27,59 @@ public partial class Detail : ComponentBase
 
         if (Id is not 0)
         {
-            _userWine = await _mediator.Send(new GetUserWineByIdQuery(Id, _userId));
+            _userWine = await _mediator.Send(new GetUserWineDetailRequest(Id, _userId));
+        }
+    }
+
+    private async Task RemoveBottle()
+    {
+        if (_userWine.Amount > 1)
+        {
+            _userWine.Amount--;
+            await UpdateAmount();
         }
         else
         {
-            _wines = await _mediator.Send(new GetWinesQuery());
-            _userWine = new();
-            _editMode = true;
-        }
-    }
+            DialogParameters parameters = new();
+            parameters.Add("ContentText", $"Do your really want to remove {_userWine.Wine.Name} from your cellar?");
 
-    private void SetEditMode()
-    {
-        _editMode = true;
-    }
+            DialogOptions options = new() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-    private void Back()
-    {
-        _navManager.NavigateTo("/Administration/Grapes");
-    }
+            var dialog = _dialogService.Show<DeleteDialog>("Delete", parameters, options);
 
-    private async void HandleValidSubmit()
-    {
-        if (Id is 0)
-        {
-            // TODO: Check if the user already has this wine.
+            var result = await dialog.Result;
 
-            _userWine = await _mediator.Send(new CreateUserWineCommand(_userWine, _userName, _userId));
-
-            Id = _userWine.Id;
-
-            if (_userWine is not null)
+            if (!result.Canceled)
             {
-                _editMode = false;
-                _snackbar.Add("Saved", Severity.Success);
+                bool deleteSucces = await _mediator.Send(new DeleteUserWineCommand(_userWine.Id));
 
-                StateHasChanged();
-            }
-            else
-            {
-                _snackbar.Add("Could not save the wine to your cellar.", Severity.Error);
+                if (deleteSucces)
+                {
+                    _snackbar.Add($"{_userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
+
+                    NavigateBackToOvierview();
+                }
+                else
+                {
+                    _snackbar.Add($"Could not remove {_userWine.Wine.Name} from your cellar.", Severity.Error);
+                }
             }
         }
-        else
-        {
-            await _mediator.Send(new UpdateUserWineCommand(_userWine, _userName));
-
-            _editMode = false;
-            _snackbar.Add("Saved", Severity.Success);
-
-            StateHasChanged();
-        }
     }
 
-    private async Task<IEnumerable<WineDto>> SearchWine(string value)
+    private async Task AddBottle()
     {
-        if (string.IsNullOrEmpty(value))
-            return new List<WineDto>();
+        _userWine.Amount++;
+        await UpdateAmount();
+    }
 
-        return _wines.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    private async Task UpdateAmount()
+    {
+        await _mediator.Send(new UpdateUserWineCommand(_userWine, _userName));
+    }
+
+    private void NavigateBackToOvierview()
+    {
+        _navManager.NavigateTo("/Cellar");
     }
 }
