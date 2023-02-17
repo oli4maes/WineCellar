@@ -1,0 +1,2 @@
+// Xunit
+global using Xunit;
