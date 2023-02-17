@@ -97,10 +97,9 @@ public class UserWineRepository : IUserWineRepository
             throw new Exception("Couldn't find the user wine to update.");
         }
 
-        userWine.WineId = userWineModel.Id;
-        userWine.Amount = userWineModel.Amount;
-        userWine.LastModified = DateTime.UtcNow;
-        userWine.LastModifiedBy = userWineModel.LastModifiedBy;
+        userWineModel.Amount = userWine.Amount;
+        userWineModel.LastModified = DateTime.UtcNow;
+        userWineModel.LastModifiedBy = userWine.LastModifiedBy;
 
         await context.SaveChangesAsync();
     }
