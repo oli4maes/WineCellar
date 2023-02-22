@@ -3,12 +3,10 @@
 internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOverviewRequest, GetCellarOverviewResponse>
 {
     private readonly IUserWineRepository _userWineRepository;
-    private readonly IMapper _mapper;
 
-    public GetCellarOverviewHandler(IUserWineRepository userWineRepository, IMapper mapper)
+    public GetCellarOverviewHandler(IUserWineRepository userWineRepository)
     {
         _userWineRepository = userWineRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<GetCellarOverviewResponse> Handle(GetCellarOverviewRequest request,
