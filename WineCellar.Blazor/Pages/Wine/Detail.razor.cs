@@ -1,7 +1,10 @@
 ﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.AddWineToCellar;
 using WineCellar.Application.Features.Cellar.GetUserWineByWineId;
+using WineCellar.Application.Features.Cellar.RemoveWineFromCellar;
+using WineCellar.Application.Features.Cellar.UpdateUserWine;
 using WineCellar.Application.Features.Wines.GetWineById;
+using WineCellar.Blazor.Components.Dialog;
 
 namespace WineCellar.Blazor.Pages.Wine;
 
@@ -11,8 +14,10 @@ public partial class Detail : ComponentBase
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
 
     private WineDto _wine;
+    private UserWineDto _userWine { get; set; } = new();
     private string _userName { get; set; } = string.Empty;
     private string _auth0Id { get; set; } = string.Empty;
     private bool _isWineInUserWines { get; set; } = false;
@@ -25,11 +30,17 @@ public partial class Detail : ComponentBase
 
         var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
         _wine = getWineByIdResponse.Wine ?? new WineDto();
-        
+
+        await GetUserWine();
+    }
+
+    private async Task GetUserWine()
+    {
         GetUserWineByWineIdResponse response = await _mediator.Send(new GetUserWineByWineIdRequest(_auth0Id, _wine.Id));
 
         if (response?.UserWine is not null)
         {
+            _userWine = response.UserWine;
             _isWineInUserWines = true;
         }
     }
@@ -40,7 +51,55 @@ public partial class Detail : ComponentBase
 
         if (response.UserWine is not null)
         {
+            await GetUserWine();
+            _isWineInUserWines = true;
             _snackbar.Add($"Added {_wine.Name} to your cellar.", Severity.Success);
         }
+    }
+
+    private async Task RemoveBottle()
+    {
+        if (_userWine.Amount > 1)
+        {
+            _userWine.Amount--;
+            await UpdateAmount();
+        }
+        else
+        {
+            DialogParameters parameters = new();
+            parameters.Add("ContentText", $"Do your really want to remove {_userWine.Wine.Name} from your cellar?");
+
+            DialogOptions options = new() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+            var dialog = _dialogService.Show<DeleteDialog>("Delete", parameters, options);
+
+            var result = await dialog.Result;
+
+            if (!result.Canceled)
+            {
+                var response = await _mediator.Send(new RemoveWineFromCellarRequest(_userWine.Id));
+
+                if (response.SuccessfulDelete)
+                {
+                    _isWineInUserWines = false;
+                    _snackbar.Add($"{_userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
+                }
+                else
+                {
+                    _snackbar.Add($"Could not remove {_userWine.Wine.Name} from your cellar.", Severity.Error);
+                }
+            }
+        }
+    }
+
+    private async Task AddBottle()
+    {
+        _userWine.Amount++;
+        await UpdateAmount();
+    }
+
+    private async Task UpdateAmount()
+    {
+        await _mediator.Send(new UpdateUserWineRequest(_userWine, _userName));
     }
 }
