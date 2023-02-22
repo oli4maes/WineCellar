@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using WineCellar.Infrastructure.Persistence.EntityTypeConfiguration;
 
 namespace WineCellar.Infrastructure.Persistence;
 
@@ -16,18 +17,10 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Wine>()
-            .HasMany(p => p.Grapes)
-            .WithMany(p => p.Wines)
-            .UsingEntity<GrapeWine>(
-                j => j
-                    .HasOne(pt => pt.Grape)
-                    .WithMany(t => t.GrapeWines)
-                    .HasForeignKey(pt => pt.GrapesId),
-                j => j
-                    .HasOne(pt => pt.Wine)
-                    .WithMany(p => p.GrapeWines)
-                    .HasForeignKey(pt => pt.WinesId));
+        CreateGrapeModel(modelBuilder);
+        CreateWineModel(modelBuilder);
+        CreateWineryModel(modelBuilder);
+        CreateUserWineModel(modelBuilder);
     }
     
     public override void Dispose()
@@ -40,5 +33,25 @@ public class ApplicationDbContext : DbContext
     {
         Debug.WriteLine($"{ContextId} context disposed async.");
         return base.DisposeAsync();
+    }
+
+    private void CreateGrapeModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new GrapeEntityTypeConfiguration());
+    }
+
+    private void CreateWineModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new WineEntityTypeConfiguration());
+    }
+
+    private void CreateWineryModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new WineryEntityTypeConfiguration());
+    }
+
+    private void CreateUserWineModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new UserWineEntityTypeConfiguration());
     }
 }
