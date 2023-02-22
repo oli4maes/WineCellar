@@ -33,7 +33,7 @@ public partial class Overview : ComponentBase
 
     private void OpenUserWine(GetCellarOverviewResponse.UserWineOverviewDto userWine)
     {
-        _navManager.NavigateTo($"/Cellar/UserWine/{userWine.Id}");
+        _navManager.NavigateTo($"/Wines/{userWine.WineId}");
     }
 
     private async Task DeleteUserWine(GetCellarOverviewResponse.UserWineOverviewDto userWine)

@@ -20,16 +20,24 @@
                     </CardHeaderActions>
                 </MudCardHeader>
             <MudDivider />
-                <MudCardContent>
-                    <MudGrid>
-                        @if (_wine.Grapes is not null)
-                        {
-                            <MudItem xs="12" md="6">
-                                <GrapesList Grapes="_wine.Grapes"/>
-                            </MudItem>
-                        }
-                    </MudGrid>
-                </MudCardContent>
+            <MudCardContent>
+                @if (_isWineInUserWines)
+                {
+                    <MudText Typo="Typo.body1">@_userWine.Amount bottle(s) in cellar.</MudText>
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                        <MudIconButton Icon="@Icons.Material.Filled.Remove" @onclick="RemoveBottle"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="AddBottle"/>
+                    </MudButtonGroup>
+                }
+                <MudGrid>
+                    @if (_wine.Grapes is not null)
+                    {
+                        <MudItem xs="12" md="6">
+                            <GrapesList Grapes="_wine.Grapes"/>
+                        </MudItem>
+                    }
+                </MudGrid>
+            </MudCardContent>
             </MudCard>
         }
     </Authorized>
