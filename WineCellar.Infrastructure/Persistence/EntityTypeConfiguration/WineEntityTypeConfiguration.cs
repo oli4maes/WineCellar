@@ -32,9 +32,5 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
                     .HasOne(pt => pt.Wine)
                     .WithMany(p => p.GrapeWines)
                     .HasForeignKey(pt => pt.WinesId));
-
-        builder
-            .HasMany(x => x.Grapes)
-            .WithMany(x => x.Wines);
     }
 }
