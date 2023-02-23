@@ -70,7 +70,7 @@ namespace WineCellar.Infrastructure.Migrations
 
                     b.HasIndex("WinesId");
 
-                    b.ToTable("GrapeWine");
+                    b.ToTable("GrapeWine", (string)null);
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.UserWine", b =>
