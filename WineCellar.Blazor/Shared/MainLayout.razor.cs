@@ -2,18 +2,20 @@
 
 public partial class MainLayout
 {
-    bool _drawerOpen = false;
-    bool _isDarkMode = false;
-    MudThemeProvider _mudThemeProvider;
+    private bool _drawerOpen = true;
+    private bool _isDarkMode;
+    private DrawerClipMode _clipMode = DrawerClipMode.Always;
+    
+    private MudThemeProvider _mudThemeProvider;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
-            StateHasChanged();
-        }
-    }
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+    //         StateHasChanged();
+    //     }
+    // }
 
     void DrawerToggle()
     {

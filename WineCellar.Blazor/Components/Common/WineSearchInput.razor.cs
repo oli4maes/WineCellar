@@ -26,7 +26,7 @@ public partial class WineSearchInput : ComponentBase
 
         return _wines.Where(x =>
             x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase) ||
-            x.Winery.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            x.WineryName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private void SelectedWineChanged(WineDto wine)
