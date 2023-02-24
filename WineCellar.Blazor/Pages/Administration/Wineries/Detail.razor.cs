@@ -51,7 +51,7 @@ public partial class Detail : ComponentBase
                 return;
             }
 
-            var response = await _mediator.Send(new CreateWineryRequest(_winery, _userName));
+            var response = await _mediator.Send(new CreateWineryRequest(_winery.Name, _winery.Description, _userName));
             _winery = response.Winery;
 
             if (_winery.Id is not 0)
@@ -70,7 +70,7 @@ public partial class Detail : ComponentBase
         }
         else
         {
-            await _mediator.Send(new UpdateWineryRequest(_winery, _userName));
+            await _mediator.Send(new UpdateWineryRequest(_winery.Id, _winery.Name, _winery.Description, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);

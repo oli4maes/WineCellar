@@ -3,12 +3,10 @@
 internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWinesResponse>
 {
     private readonly IWineRepository _wineRepository;
-    private readonly IMapper _mapper;
 
-    public GetWinesHandler(IWineRepository wineRepository, IMapper mapper)
+    public GetWinesHandler(IWineRepository wineRepository)
     {
         _wineRepository = wineRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<GetWinesResponse> Handle(GetWinesRequest request, CancellationToken cancellationToken)
@@ -17,7 +15,13 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
 
         return new GetWinesResponse()
         {
-            Wines = _mapper.Map<List<WineDto>>(wines)
+            Wines = wines.Select(x => new WineDto()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                WineType = x.WineType,
+                WineryName = x.Winery.Name
+            })
         };
     }
 }

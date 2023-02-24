@@ -3,28 +3,32 @@
 internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryRequest, CreateWineryResponse>
 {
     private readonly IWineryRepository _wineryRepository;
-    private readonly IMapper _mapper;
 
-    public CreateWineryHandler(IWineryRepository wineryRepository, IMapper mapper)
+    public CreateWineryHandler(IWineryRepository wineryRepository)
     {
         _wineryRepository = wineryRepository;
-        _mapper = mapper;
     }
 
-    public async ValueTask<CreateWineryResponse> Handle(CreateWineryRequest request, CancellationToken cancellationToken)
+    public async ValueTask<CreateWineryResponse> Handle(CreateWineryRequest request,
+        CancellationToken cancellationToken)
     {
-        Winery entity = new()
+        var winery = new Winery()
         {
-            Name = request.WineryDto.Name,
-            Description = request.WineryDto.Description,
+            Name = request.Name,
+            Description = request.Description,
             CreatedBy = request.UserName
         };
 
-        await _wineryRepository.Create(entity);
+        await _wineryRepository.Create(winery);
 
         return new CreateWineryResponse()
         {
-            Winery = _mapper.Map<WineryDto>(entity)
+            Winery = new WineryDto()
+            {
+                Id = winery.Id,
+                Name = winery.Name,
+                Description = winery.Description
+            }
         };
     }
 }

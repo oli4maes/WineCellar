@@ -17,20 +17,18 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
             .IsRequired();
 
         builder
-            .HasOne(x => x.Winery)
-            .WithMany(x => x.Wines);
-
-        builder
-            .HasMany(x => x.Grapes)
-            .WithMany(x => x.Wines)
+            .HasMany(wine => wine.Grapes)
+            .WithMany(grape => grape.Wines)
             .UsingEntity<GrapeWine>(
-                j => j
-                    .HasOne(pt => pt.Grape)
-                    .WithMany(t => t.GrapeWines)
-                    .HasForeignKey(pt => pt.GrapesId),
-                j => j
-                    .HasOne(pt => pt.Wine)
-                    .WithMany(p => p.GrapeWines)
-                    .HasForeignKey(pt => pt.WinesId));
+                gw => gw
+                    .HasOne(gw => gw.Grape)
+                    .WithMany(grape => grape.GrapeWines)
+                    .HasForeignKey(gw => gw.GrapeId),
+                gw => gw
+                    .HasOne(gw => gw.Wine)
+                    .WithMany(wine => wine.GrapeWines)
+                    .HasForeignKey(gw => gw.WineId),
+                gw => { gw.HasKey(gw => new { gw.GrapeId, gw.WineId }); }
+            );
     }
 }

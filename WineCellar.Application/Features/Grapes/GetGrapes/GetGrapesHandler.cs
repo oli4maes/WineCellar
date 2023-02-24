@@ -3,12 +3,10 @@
 internal sealed class GetGrapesHandler : IRequestHandler<GetGrapesRequest, GetGrapesResponse>
 {
     private readonly IGrapeRepository _grapeRepository;
-    private readonly IMapper _mapper;
 
-    public GetGrapesHandler(IGrapeRepository grapeRepository, IMapper mapper)
+    public GetGrapesHandler(IGrapeRepository grapeRepository)
     {
         _grapeRepository = grapeRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<GetGrapesResponse> Handle(GetGrapesRequest request, CancellationToken cancellationToken)
@@ -17,7 +15,12 @@ internal sealed class GetGrapesHandler : IRequestHandler<GetGrapesRequest, GetGr
 
         return new GetGrapesResponse()
         {
-            Grapes = _mapper.Map<List<GrapeDto>>(grapes)
+            Grapes = grapes.Select(x => new GrapeDto()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description
+            }).ToList()
         };
     }
 }

@@ -1,24 +1,35 @@
-﻿using WineCellar.Application.Features.Wineries.GetWineries;
-
-namespace WineCellar.Application.Features.Wineries.GetWineryById;
+﻿namespace WineCellar.Application.Features.Wineries.GetWineryById;
 
 internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdRequest, GetWineryByIdResponse>
 {
-    private readonly IMediator _mediator;
+    private readonly IWineryRepository _wineryRepository;
 
-    public GetWineryByIdHandler(IMediator mediator)
+    public GetWineryByIdHandler(IWineryRepository wineryRepository)
     {
-        _mediator = mediator;
+        _wineryRepository = wineryRepository;
     }
 
     public async ValueTask<GetWineryByIdResponse> Handle(GetWineryByIdRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(new GetWineriesRequest(), cancellationToken);
+        var winery = await _wineryRepository.GetById(request.Id);
+
+        if (winery is null)
+        {
+            return new GetWineryByIdResponse()
+            {
+                ErrorMessage = $"Couldn't find the winery with id: {request.Id}."
+            };
+        }
 
         return new GetWineryByIdResponse()
         {
-            Winery = response.Wineries.FirstOrDefault(x => x.Id == request.Id)
+            Winery = new WineryDto()
+            {
+                Id = winery.Id,
+                Name = winery.Name,
+                Description = winery.Description
+            }
         };
     }
 }

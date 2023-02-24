@@ -1,8 +1,10 @@
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Application.Features.Wineries.GetWineries;
+using WineCellar.Application.Features.Wines.AddGrapeToWine;
 using WineCellar.Application.Features.Wines.CreateWine;
 using WineCellar.Application.Features.Wines.GetWineById;
 using WineCellar.Application.Features.Wines.GetWineByName;
+using WineCellar.Application.Features.Wines.RemoveGrapeFromWine;
 using WineCellar.Application.Features.Wines.UpdateWine;
 
 namespace WineCellar.Blazor.Pages.Administration.Wines;
@@ -21,17 +23,17 @@ public partial class Detail : ComponentBase
     private string _userName { get; set; } = string.Empty;
     private List<WineryDto> _wineries = new();
     private List<GrapeDto> _grapes = new();
-    private GrapeDto _selectedGrape = new();
+    private GrapeDto? _selectedGrape { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         var getWineriesResponse = await _mediator.Send(new GetWineriesRequest());
         _wineries = getWineriesResponse.Wineries.ToList();
-        
+
         var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
         _grapes = getGrapesResponse.Grapes;
 
-        if (Id != 0)
+        if (Id is not 0)
         {
             var response = await _mediator.Send(new GetWineByIdRequest(Id));
             _wine = response.Wine ?? new WineDto();
@@ -57,7 +59,7 @@ public partial class Detail : ComponentBase
 
         _wine.WineryId = _wine.Winery.Id;
 
-        if (Id == 0)
+        if (Id is 0)
         {
             var getWineByNameResponse = await _mediator.Send(new GetWineByNameRequest(_wine.Name));
             if (getWineByNameResponse.Wine != null)
@@ -66,13 +68,14 @@ public partial class Detail : ComponentBase
                 return;
             }
 
-            var response = await _mediator.Send(new CreateWineRequest(_wine, _userName));
+            var response =
+                await _mediator.Send(new CreateWineRequest(_wine.Name, _wine.WineType, _wine.WineryId, _userName));
             _wine = response.Wine ?? new WineDto();
 
             if (_wine.Id is not 0)
             {
                 Id = _wine.Id;
-                
+
                 _editMode = false;
                 _snackbar.Add("Saved", Severity.Success);
 
@@ -85,7 +88,8 @@ public partial class Detail : ComponentBase
         }
         else
         {
-            await _mediator.Send(new UpdateWineCommand(_wine, _userName));
+            await _mediator.Send(
+                new UpdateWineRequest(_wine.Id, _wine.Name, _wine.WineType, _wine.WineryId, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
@@ -115,13 +119,20 @@ public partial class Detail : ComponentBase
         return _grapes.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void RemoveGrape(GrapeDto grape)
+    private async Task RemoveGrape(GrapeDto grape)
     {
         _wine.Grapes.Remove(grape);
+
+        await _mediator.Send(new RemoveGrapeFromWineRequest(grape.Id, Id));
     }
 
-    private void AddGrape()
+    private async Task AddGrape()
     {
-        _wine.Grapes.Add(_selectedGrape);
+        if (_selectedGrape is not null)
+        {
+            _wine.Grapes.Add(_selectedGrape);
+
+            await _mediator.Send(new AddGrapeToWineRequest(_selectedGrape.Id, Id));
+        }
     }
 }
