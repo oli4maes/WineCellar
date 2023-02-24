@@ -10,9 +10,6 @@ public static class ConfigureServices
         // Mediator
         services.AddMediator();
 
-        // AutoMapper
-        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
         // Pipeline Behaviours
         services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
 

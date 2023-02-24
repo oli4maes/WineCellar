@@ -1,24 +1,34 @@
-﻿using WineCellar.Application.Features.Grapes.GetGrapes;
-
-namespace WineCellar.Application.Features.Grapes.GetGrapeById;
+﻿namespace WineCellar.Application.Features.Grapes.GetGrapeById;
 
 internal sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdRequest, GetGrapeByIdResponse>
 {
-    private readonly IMediator _mediator;
+    private readonly IGrapeRepository _grapeRepository;
 
-    public GetGrapeByIdHandler(IMediator mediator)
+    public GetGrapeByIdHandler(IGrapeRepository grapeRepository)
     {
-        _mediator = mediator;
+        _grapeRepository = grapeRepository;
     }
 
     public async ValueTask<GetGrapeByIdResponse> Handle(GetGrapeByIdRequest request, CancellationToken cancellationToken)
     {
-        var getGrapesResponse = await _mediator.Send(new GetGrapesRequest(), cancellationToken);
-        var grapes = getGrapesResponse.Grapes;
+        var grape = await _grapeRepository.GetById(request.Id);
+
+        if (grape is null)
+        {
+            return new GetGrapeByIdResponse()
+            {
+                ErrorMessage = $"Couldn't find the grape with id: {request.Id}."
+            };
+        }
 
         return new GetGrapeByIdResponse
         {
-            Grape = grapes.FirstOrDefault(x => x.Id == request.Id)
+            Grape = new GrapeDto()
+            {
+                Id = grape.Id,
+                Name = grape.Name,
+                Description = grape.Description
+            }
         };
     }
 }

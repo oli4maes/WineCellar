@@ -3,28 +3,31 @@
 internal sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeRequest, CreateGrapeResponse>
 {
     private readonly IGrapeRepository _grapeRepository;
-    private readonly IMapper _mapper;
 
-    public CreateGrapeHandler(IGrapeRepository grapeRepository, IMapper mapper)
+    public CreateGrapeHandler(IGrapeRepository grapeRepository)
     {
         _grapeRepository = grapeRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<CreateGrapeResponse> Handle(CreateGrapeRequest request, CancellationToken cancellationToken)
     {
-        Grape entity = new()
+        Grape grape = new()
         {
-            Name = request.GrapeDto.Name,
-            Description = request.GrapeDto.Description,
+            Name = request.Name,
+            Description = request.Description,
             CreatedBy = request.UserName
         };
 
-        await _grapeRepository.Create(entity);
+        await _grapeRepository.Create(grape);
 
         return new CreateGrapeResponse()
         {
-            Grape = _mapper.Map<GrapeDto>(entity)
+            Grape = new GrapeDto()
+            {
+                Id = grape.Id,
+                Name = grape.Name,
+                Description = grape.Description
+            }
         };
     }
 }

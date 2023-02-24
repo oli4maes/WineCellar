@@ -15,21 +15,13 @@ internal sealed class CreateWineHandler : IRequestHandler<CreateWineRequest, Cre
 
     public async ValueTask<CreateWineResponse> Handle(CreateWineRequest request, CancellationToken cancellationToken)
     {
-        Wine entity = new()
+        var entity = new Wine()
         {
-            Name = request.WineDto.Name,
-            WineType = request.WineDto.WineType,
-            WineryId = request.WineDto.WineryId,
+            Name = request.Name,
+            WineType = request.WineType,
+            WineryId = request.WineryId,
             CreatedBy = request.UserName
         };
-        
-
-        entity.GrapeWines = new();
-
-        foreach (GrapeDto grape in request.WineDto.Grapes)
-        {
-            entity.GrapeWines.Add(new GrapeWine { GrapesId = grape.Id });
-        }
 
         await _wineRepository.Create(entity);
 

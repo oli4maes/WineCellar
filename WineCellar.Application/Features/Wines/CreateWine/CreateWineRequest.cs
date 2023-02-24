@@ -1,3 +1,5 @@
-﻿namespace WineCellar.Application.Features.Wines.CreateWine;
+﻿using WineCellar.Domain.Enums;
 
-public sealed record CreateWineRequest(WineDto WineDto, string UserName) : IRequest<CreateWineResponse>;
+namespace WineCellar.Application.Features.Wines.CreateWine;
+
+public sealed record CreateWineRequest(string Name, WineType WineType, int WineryId, string UserName) : IRequest<CreateWineResponse>;

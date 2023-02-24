@@ -1,23 +1,26 @@
 ﻿namespace WineCellar.Application.Features.Wineries.UpdateWinery;
 
-internal sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryRequest>
+internal sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryRequest, UpdateWineryResponse>
 {
     private readonly IWineryRepository _wineryRepository;
-    private readonly IMapper _mapper;
 
-    public UpdateWineryHandler(IWineryRepository wineryRepository, IMapper mapper)
+    public UpdateWineryHandler(IWineryRepository wineryRepository)
     {
         _wineryRepository = wineryRepository;
-        _mapper = mapper;
     }
 
-    public async ValueTask<Unit> Handle(UpdateWineryRequest request, CancellationToken cancellationToken)
+    public async ValueTask<UpdateWineryResponse> Handle(UpdateWineryRequest request, CancellationToken cancellationToken)
     {
-        Winery wineryEntity = _mapper.Map<Winery>(request.WineryDto);
-        wineryEntity.LastModifiedBy = request.UserName;
+        var winery = new Winery()
+        {
+            Id = request.Id,
+            Name = request.Name,
+            Description = request.Description,
+            LastModifiedBy = request.UserName
+        };
 
-        await _wineryRepository.Update(wineryEntity);
+        await _wineryRepository.Update(winery);
 
-        return Unit.Value;
+        return new UpdateWineryResponse();
     }
 }

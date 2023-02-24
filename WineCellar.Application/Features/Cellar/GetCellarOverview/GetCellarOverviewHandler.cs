@@ -12,7 +12,7 @@ internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOvervi
     public async ValueTask<GetCellarOverviewResponse> Handle(GetCellarOverviewRequest request,
         CancellationToken cancellationToken)
     {
-        var userWines = await _userWineRepository.GetUserWines(request.UserId);
+        var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
 
         return new GetCellarOverviewResponse()
         {

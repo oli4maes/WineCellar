@@ -54,7 +54,7 @@
                                      Class="mt-3"/>
 
                     <!-- Grapes -->
-                    @if (_editMode)
+                    @if (Id is not 0)
                     {
                         <MudAutocomplete T="GrapeDto"
                                          Label="Grape"
@@ -66,7 +66,6 @@
                                          AdornmentIcon="@Icons.Material.Filled.Search"
                                          AdornmentColor="Color.Primary"
                                          ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                         Disabled="!_editMode"
                                          Class="mt-3"/>
 
 
@@ -80,7 +79,7 @@
                         </MudButton>
                     }
 
-                    @if (_wine.Grapes != null)
+                    @if (_wine.Grapes.Any())
                     {
                         <MudList Class="mt-3" Dense=true>
                             <MudListSubheader>Grapes</MudListSubheader>
@@ -88,10 +87,7 @@
                             {
                                 <MudListItem>
                                     @grape.Name
-                                    @if (_editMode)
-                                    {
-                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small"/>
-                                    }
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small"/>
                                 </MudListItem>
                             }
                         </MudList>

@@ -1,3 +1,3 @@
 ﻿namespace WineCellar.Application.Features.Cellar.GetCellarOverview;
 
-public sealed record GetCellarOverviewRequest(string UserId) : IRequest<GetCellarOverviewResponse>;
+public sealed record GetCellarOverviewRequest(string Auth0Id) : IRequest<GetCellarOverviewResponse>;

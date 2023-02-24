@@ -70,14 +70,6 @@ public class WineRepository : IWineRepository
         wineModel.LastModified = DateTime.UtcNow;
         wineModel.LastModifiedBy = wine.LastModifiedBy;
 
-        // Remove all grape wines and insert updated ones
-        wineModel.GrapeWines.Clear();
-
-        foreach (Grape grape in wine.Grapes)
-        {
-            wineModel.GrapeWines.Add(new GrapeWine { GrapesId = grape.Id, WinesId = wine.Id });
-        }
-
         await context.SaveChangesAsync();
     }
 
@@ -93,12 +85,53 @@ public class WineRepository : IWineRepository
         return entity;
     }
 
+    public async Task AddGrapeToWine(int grapeId, int wineId)
+    {
+        ArgumentNullException.ThrowIfNull(grapeId);
+        ArgumentNullException.ThrowIfNull(wineId);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        var wine = context.Wines
+            .Include(x => x.GrapeWines)
+            .Single(x => x.Id == wineId);
+
+        var grape = context.Grapes.Single(x => x.Id == grapeId);
+
+        wine.GrapeWines.Add(new GrapeWine()
+        {
+            Grape = grape,
+            WineId = wineId
+        });
+
+        await context.SaveChangesAsync();
+    }
+
+    public async Task RemoveGrapeFromWine(int grapeId, int wineId)
+    {
+        ArgumentNullException.ThrowIfNull(grapeId);
+        ArgumentNullException.ThrowIfNull(wineId);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+        
+        var wine = context.Wines
+            .Include(x => x.GrapeWines)
+            .Single(x => x.Id == wineId);
+
+        var grapeWineToDelete = wine.GrapeWines.Single(x => x.WineId == wineId && x.GrapeId == grapeId);
+
+        wine.GrapeWines.Remove(grapeWineToDelete);
+
+        await context.SaveChangesAsync();
+    }
+
     public async Task<Wine?> GetByName(string name)
     {
         ArgumentException.ThrowIfNullOrEmpty(name);
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Wines.FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        return await context.Wines
+            .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }
