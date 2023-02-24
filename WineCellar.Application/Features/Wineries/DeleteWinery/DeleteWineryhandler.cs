@@ -1,7 +1,5 @@
 ﻿namespace WineCellar.Application.Features.Wineries.DeleteWinery;
 
-
-
 internal sealed class DeleteWineryHandler : IRequestHandler<DeleteWineryRequest, DeleteWineryResponse>
 {
     private readonly IWineryRepository _wineryRepository;

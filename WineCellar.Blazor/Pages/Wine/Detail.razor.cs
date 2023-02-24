@@ -100,6 +100,6 @@ public partial class Detail : ComponentBase
 
     private async Task UpdateAmount()
     {
-        await _mediator.Send(new UpdateUserWineRequest(_userWine, _userName));
+        await _mediator.Send(new UpdateUserWineRequest(_userWine.Id, _userWine.Amount, _userName, _auth0Id));
     }
 }

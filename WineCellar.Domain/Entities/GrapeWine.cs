@@ -2,8 +2,8 @@
 
 public class GrapeWine
 {
-    public int GrapesId { get; set; }
+    public int GrapeId { get; set; }
     public Grape Grape { get; set; } = new();
-    public int WinesId { get; set; }
+    public int WineId { get; set; }
     public Wine Wine { get; set; } = new();
 }

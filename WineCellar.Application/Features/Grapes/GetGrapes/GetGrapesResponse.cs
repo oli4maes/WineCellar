@@ -2,5 +2,5 @@
 
 public sealed class GetGrapesResponse
 {
-    public List<GrapeDto> Grapes { get; set; } = new List<GrapeDto>();
+    public List<GrapeDto> Grapes { get; set; } = new();
 }

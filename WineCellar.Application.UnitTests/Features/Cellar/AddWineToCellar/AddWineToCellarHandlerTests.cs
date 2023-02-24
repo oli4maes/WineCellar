@@ -8,12 +8,10 @@ namespace WineCellar.Application.UnitTests.Features.Cellar.AddWineToCellar;
 public class AddWineToCellarHandlerTests
 {
     private readonly Mock<IUserWineRepository> _userWineRepositoryMock;
-    private readonly Mock<IMapper> _mapperMock;
 
     public AddWineToCellarHandlerTests()
     {
         _userWineRepositoryMock = new();
-        _mapperMock = new();
     }
 
     [Fact]
@@ -34,20 +32,16 @@ public class AddWineToCellarHandlerTests
             Wine = new WineDto()
         };
 
-        _mapperMock.Setup(x => x.Map<UserWineDto>(It.IsAny<UserWine>()))
-            .Returns(expectedUserWine);
-
         var addWineToCellarRequest =
             new AddWineToCellarRequest(expectedUserWine.WineId, expectedUserWine.Amount, USERNAME, AUTH0ID);
 
-        var SUT = new AddWineToCellarHandler(_userWineRepositoryMock.Object, _mapperMock.Object);
+        var SUT = new AddWineToCellarHandler(_userWineRepositoryMock.Object);
 
         // Act
         var result = await SUT.Handle(addWineToCellarRequest, default);
 
         // Assert
         _userWineRepositoryMock.Verify(x => x.Create(It.IsAny<UserWine>()), Times.Once);
-        _mapperMock.Verify(x => x.Map<UserWineDto>(It.IsAny<UserWine>()),Times.Once);
         
         result.Should().BeOfType<AddWineToCellarResponse>();
         result.UserWine.Should().NotBeNull();

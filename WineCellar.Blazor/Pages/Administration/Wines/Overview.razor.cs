@@ -6,17 +6,13 @@ namespace WineCellar.Blazor.Pages.Administration.Wines;
 
 public partial class Overview : ComponentBase
 {
-    [Inject]
-    private IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
 
-    [Inject]
-    private ISnackbar _snackbar { get; set; }
+    [Inject] private ISnackbar _snackbar { get; set; }
 
-    [Inject]
-    private NavigationManager _navManager { get; set; }
+    [Inject] private NavigationManager _navManager { get; set; }
 
-    [Inject]
-    private IDialogService _dialogService { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
 
     private IEnumerable<WineDto> _wines = Enumerable.Empty<WineDto>();
     private string _searchString = String.Empty;
@@ -26,13 +22,13 @@ public partial class Overview : ComponentBase
         await GetWines();
     }
 
-    // Quick filter - filter globally across multiple columns (Name) with the same input
     private Func<WineDto, bool> QuickFilter => x =>
     {
         if (string.IsNullOrWhiteSpace(_searchString))
             return true;
 
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+            x.WineryName.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
             return true;
 
         return false;

@@ -3,12 +3,10 @@
 internal sealed class GetUserWineByIdHandler : IRequestHandler<GetUserWineDetailRequest, GetUserWineDetailResponse>
 {
     private readonly IUserWineRepository _userWineRepository;
-    private readonly IMapper _mapper;
 
-    public GetUserWineByIdHandler(IUserWineRepository userWineRepository, IMapper mapper)
+    public GetUserWineByIdHandler(IUserWineRepository userWineRepository)
     {
         _userWineRepository = userWineRepository;
-        _mapper = mapper;
     }
     
     public async ValueTask<GetUserWineDetailResponse> Handle(GetUserWineDetailRequest request, CancellationToken cancellationToken)
@@ -17,12 +15,32 @@ internal sealed class GetUserWineByIdHandler : IRequestHandler<GetUserWineDetail
 
         if (userWine?.Auth0Id != request.Auth0Id)
         {
-            return null;
+            return new GetUserWineDetailResponse()
+            {
+                ErrorMessage = "You don't have access to this item."
+            };
         }
 
         return new GetUserWineDetailResponse()
         {
-            UserWine = _mapper.Map<UserWineDto>(userWine)
+            UserWine = new UserWineDto()
+            {
+                Id = userWine.Id,
+                Amount = userWine.Amount,
+                WineId = userWine.WineId,
+                Wine = new WineDto()
+                {
+                    Id = userWine.Wine.Id,
+                    Name = userWine.Wine.Name,
+                    WineType = userWine.Wine.WineType,
+                    Winery = new WineryDto()
+                    {
+                        Id = userWine.Wine.WineryId,
+                        Name = userWine.Wine.Winery.Name,
+                        Description = userWine.Wine.Winery.Description
+                    }
+                }
+            }
         };
     }
 }

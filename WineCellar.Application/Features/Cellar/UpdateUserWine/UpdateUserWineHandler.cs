@@ -1,24 +1,31 @@
 namespace WineCellar.Application.Features.Cellar.UpdateUserWine;
 
-internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWineRequest>
+internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWineRequest, UpdateUserWineResponse>
 
 {
     private readonly IUserWineRepository _userWineRepository;
-    private readonly IMapper _mapper;
-
-    public UpdateUserWineHandler(IUserWineRepository userWineRepository, IMapper mapper)
+    public UpdateUserWineHandler(IUserWineRepository userWineRepository)
     {
         _userWineRepository = userWineRepository;
-        _mapper = mapper;
     }
 
-    public async ValueTask<Unit> Handle(UpdateUserWineRequest request, CancellationToken cancellationToken)
+    public async ValueTask<UpdateUserWineResponse> Handle(UpdateUserWineRequest request, CancellationToken cancellationToken)
     {
-        UserWine userWineEntity = _mapper.Map<UserWine>(request.UserWineDto);
-        userWineEntity.LastModifiedBy = request.UserName;
+        var userWine = await _userWineRepository.GetById(request.Id);
 
-        await _userWineRepository.Update(userWineEntity);
-        
-        return Unit.Value;
+        if (userWine.Auth0Id != request.Auth0Id)
+        {
+            return new UpdateUserWineResponse()
+            {
+                ErrorMessage = "You don't have access to this item."
+            };
+        }
+
+        userWine.Amount = request.Amount;
+        userWine.LastModifiedBy = request.UserName;
+
+        await _userWineRepository.Update(userWine);
+
+        return new UpdateUserWineResponse();
     }
 }

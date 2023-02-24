@@ -4,9 +4,6 @@ global using System.Linq;
 // Mediator
 global using Mediator;
 
-// AutoMapper
-global using AutoMapper;
-
 // WineCellar.Domain
 global using WineCellar.Domain.Entities;
 global using WineCellar.Domain.Interfaces.Repositories;
