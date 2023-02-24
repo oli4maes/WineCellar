@@ -17,9 +17,29 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
     {
         var wine = await _wineRepository.GetById(request.Id);
 
+        var grapes = wine?.Grapes.Select(x => new GrapeDto()
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Description = x.Description
+        }).ToList();
+
         return new GetWineByIdResponse()
         {
-            Wine = _mapper.Map<WineDto>(wine)
+            Wine = new WineDto()
+            {
+                Id = wine.Id,
+                Name = wine.Name,
+                WineType = wine.WineType,
+                WineryId = wine.WineryId,
+                Winery = new WineryDto()
+                {
+                    Id = wine. Winery.Id,
+                    Name = wine.Winery.Name,
+                    Description = wine.Winery.Description
+                },
+                Grapes = grapes ?? new List<GrapeDto>() 
+            }
         };
     }
 }
