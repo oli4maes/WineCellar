@@ -1,6 +1,3 @@
-// AutoMapper
-global using AutoMapper;
-
 // FluentAssertions
 global using FluentAssertions;
 

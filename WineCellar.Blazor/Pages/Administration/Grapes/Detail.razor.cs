@@ -9,7 +9,7 @@ public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
     
-    [Inject] private Mediator.IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; } = default!;
@@ -51,7 +51,7 @@ public partial class Detail : ComponentBase
                 return;
             }
 
-            var response = await _mediator.Send(new CreateGrapeRequest(_grape, _userName));
+            var response = await _mediator.Send(new CreateGrapeRequest(_grape.Name, _grape.Description, _userName));
             _grape = response.Grape;
 
             Id = _grape.Id;
@@ -70,7 +70,7 @@ public partial class Detail : ComponentBase
         }
         else
         {
-            await _mediator.Send(new UpdateGrapeRequest(_grape, _userName));
+            await _mediator.Send(new UpdateGrapeRequest(_grape.Id, _grape.Name, _grape.Description, _userName));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);

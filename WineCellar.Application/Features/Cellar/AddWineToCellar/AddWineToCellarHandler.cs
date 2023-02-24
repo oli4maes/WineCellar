@@ -3,18 +3,16 @@ namespace WineCellar.Application.Features.Cellar.AddWineToCellar;
 internal sealed class AddWineToCellarHandler : IRequestHandler<AddWineToCellarRequest, AddWineToCellarResponse>
 {
     private readonly IUserWineRepository _userWineRepository;
-    private readonly IMapper _mapper;
 
-    public AddWineToCellarHandler(IUserWineRepository userWineRepository, IMapper mapper)
+    public AddWineToCellarHandler(IUserWineRepository userWineRepository)
     {
         _userWineRepository = userWineRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<AddWineToCellarResponse> Handle(AddWineToCellarRequest request,
         CancellationToken cancellationToken)
     {
-        UserWine entity = new()
+        UserWine userWine = new()
         {
             Auth0Id = request.Auth0Id,
             WineId = request.WineId,
@@ -22,11 +20,16 @@ internal sealed class AddWineToCellarHandler : IRequestHandler<AddWineToCellarRe
             CreatedBy = request.UserName
         };
 
-        await _userWineRepository.Create(entity);
+        await _userWineRepository.Create(userWine);
 
         return new AddWineToCellarResponse()
         {
-            UserWine = _mapper.Map<UserWineDto>(entity)
+            UserWine = new UserWineDto()
+            {
+                Id = userWine.Id,
+                Amount = userWine.Amount,
+                WineId = userWine.WineId
+            }
         };
     }
 }

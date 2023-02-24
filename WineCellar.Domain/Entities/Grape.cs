@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WineCellar.Domain.Common;
+﻿using WineCellar.Domain.Common;
 
 namespace WineCellar.Domain.Entities;
 

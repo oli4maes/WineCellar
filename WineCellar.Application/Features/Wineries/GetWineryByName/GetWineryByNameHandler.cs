@@ -3,20 +3,30 @@
 internal sealed class GetWineryByNameHandler : IRequestHandler<GetWineryByNameRequest, GetWineryByNameResponse>
 {
     private readonly IWineryRepository _wineryRepository;
-    private readonly IMapper _mapper;
 
-    public GetWineryByNameHandler(IWineryRepository wineryRepository, IMapper mapper)
+    public GetWineryByNameHandler(IWineryRepository wineryRepository)
     {
         _wineryRepository = wineryRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<GetWineryByNameResponse> Handle(GetWineryByNameRequest request,
         CancellationToken cancellationToken)
     {
+        var winery = await _wineryRepository.GetByName(request.Name);
+
+        if (winery is null)
+        {
+            return new GetWineryByNameResponse();
+        }
+
         return new GetWineryByNameResponse()
         {
-            Winery = _mapper.Map<WineryDto>(await _wineryRepository.GetByName(request.Name))
+            Winery = new WineryDto()
+            {
+                Id = winery.Id,
+                Name = winery.Name,
+                Description = winery.Description
+            }
         };
     }
 }
