@@ -51,9 +51,4 @@ public partial class MainLayout
     //         StateHasChanged();
     //     }
     // }
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
 }
