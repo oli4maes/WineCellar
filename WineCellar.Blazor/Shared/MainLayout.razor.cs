@@ -40,7 +40,15 @@ public partial class MainLayout
             {
                 FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
             },
+        },
+        Palette = new Palette()
+        {
+            Background = "#f2f2f2",
+            DrawerBackground = "#f2f2f2",
+            AppbarBackground = "#f2f2f2",
+            AppbarText = "#424242ff",
         }
+        
     };
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)
