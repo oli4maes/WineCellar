@@ -23,10 +23,11 @@ public static class ConfigureServices
         services.AddRazorPages();
         services.AddServerSideBlazor();
 
+        // MudBlazor
         services.AddMudServices(config =>
             {
-                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
-
+                // Snackbar
+                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
                 config.SnackbarConfiguration.PreventDuplicates = false;
                 config.SnackbarConfiguration.NewestOnTop = false;
                 config.SnackbarConfiguration.ShowCloseIcon = true;

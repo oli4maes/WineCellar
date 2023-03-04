@@ -5,26 +5,20 @@
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar Elevation="4">
-        <MudText Typo="Typo.h5" Class="mt-1">Kave</MudText>
-        <MudSpacer/>
-        <AuthorizeView>
-            <Authorized>
+    <AuthorizeView>
+        <Authorized>
+            <MudAppBar Elevation="2">
+                <MudText Typo="Typo.h5" Class="mt-1">Kave</MudText>
+                <MudSpacer/>
                 <MudItem md="4">
                     <WineSearchInput Dense="true" Margin="Margin.Dense"></WineSearchInput>
                 </MudItem>
-            </Authorized>
-        </AuthorizeView>
-        <AccessControl></AccessControl>
-        <AuthorizeView Policy="AdminRole">
-            <Authorized>
-                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End" Link="/administration"/>
-            </Authorized>
-        </AuthorizeView>
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2" ClipMode="_clipMode">
-        <NavMenu/>
-    </MudDrawer>
+            </MudAppBar>
+            <MudDrawer @bind-Open="_drawerOpen" ClipMode="_clipMode" Elevation="1">
+                <NavMenu/>
+            </MudDrawer>
+        </Authorized>
+    </AuthorizeView>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="pt-10 px-10">
             @Body
