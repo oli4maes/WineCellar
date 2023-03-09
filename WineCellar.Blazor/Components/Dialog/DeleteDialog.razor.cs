@@ -10,7 +10,7 @@ public partial class DeleteDialog : ComponentBase
 
     private void Cancel()
     {
-        MudDialog.Close();
+        MudDialog.Cancel();
     }
 
     private void Delete()
