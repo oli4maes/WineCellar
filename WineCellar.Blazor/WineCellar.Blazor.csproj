@@ -31,6 +31,31 @@
     <Content Remove="wwwroot\css\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Features" />
     <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="Features\Administration\Pages\Grapes\Detail.razor" />
+    <AdditionalFiles Include="Features\Administration\Pages\Grapes\Overview.razor" />
+    <AdditionalFiles Include="Features\Administration\Pages\Wineries\Detail.razor" />
+    <AdditionalFiles Include="Features\Administration\Pages\Wineries\Overview.razor" />
+    <AdditionalFiles Include="Features\Administration\Pages\Wines\Detail.razor" />
+    <AdditionalFiles Include="Features\Administration\Pages\Wines\Overview.razor" />
+    <AdditionalFiles Include="Features\Cellar\Pages\Overview.razor" />
+    <AdditionalFiles Include="Features\Wine\Pages\Detail.razor" />
+    <AdditionalFiles Include="Shared\Components\Dialogs\DeleteDialog.razor" />
+  </ItemGroup>
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Administration\Wineries\Detail.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Administration\Wineries\Overview.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Administration\Wines\Detail.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Administration\Wines\Overview.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Grapes\Detail.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Grapes\Overview.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Wineries\Detail.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Wineries\Overview.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Wines\Detail.razor" />
+    <_ContentIncludedByDefault Remove="Administration\Pages\Wines\Overview.razor" />
+    <_ContentIncludedByDefault Remove="Wine\Pages\Detail.razor" />
   </ItemGroup>
 </Project>

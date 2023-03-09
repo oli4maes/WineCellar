@@ -1,0 +1,16 @@
+﻿<MudDialog>
+    <DialogContent>
+        @if (ItemToDelete is not null)
+        {
+            <MudText>Do you really want to delete @ItemToDelete?</MudText>
+        }
+        @if (Text is not null)
+        {
+            <MudText>@Text</MudText>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Outlined" Color="Color.Secondary">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="Delete">Delete</MudButton>
+    </DialogActions>
+</MudDialog>

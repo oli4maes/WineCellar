@@ -1,0 +1,40 @@
+﻿@page "/Wines/{id:int}"
+@using WineCellar.Blazor.Features.Wine.Components
+
+<PageTitle>Kave - Wine</PageTitle>
+
+<MudCard>
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Warehouse" Title="Winery"/> @_wine.Winery.Name
+            </MudText>
+            <MudText Typo="Typo.h4">@_wine.Name</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            @if (!_isWineInUserWines)
+            {
+                <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" @onclick="AddWineToCellar" Size="Size.Small"></MudFab>
+            }
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudDivider/>
+    <MudCardContent>
+        @if (_isWineInUserWines)
+        {
+            <MudText Typo="Typo.body1">@_userWine.Amount bottle(s) in cellar.</MudText>
+            <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                <MudIconButton Icon="@Icons.Material.Filled.Remove" @onclick="RemoveBottle"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="AddBottle"/>
+            </MudButtonGroup>
+        }
+        <MudGrid>
+            @if (_wine.Grapes.Count > 0)
+            {
+                <MudItem xs="12" md="6">
+                    <GrapesList Grapes="_wine.Grapes"/>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
