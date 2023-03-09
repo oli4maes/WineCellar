@@ -1,0 +1,9 @@
+﻿@page "/Cellar"
+
+<PageTitle>Kave - Cellar</PageTitle>
+
+<MudText Typo="Typo.h3">Cellar</MudText>
+
+<div class="pt-6">
+    <UserWinesDataGrid UserWines="@_userWines" OnOpenWine="OpenWine" OnDeleteUserWine="DeleteUserWine"/>
+</div>

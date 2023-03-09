@@ -26,7 +26,8 @@ public partial class MainLayout
             },
             H3 = new H3()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 300
             },
             H4 = new H4()
             {
@@ -43,10 +44,11 @@ public partial class MainLayout
         },
         Palette = new Palette()
         {
-            Background = "#f2f2f2",
-            DrawerBackground = "#f2f2f2",
-            AppbarBackground = "#f2f2f2",
-            AppbarText = "#424242ff",
+            Background = Colors.Grey.Lighten5,
+            DrawerBackground = Colors.Grey.Lighten5,
+            AppbarBackground = Colors.Grey.Lighten5,
+            Primary = Colors.DeepOrange.Accent3,
+            Secondary = Colors.Cyan.Darken2
         }
         
     };

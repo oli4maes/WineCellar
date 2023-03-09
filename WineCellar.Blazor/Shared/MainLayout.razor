@@ -1,14 +1,16 @@
-﻿@inherits LayoutComponentBase
+﻿@using WineCellar.Blazor.Shared.Components.Inputs
+@using WineCellar.Blazor.Shared.Components.NavMenu
+@inherits LayoutComponentBase
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
-<MudDialogProvider/>
+<MudDialogProvider MaxWidth="MaxWidth.Large" CloseButton="true"/>
 <MudSnackbarProvider/>
 
 <MudLayout>
     <AuthorizeView>
         <Authorized>
             <MudAppBar Elevation="2">
-                <MudText Typo="Typo.h5" Class="mt-1">Kave</MudText>
+                <MudText Typo="Typo.h5" Class="mt-1" Color="Color.Primary">Kave</MudText>
                 <MudSpacer/>
                 <MudItem md="4">
                     <WineSearchInput Dense="true" Margin="Margin.Dense"></WineSearchInput>
@@ -21,7 +23,14 @@
     </AuthorizeView>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="pt-10 px-10">
-            @Body
+            <AuthorizeView>
+                <Authorized>
+                    @Body
+                </Authorized>
+                <NotAuthorized>
+                    <AppLanding />
+                </NotAuthorized>
+            </AuthorizeView>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
