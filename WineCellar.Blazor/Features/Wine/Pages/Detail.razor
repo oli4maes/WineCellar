@@ -17,7 +17,11 @@
 </div>
 <MudText Typo="Typo.h5" Color="Color.Primary">@_wine?.WineryName</MudText>
 <MudDivider/>
-<MudGrid Class="pt-8">
+<MudGrid Class="pt-4">
+    <MudItem md="12">
+        <WineInfo Wine="_wine"/>
+    </MudItem>
+    
     @if (_wine?.Grapes.Count > 0)
     {
         <MudItem xs="12" md="6">
