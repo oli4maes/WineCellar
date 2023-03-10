@@ -14,43 +14,44 @@ public partial class MainLayout
             Default = new Default()
             {
                 FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
-                FontWeight = 400
+                FontWeight = 500
             },
             H1 = new H1()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
             },
             H2 = new H2()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
             },
             H3 = new H3()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" },
-                FontWeight = 300
+                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 200
             },
             H4 = new H4()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 400
             },
             H5 = new H5()
             {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
-            },
-            H6 = new H6()
-            {
-                FontFamily = new[] { "Fira Sans", "Helvetica", "Arial", "sans-serif" }
-            },
+                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 300
+            }
         },
         Palette = new Palette()
         {
-            Background = Colors.Grey.Lighten5,
             DrawerBackground = Colors.Grey.Lighten5,
-            AppbarBackground = Colors.Grey.Lighten5,
-            Primary = Colors.DeepOrange.Accent3,
-            Secondary = Colors.Cyan.Darken2
+            AppbarBackground = "#42707f",
+            AppbarText = "#fff6e5",
+            Primary = "#42707f",
+            PrimaryContrastText = "#fff6e5",
+            Secondary = "#B87D4B",
+            SecondaryContrastText = "#19282C",
+            Tertiary = "#19282C",
+            TertiaryContrastText = "#B87D4B"
         }
-        
     };
 
     // protected override async Task OnAfterRenderAsync(bool firstRender)

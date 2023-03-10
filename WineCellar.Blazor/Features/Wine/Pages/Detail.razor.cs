@@ -29,7 +29,7 @@ public partial class Detail : ComponentBase
         _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
         var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
-        _wine = getWineByIdResponse.Wine ?? new WineDto();
+        _wine = getWineByIdResponse.Wine ?? new();
 
         await GetUserWine();
     }
