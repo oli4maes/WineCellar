@@ -14,7 +14,7 @@ This will run a Azure SQL Edge container on localhost port 1401.
 `docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD={{PASSWORD}}" -p 1401:1433 --name sql --hostname sql -d mcr.microsoft.com/azure-sql-edge:latest`
 
 ## Project Structure
-The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor in this case) layers.
+The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor server in this case) layers.
 
 ### WineCellar.Application
 This layer contains all application logic. It is dependent on the domain layer, but has no dependencies on any other layer or project. This layer defines interfaces that are implemented by outside layers. For example, if the application need to access a notification service, a new interface would be added to application and an implementation would be created within infrastructure.
