@@ -15,7 +15,6 @@ This will run a Azure SQL Edge container on localhost port 1401.
 
 ## Project Structure
 The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor in this case) layers.
-The project is loosely based on https://github.com/jasontaylordev/CleanArchitecture
 
 ### WineCellar.Application
 This layer contains all application logic. It is dependent on the domain layer, but has no dependencies on any other layer or project. This layer defines interfaces that are implemented by outside layers. For example, if the application need to access a notification service, a new interface would be added to application and an implementation would be created within infrastructure.
