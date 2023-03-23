@@ -2,16 +2,13 @@ using WineCellar.Application.Features.Wines.DeleteWine;
 using WineCellar.Application.Features.Wines.GetWines;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Wines;
+namespace WineCellar.Blazor.Features.Administration.Wines.Pages;
 
 public partial class Overview : ComponentBase
 {
     [Inject] private IMediator _mediator { get; set; }
-
     [Inject] private ISnackbar _snackbar { get; set; }
-
     [Inject] private NavigationManager _navManager { get; set; }
-
     [Inject] private IDialogService _dialogService { get; set; }
 
     private IEnumerable<WineDto> _wines = Enumerable.Empty<WineDto>();

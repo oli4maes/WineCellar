@@ -35,12 +35,6 @@
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
   <ItemGroup>
-    <AdditionalFiles Include="Features\Administration\Pages\Grapes\Detail.razor" />
-    <AdditionalFiles Include="Features\Administration\Pages\Grapes\Overview.razor" />
-    <AdditionalFiles Include="Features\Administration\Pages\Wineries\Detail.razor" />
-    <AdditionalFiles Include="Features\Administration\Pages\Wineries\Overview.razor" />
-    <AdditionalFiles Include="Features\Administration\Pages\Wines\Detail.razor" />
-    <AdditionalFiles Include="Features\Administration\Pages\Wines\Overview.razor" />
     <AdditionalFiles Include="Features\Cellar\Pages\Overview.razor" />
     <AdditionalFiles Include="Features\Wine\Pages\Detail.razor" />
     <AdditionalFiles Include="Shared\Components\Dialogs\DeleteDialog.razor" />

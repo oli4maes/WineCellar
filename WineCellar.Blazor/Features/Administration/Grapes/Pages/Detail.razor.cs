@@ -3,7 +3,7 @@ using WineCellar.Application.Features.Grapes.GetGrapeById;
 using WineCellar.Application.Features.Grapes.GetGrapeByName;
 using WineCellar.Application.Features.Grapes.UpdateGrape;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Grapes;
+namespace WineCellar.Blazor.Features.Administration.Grapes.Pages;
 
 public partial class Detail : ComponentBase
 {
