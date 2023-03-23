@@ -14,7 +14,7 @@ public partial class WineSearchInput : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        var response= await _mediator.Send(new GetWinesRequest());
+        var response = await _mediator.Send(new GetWinesRequest());
         _wines = response.Wines;
     }
 
@@ -28,7 +28,7 @@ public partial class WineSearchInput : ComponentBase
             x.WineryName.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private void SelectedWineChanged(WineDto wine)
+    private void SelectedWineChanged(WineDto? wine)
     {
         if (wine is not null)
         {

@@ -26,7 +26,7 @@ public partial class Detail : ComponentBase
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity?.Name ?? string.Empty;
-        _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
 
         var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
         _wine = getWineByIdResponse.Wine ?? new();
@@ -67,7 +67,7 @@ public partial class Detail : ComponentBase
         else
         {
             DialogParameters parameters = new();
-            parameters.Add("ItemToDelete", _userWine.Wine.Name.ToLower());
+            parameters.Add("ItemToDelete", _wine.Name.ToLower());
 
             var dialog = _dialogService.Show<DeleteDialog>("Delete", parameters);
 
@@ -80,11 +80,11 @@ public partial class Detail : ComponentBase
                 if (response.SuccessfulDelete)
                 {
                     _isWineInUserWines = false;
-                    _snackbar.Add($"{_userWine.Wine.Name} was removed from your cellar.", Severity.Warning);
+                    _snackbar.Add($"{_wine.Name} was removed from your cellar.", Severity.Warning);
                 }
                 else
                 {
-                    _snackbar.Add($"Could not remove {_userWine.Wine.Name} from your cellar.", Severity.Error);
+                    _snackbar.Add($"Could not remove {_wine.Name} from your cellar.", Severity.Error);
                 }
             }
         }
