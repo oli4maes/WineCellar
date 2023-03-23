@@ -2,7 +2,7 @@
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Grapes;
+namespace WineCellar.Blazor.Features.Administration.Grapes.Pages;
 
 public partial class Overview : ComponentBase
 {
