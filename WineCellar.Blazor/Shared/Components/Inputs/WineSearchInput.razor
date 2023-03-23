@@ -1,0 +1,14 @@
+﻿<MudAutocomplete T=WineDto
+                 SearchFunc=@SearchWine
+                 ResetValueOnEmptyText=true
+                 CoerceText=false
+                 CoerceValue=false
+                 AdornmentIcon=@Icons.Material.Filled.Search
+                 AdornmentColor="Color.Secondary"
+                 ToStringFunc=@(e => e == null ? null : $"{e.Name} - {e.WineryName}")
+                 Variant=Variant.Text
+                 Dense=@Dense
+                 Margin=@Margin
+                 MinCharacters=4
+                 ValueChanged=@(x => SelectedWineChanged(x))>
+</MudAutocomplete>
