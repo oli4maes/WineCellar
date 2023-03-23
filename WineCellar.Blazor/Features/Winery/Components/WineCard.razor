@@ -1,0 +1,8 @@
+<MudPaper Elevation="2" Class="pa-3">
+    <MudText Typo="Typo.h5" Class="mb-2">@Wine?.Name</MudText>
+    <MudText>@Wine?.WineType</MudText>
+    @if (Wine.IsInUserCellar)
+    {
+        <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Title="Wine in cellar" />
+    }
+</MudPaper>
