@@ -2,7 +2,7 @@ using WineCellar.Application.Features.Wineries.DeleteWinery;
 using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Wineries;
+namespace WineCellar.Blazor.Features.Administration.Wineries.Pages;
 
 public partial class Overview : ComponentBase
 {

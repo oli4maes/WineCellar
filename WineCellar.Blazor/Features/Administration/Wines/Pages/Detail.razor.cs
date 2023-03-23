@@ -7,13 +7,13 @@ using WineCellar.Application.Features.Wines.GetWineByName;
 using WineCellar.Application.Features.Wines.RemoveGrapeFromWine;
 using WineCellar.Application.Features.Wines.UpdateWine;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Wines;
+namespace WineCellar.Blazor.Features.Administration.Wines.Pages;
 
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
 
-    [Inject] IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
