@@ -113,7 +113,7 @@ public class WineRepository : IWineRepository
         ArgumentNullException.ThrowIfNull(wineId);
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
+
         var wine = context.Wines
             .Include(x => x.GrapeWines)
             .Single(x => x.Id == wineId);
@@ -133,5 +133,17 @@ public class WineRepository : IWineRepository
 
         return await context.Wines
             .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+    }
+
+    public async Task<IEnumerable<Wine>> GetByWineryId(int wineryId)
+    {
+        ArgumentNullException.ThrowIfNull(wineryId);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wines
+            .Where(x => x.WineryId == wineryId)
+            .AsNoTracking()
+            .ToListAsync();
     }
 }

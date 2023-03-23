@@ -1,0 +1,22 @@
+@page "/Wineries/{id:int}"
+@using WineCellar.Blazor.Features.Winery.Components
+
+<PageTitle>Kave - Winery</PageTitle>
+
+<MudText Typo="Typo.h3" Color="Color.Primary" Class="pb-1">@_winery?.Name</MudText>
+<MudDivider/>
+<div class="pt-4">
+    <WineryInfo Winery="@_winery" />
+</div>
+
+@if (_wines.Any())
+{
+    <MudGrid Class="pt-4">
+        @foreach (var wine in _wines)
+        {
+            <MudItem xs="12" md="4">
+                <WineCard Wine="wine"/>
+            </MudItem>
+        }
+    </MudGrid>
+}
