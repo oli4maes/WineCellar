@@ -1,0 +1,36 @@
+﻿@using WineCellar.Application.Features.Cellar.GetCellarOverview
+
+<MudDataGrid T="GetCellarOverviewResponse.UserWineOverviewDto"
+             Items="@UserWines"
+             QuickFilter="QuickFilter"
+             SortMode="SortMode.Single">
+    <ToolBarContent>
+        <MudTextField @bind-Value="_searchString"
+                      Placeholder="Search"
+                      Adornment="Adornment.End"
+                      Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      AdornmentColor="Color.Primary"
+                      IconSize="Size.Medium"
+                      Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <Column T="GetCellarOverviewResponse.UserWineOverviewDto" Field="WineryName" Title="Winery" Sortable="true" Filterable="true"/>
+        <Column T="GetCellarOverviewResponse.UserWineOverviewDto" Field="WineName" Title="Wine" Sortable="true" Filterable="true"/>
+        <Column T="GetCellarOverviewResponse.UserWineOverviewDto" Field="WineType" Title="Type" Sortable="true" Filterable="true"/>
+        <Column T="GetCellarOverviewResponse.UserWineOverviewDto" Field="Amount" Title="Amount" Sortable="true" Filterable="true"/>
+        <Column T="GetCellarOverviewResponse.UserWineOverviewDto" Context="UserWineEditContext">
+            <CellTemplate>
+                @{
+                    var userWine = UserWineEditContext.Item;
+                }
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Primary" @onclick="() => OpenWine(userWine)"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteUserWine(userWine)"/>
+            </CellTemplate>
+        </Column>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="GetCellarOverviewResponse.UserWineOverviewDto"/>
+    </PagerContent>
+</MudDataGrid>

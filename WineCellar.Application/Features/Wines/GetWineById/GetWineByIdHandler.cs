@@ -28,6 +28,7 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
                 Id = wine.Id,
                 Name = wine.Name,
                 WineType = wine.WineType,
+                WineryName = wine.Winery.Name,
                 Winery = new WineryDto()
                 {
                     Id = wine.Winery.Id,
