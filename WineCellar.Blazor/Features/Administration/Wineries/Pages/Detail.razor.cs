@@ -3,7 +3,7 @@ using WineCellar.Application.Features.Wineries.GetWineryById;
 using WineCellar.Application.Features.Wineries.GetWineryByName;
 using WineCellar.Application.Features.Wineries.UpdateWinery;
 
-namespace WineCellar.Blazor.Features.Administration.Pages.Wineries;
+namespace WineCellar.Blazor.Features.Administration.Wineries.Pages;
 
 public partial class Detail : ComponentBase
 {

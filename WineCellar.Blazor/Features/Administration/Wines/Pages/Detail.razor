@@ -8,7 +8,7 @@
 <AuthorizeView Policy="AdminRole">
     <Authorized>
         <MudCard>
-            <EditForm Model="@_wine" OnValidSubmit="HandleValidSubmit" Context="EditContext">
+            <EditForm Model="@_wine" OnValidSubmit="HandleValidSubmit" Context="editContext">
                 <MudCardHeader>
                     <CardHeaderContent>
                         <MudText Typo="Typo.h4">@_wine.Name</MudText>
