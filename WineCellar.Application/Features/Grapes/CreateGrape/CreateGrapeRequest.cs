@@ -1,3 +1,5 @@
-﻿namespace WineCellar.Application.Features.Grapes.CreateGrape;
+﻿using WineCellar.Domain.Enums;
 
-public sealed record CreateGrapeRequest(string Name, string? Description, string UserName) : IRequest<CreateGrapeResponse>;
+namespace WineCellar.Application.Features.Grapes.CreateGrape;
+
+public sealed record CreateGrapeRequest(string Name, string? Description, string UserName, GrapeType GrapeType) : IRequest<CreateGrapeResponse>;
