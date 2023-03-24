@@ -15,28 +15,24 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         CancellationToken cancellationToken)
     {
         var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
-        var amountOfWhites = userWines.Count(x => x.Wine.WineType == WineType.White);
-        var amountOfRoses = userWines.Count(x => x.Wine.WineType == WineType.Rose);
-        var amountOfReds = userWines.Count(x => x.Wine.WineType == WineType.Red);
-        var amountOfSparkling = userWines.Count(x => x.Wine.WineType == WineType.Sparkling);
+
+        var amountOfWhites = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.White));
+        var amountOfRoses = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Rose));
+        var amountOfReds = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Red));
+        var amountOfSparkling = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Sparkling));
+        var amountOfBottlesPerWineTypeData = new[] { amountOfWhites, amountOfRoses, amountOfReds, amountOfSparkling };
+
+        var amountOfBottlesPerWineTypeLabels = userWines
+            .GroupBy(x => x.Wine.WineType)
+            .OrderBy(x => x.Key)
+            .Select(y => y.Key.ToString())
+            .ToArray();
 
         return new GetDashboardResponse()
         {
             AmountOfBottlesInCellar = userWines.Count(),
-            AmountOfBottlesPerWineTypeData = new[]
-            {
-                Convert.ToDouble(amountOfWhites),
-                Convert.ToDouble(amountOfRoses),
-                Convert.ToDouble(amountOfReds),
-                Convert.ToDouble(amountOfSparkling)
-            },
-            AmountOfBottlesPerWineTypeLabels = new[]
-            {
-                WineType.White.ToString(),
-                WineType.Rose.ToString(),
-                WineType.Red.ToString(),
-                WineType.Sparkling.ToString()
-            }
+            AmountOfBottlesPerWineTypeData = amountOfBottlesPerWineTypeData,
+            AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels
         };
     }
 }
