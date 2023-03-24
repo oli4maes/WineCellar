@@ -6,11 +6,12 @@
 <MudText Typo="Typo.h3" Color="Color.Primary" Class="pb-1">@_winery?.Name</MudText>
 <MudDivider/>
 <div class="pt-4">
-    <WineryInfo Winery="@_winery" />
+    <WineryInfo Winery="@_winery"/>
 </div>
 
 @if (_wines.Any())
 {
+    <MudText Typo="Typo.h5" Color="Color.Primary" Class="pt-4">Wines</MudText>
     <MudGrid Class="pt-4">
         @foreach (var wine in _wines)
         {

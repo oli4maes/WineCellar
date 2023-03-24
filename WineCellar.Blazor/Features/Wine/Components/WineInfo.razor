@@ -1,2 +1,6 @@
-﻿<MudText>@Wine?.WineType</MudText>
-<MudText>@Wine?.Winery.Description</MudText>
+﻿@using WineCellar.Blazor.Features.Winery.Components
+
+@if (Wine is not null)
+{
+    <WineTypeChip WineType="@Wine.WineType"/>
+}
