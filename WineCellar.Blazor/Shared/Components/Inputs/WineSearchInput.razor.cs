@@ -33,6 +33,7 @@ public partial class WineSearchInput : ComponentBase
         if (wine is not null)
         {
             _navManager.NavigateTo($"/Wines/{wine.Id}");
+            wine = new();
         }
     }
 }
