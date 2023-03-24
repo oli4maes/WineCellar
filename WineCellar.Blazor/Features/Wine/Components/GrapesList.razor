@@ -2,6 +2,6 @@
     <MudText Typo="Typo.h5" Class="mb-2" Color="Color.Primary">Grapes</MudText>
     @foreach (var grape in Grapes)
     {
-        <MudText>@grape.Name</MudText>
+        <GrapeChip Grape="grape"/>
     }
 </MudPaper>

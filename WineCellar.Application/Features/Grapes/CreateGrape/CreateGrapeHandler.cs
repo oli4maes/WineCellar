@@ -15,7 +15,8 @@ internal sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeRequest, C
         {
             Name = request.Name,
             Description = request.Description,
-            CreatedBy = request.UserName
+            CreatedBy = request.UserName,
+            GrapeType = request.GrapeType
         };
 
         await _grapeRepository.Create(grape);
@@ -26,7 +27,8 @@ internal sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeRequest, C
             {
                 Id = grape.Id,
                 Name = grape.Name,
-                Description = grape.Description
+                Description = grape.Description,
+                GrapeType = grape.GrapeType
             }
         };
     }

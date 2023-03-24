@@ -16,6 +16,7 @@ internal sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeRequest, U
             Id = request.Id,
             Name = request.Name,
             Description = request.Description,
+            GrapeType = request.GrapeType,
             LastModifiedBy = request.UserName
         };
 
