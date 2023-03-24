@@ -25,7 +25,8 @@ internal sealed class GetGrapeByNameHandler : IRequestHandler<GetGrapeByNameRequ
             {
                 Id = grape.Id,
                 Name = grape.Name,
-                Description = grape.Description
+                Description = grape.Description,
+                GrapeType = grape.GrapeType
             }
         };
     }

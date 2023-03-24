@@ -9,7 +9,8 @@ internal sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdRequest,
         _grapeRepository = grapeRepository;
     }
 
-    public async ValueTask<GetGrapeByIdResponse> Handle(GetGrapeByIdRequest request, CancellationToken cancellationToken)
+    public async ValueTask<GetGrapeByIdResponse> Handle(GetGrapeByIdRequest request,
+        CancellationToken cancellationToken)
     {
         var grape = await _grapeRepository.GetById(request.Id);
 
@@ -27,7 +28,8 @@ internal sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdRequest,
             {
                 Id = grape.Id,
                 Name = grape.Name,
-                Description = grape.Description
+                Description = grape.Description,
+                GrapeType = grape.GrapeType
             }
         };
     }

@@ -43,6 +43,7 @@ public class GrapeRepository :  IGrapeRepository
 
         grapeModel.Name = grape.Name;
         grapeModel.Description = grape.Description;
+        grapeModel.GrapeType = grape.GrapeType;
         grapeModel.LastModified = DateTime.UtcNow;
         grapeModel.LastModifiedBy = grape.LastModifiedBy;
 
