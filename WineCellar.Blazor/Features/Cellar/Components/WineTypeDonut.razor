@@ -1,0 +1,13 @@
+﻿<MudChart ChartType="ChartType.Donut"
+              Width="200px"
+              Height="200px"
+              @bind-SelectedIndex="_index"
+              InputData="@AmountOfBottlesPerWineTypeData"
+              InputLabels="@AmountOfBottlesPerWineTypeLabels"
+              LegendPosition="Position.Bottom"
+              ChartOptions="@_chartOptions">
+        <CustomGraphics>
+            <text class="donut-inner-text" x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="2">Total</text>
+            <text class="donut-inner-text" x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" fill="black" font-family="Helvetica" font-size="5">@AmountOfBottlesInCellar</text>
+        </CustomGraphics>
+    </MudChart>

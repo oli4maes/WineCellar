@@ -49,7 +49,7 @@ public partial class MainLayout
             PrimaryContrastText = "#fff6e5",
             Secondary = "#B87D4B",
             SecondaryContrastText = "#19282C",
-            Tertiary = "#19282C",
+            Tertiary = "#fff6e5",
             TertiaryContrastText = "#B87D4B"
         }
     };
