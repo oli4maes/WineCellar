@@ -41,6 +41,7 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
             wineryWines.Add(new GetWineryDetailResponse.WineDto()
             {
                 IsInUserCellar = isWineInUserCellar,
+                Id = wine.Id,
                 Name = wine.Name,
                 WineType = wine.WineType
             });

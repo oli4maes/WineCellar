@@ -1,8 +1,19 @@
-<MudPaper Elevation="2" Class="pa-3">
-    <MudText Typo="Typo.h5" Class="mb-2">@Wine?.Name</MudText>
-    <MudText>@Wine?.WineType</MudText>
-    @if (Wine.IsInUserCellar)
-    {
-        <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Title="Wine in cellar" />
-    }
-</MudPaper>
+<MudLink OnClick="NavigateToWineDetail" Underline="Underline.None">
+    <MudCard Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Class="mb-2">@Wine?.Name</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                @if (Wine.IsInUserCellar)
+                {
+                    <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Title="Wine in cellar"/>
+                }
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText>@Wine?.WineType</MudText>
+        </MudCardContent>
+        <MudCardActions></MudCardActions>
+    </MudCard>
+</MudLink>

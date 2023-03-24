@@ -10,6 +10,7 @@ public sealed class GetWineryDetailResponse
 
     public sealed class WineDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
         public WineType WineType { get; set; }
         public bool IsInUserCellar { get; set; }

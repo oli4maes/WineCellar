@@ -15,7 +15,7 @@
         @foreach (var wine in _wines)
         {
             <MudItem xs="12" md="4">
-                <WineCard Wine="wine"/>
+                <WineCard Wine="wine" OnNavigateToWineDetail="NavigateToWineDetail"/>
             </MudItem>
         }
     </MudGrid>
