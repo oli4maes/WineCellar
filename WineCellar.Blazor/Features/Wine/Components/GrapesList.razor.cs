@@ -2,5 +2,5 @@
 
 public partial class GrapesList : ComponentBase
 {
-    [Parameter] public List<GrapeDto> Grapes { get; set; }
+    [Parameter] public List<GrapeDto> Grapes { get; set; } = new();
 }

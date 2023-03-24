@@ -1,0 +1,21 @@
+<MudLink OnClick="NavigateToWineDetail" Underline="Underline.None">
+    <MudCard Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6" Class="mb-2" Color="Color.Primary">@Wine?.Name</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <WineTypeChip WineType="@Wine.WineType"/>
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+
+        </MudCardContent>
+        <MudCardActions>
+            @if (Wine.IsInUserCellar)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Color="Color.Secondary" Title="Wine in cellar"/>
+            }
+        </MudCardActions>
+    </MudCard>
+</MudLink>

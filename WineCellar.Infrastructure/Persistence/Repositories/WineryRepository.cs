@@ -2,87 +2,87 @@
 
 public class WineryRepository : IWineryRepository
 {
-	private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-	public WineryRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
-	{
-		_dbContextFactory = dbContextFactory;
-	}
+    public WineryRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
+    {
+        _dbContextFactory = dbContextFactory;
+    }
 
-	public async Task<bool> Delete(int id)
-	{
-		ArgumentNullException.ThrowIfNull(id);
-        
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
-		
-		var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == id);
+    public async Task<bool> Delete(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
 
-		if (wineryModel == null)
-		{
-			return false;
-		}
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-		context.Wineries.Remove(wineryModel);
-		await context.SaveChangesAsync();
+        var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == id);
 
-		return true;
-	}
+        if (wineryModel == null)
+        {
+            return false;
+        }
 
-	public async Task Update(Winery winery)
-	{
-		ArgumentNullException.ThrowIfNull(winery);
-        
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
-		
-		var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == winery.Id);
+        context.Wineries.Remove(wineryModel);
+        await context.SaveChangesAsync();
 
-		if (wineryModel == null)
-		{
-			throw new Exception("Couldn't find the winery to update");
-		}
+        return true;
+    }
 
-		wineryModel.Name= winery.Name;
-		wineryModel.Description= winery.Description;
-		wineryModel.LastModified = DateTime.UtcNow;
-		wineryModel.LastModifiedBy = winery.LastModifiedBy;
+    public async Task Update(Winery winery)
+    {
+        ArgumentNullException.ThrowIfNull(winery);
 
-		await context.SaveChangesAsync();
-	}
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-	public async Task<Winery> Create(Winery entity)
-	{
-		ArgumentNullException.ThrowIfNull(entity);
-        
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
+        var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == winery.Id);
 
-		await context.Wineries.AddAsync(entity);
-		await context.SaveChangesAsync();
-        
-		return entity;
-	}
+        if (wineryModel == null)
+        {
+            throw new Exception("Couldn't find the winery to update");
+        }
 
-	public async Task<IEnumerable<Winery>> All()
-	{
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
+        wineryModel.Name = winery.Name;
+        wineryModel.Description = winery.Description;
+        wineryModel.LastModified = DateTime.UtcNow;
+        wineryModel.LastModifiedBy = winery.LastModifiedBy;
 
-		return await context.Wineries.AsNoTracking().ToListAsync();
-	}
+        await context.SaveChangesAsync();
+    }
 
-	public async Task<Winery?> GetById(int id)
-	{
-		ArgumentNullException.ThrowIfNull(id);
-        
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
+    public async Task<Winery> Create(Winery entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
 
-		return await context.Wineries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-	}
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-	public async Task<Winery?> GetByName(string name)
-	{
-		ArgumentException.ThrowIfNullOrEmpty(name);
-        
-		await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-		return await context.Wineries.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
-	}
+        await context.Wineries.AddAsync(entity);
+        await context.SaveChangesAsync();
+
+        return entity;
+    }
+
+    public async Task<IEnumerable<Winery>> All()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wineries.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<Winery?> GetById(int id)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wineries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Winery?> GetByName(string name)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(name);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wineries.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+    }
 }

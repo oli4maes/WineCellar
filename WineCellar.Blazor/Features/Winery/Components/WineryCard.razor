@@ -1,0 +1,15 @@
+﻿<MudLink OnClick="NavigateToWineryDetail" Underline="Underline.None">
+    <MudCard Elevation="2">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h5" Class="mb-2" Color="Color.Primary">@Winery?.Name</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText>@Winery?.Description</MudText>
+        </MudCardContent>
+        <MudCardActions></MudCardActions>
+    </MudCard>
+</MudLink>

@@ -2,5 +2,5 @@
 
 public class GetWineriesResponse
 {
-    public List<WineryDto> Wineries { get; set; } = new List<WineryDto>();
+    public List<WineryDto> Wineries { get; set; } = new();
 }
