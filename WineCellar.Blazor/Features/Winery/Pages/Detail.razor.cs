@@ -8,6 +8,7 @@ public partial class Detail : ComponentBase
     [Parameter] public int Id { get; set; }
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
 
     private string _auth0Id { get; set; } = String.Empty;
     private WineryDto _winery { get; set; }
@@ -23,5 +24,10 @@ public partial class Detail : ComponentBase
         var getWineryByIdResponse = await _mediator.Send(new GetWineryDetailRequest(Id, _auth0Id));
         _winery = getWineryByIdResponse.Winery ?? new WineryDto();
         _wines = getWineryByIdResponse.Wines;
+    }
+
+    private void NavigateToWineDetail(int wineId)
+    {
+        _navigationManager.NavigateTo($"/Wines/{wineId}");
     }
 }
