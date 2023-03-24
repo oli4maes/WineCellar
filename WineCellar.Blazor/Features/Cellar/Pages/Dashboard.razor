@@ -1,0 +1,13 @@
+﻿@page "/"
+
+<PageTitle>Kave - Dashboard</PageTitle>
+
+<MudText Typo="Typo.h3" Color="Color.Primary">Dashboard</MudText>
+<MudDivider/>
+
+@if (_dashboardResponse is not null)
+{
+    <WineTypeDonut AmountOfBottlesInCellar="@_dashboardResponse.AmountOfBottlesInCellar"
+                   AmountOfBottlesPerWineTypeData="@_dashboardResponse.AmountOfBottlesPerWineTypeData"
+                   AmountOfBottlesPerWineTypeLabels="@_dashboardResponse.AmountOfBottlesPerWineTypeLabels"/>
+}
