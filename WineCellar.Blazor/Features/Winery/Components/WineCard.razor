@@ -2,18 +2,20 @@
     <MudCard Elevation="2">
         <MudCardHeader>
             <CardHeaderContent>
-                <MudText Typo="Typo.h5" Class="mb-2">@Wine?.Name</MudText>
+                <MudText Typo="Typo.h6" Class="mb-2" Color="Color.Primary">@Wine?.Name</MudText>
             </CardHeaderContent>
             <CardHeaderActions>
-                @if (Wine.IsInUserCellar)
-                {
-                    <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Title="Wine in cellar"/>
-                }
+                <WineTypeChip WineType="@Wine.WineType"/>
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
-            <MudText>@Wine?.WineType</MudText>
+
         </MudCardContent>
-        <MudCardActions></MudCardActions>
+        <MudCardActions>
+            @if (Wine.IsInUserCellar)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Workspaces" Color="Color.Secondary" Title="Wine in cellar"/>
+            }
+        </MudCardActions>
     </MudCard>
 </MudLink>

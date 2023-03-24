@@ -2,5 +2,5 @@
 
 public partial class WineInfo : ComponentBase
 {
-    [Parameter] public WineDto Wine { get; set; }
+    [Parameter] public WineDto Wine { get; set; } = new();
 }
