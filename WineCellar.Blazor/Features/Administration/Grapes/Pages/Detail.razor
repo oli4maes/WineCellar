@@ -19,21 +19,42 @@
                     </CardHeaderActions>
                 </MudCardHeader>
                 <MudCardContent>
-                    <MudTextField @bind-Value="_grape.Name" Label="Name" Disabled="!_editMode" For="@(() => _grape.Name)" Class="mt-3" />
-                    <MudTextField @bind-Value="_grape.Description" Label="Description" Disabled="!_editMode" Class="mt-3" />
+                    <!-- Name -->
+                    <MudTextField @bind-Value="_grape.Name" Label="Name" Disabled="!_editMode" For="@(() => _grape.Name)" Class="mt-3"/>
+
+                    <!-- Description -->
+                    <MudTextField @bind-Value="_grape.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
+
+                    <!-- Grape Type -->
+                    <MudSelect T="GrapeType"
+                               @bind-Value="_grape.GrapeType"
+                               Placeholder="Select grape type"
+                               Label="Type"
+                               Disabled="!_editMode"
+                               For="@(() => _grape.GrapeType)"
+                               Class="pt-5">
+                        @foreach (var item in Enum.GetValues(typeof(GrapeType)))
+                        {
+                            <MudSelectItem T="GrapeType" Value="(GrapeType)item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Button"
                                Variant="Variant.Outlined"
                                Color="Color.Error"
-                               OnClick="Back">Back</MudButton>
+                               OnClick="Back">
+                        Back
+                    </MudButton>
                     @if (_editMode)
                     {
                         <MudButton Class="ml-4"
-                               ButtonType="ButtonType.Submit"
-                               Variant="Variant.Outlined"
-                               StartIcon="@Icons.Material.Filled.Save"
-                               Color="Color.Primary">Save</MudButton>
+                                   ButtonType="ButtonType.Submit"
+                                   Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Color="Color.Primary">
+                            Save
+                        </MudButton>
                     }
                 </MudCardActions>
             </EditForm>

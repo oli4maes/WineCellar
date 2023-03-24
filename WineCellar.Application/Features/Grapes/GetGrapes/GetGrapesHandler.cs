@@ -19,7 +19,8 @@ internal sealed class GetGrapesHandler : IRequestHandler<GetGrapesRequest, GetGr
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description
+                Description = x.Description,
+                GrapeType = x.GrapeType
             }).ToList()
         };
     }
