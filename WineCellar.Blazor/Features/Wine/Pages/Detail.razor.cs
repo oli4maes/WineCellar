@@ -28,7 +28,10 @@ public partial class Detail : ComponentBase
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         _userName = authState.User.Identity?.Name ?? string.Empty;
         _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+    }
 
+    protected override async Task OnParametersSetAsync()
+    {
         var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
         _wine = getWineByIdResponse.Wine ?? new();
 
