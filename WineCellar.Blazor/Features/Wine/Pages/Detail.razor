@@ -14,7 +14,10 @@
                 Size="Size.Large"/>
     }
 </div>
-<MudText Typo="Typo.h5" Color="Color.Primary">@_wine?.WineryName</MudText>
+<MudLink OnClick="NavigateToWinery" Underline="Underline.None">
+    <MudText Typo="Typo.h5" Color="Color.Primary">@_wine?.WineryName</MudText>
+</MudLink>
+
 <MudDivider/>
 <MudGrid Class="pt-4">
     <MudItem md="12">

@@ -40,7 +40,7 @@ public partial class Detail : ComponentBase
     protected async void HandleValidSubmit()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        _userName = authState.User.Identity.Name ?? string.Empty;
+        _userName = authState.User.Identity?.Name ?? string.Empty;
 
         if (Id == 0)
         {

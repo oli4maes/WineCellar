@@ -15,6 +15,7 @@ public partial class Detail : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
     [Inject] private IDialogService _dialogService { get; set; }
+    [Inject] private NavigationManager _navigationManager { get; set; }
 
     private WineDto _wine;
     private UserWineDto _userWine { get; set; } = new();
@@ -99,5 +100,10 @@ public partial class Detail : ComponentBase
     private async Task UpdateAmount()
     {
         await _mediator.Send(new UpdateUserWineRequest(_userWine.Id, _userWine.Amount, _userName, _auth0Id));
+    }
+
+    private void NavigateToWinery()
+    {
+        _navigationManager.NavigateTo($"/Wineries/{_wine.Winery.Id}");
     }
 }
