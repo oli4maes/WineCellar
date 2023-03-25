@@ -16,23 +16,41 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
     {
         var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
 
-        var amountOfWhites = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.White));
-        var amountOfRoses = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Rose));
-        var amountOfReds = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Red));
-        var amountOfSparkling = Convert.ToDouble(userWines.Count(x => x.Wine.WineType == WineType.Sparkling));
+        var whites = userWines.Where(x => x.Wine?.WineType == WineType.White);
+        var amountOfWhites = GetAmountOfBottles(whites.ToList());
+
+        var roses = userWines.Where(x => x.Wine?.WineType == WineType.Rosé);
+        var amountOfRoses = GetAmountOfBottles(roses.ToList());
+
+        var reds = userWines.Where(x => x.Wine?.WineType == WineType.Red);
+        var amountOfReds = GetAmountOfBottles(reds.ToList());
+
+        var sparkling = userWines.Where(x => x.Wine?.WineType == WineType.Sparkling);
+        var amountOfSparkling = GetAmountOfBottles(sparkling.ToList());
+
         var amountOfBottlesPerWineTypeData = new[] { amountOfWhites, amountOfRoses, amountOfReds, amountOfSparkling };
 
-        var amountOfBottlesPerWineTypeLabels = userWines
-            .GroupBy(x => x.Wine.WineType)
-            .OrderBy(x => x.Key)
-            .Select(y => y.Key.ToString())
-            .ToArray();
+        var amountOfBottlesPerWineTypeLabels = new[]
+            { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
         return new GetDashboardResponse()
         {
-            AmountOfBottlesInCellar = userWines.Count(),
+            AmountOfBottlesInCellar =
+                Convert.ToInt32(amountOfWhites + amountOfRoses + amountOfReds + amountOfSparkling),
             AmountOfBottlesPerWineTypeData = amountOfBottlesPerWineTypeData,
             AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels
         };
+    }
+
+    private double GetAmountOfBottles(List<UserWine> wines)
+    {
+        var amount = 0d;
+
+        foreach (var wine in wines)
+        {
+            amount += wine.Amount;
+        }
+
+        return amount;
     }
 }

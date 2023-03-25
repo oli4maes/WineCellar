@@ -20,7 +20,7 @@ public partial class WineTypeChip : ComponentBase
                 _wineTypeColor = Colors.Red.Darken4;
                 _wineTypeTextColor = Colors.Grey.Lighten5;
                 break;
-            case WineType.Rose:
+            case WineType.Rosé:
                 _wineTypeColor = Colors.Red.Lighten3;
                 _wineTypeTextColor = Colors.Grey.Darken4;
                 break;
