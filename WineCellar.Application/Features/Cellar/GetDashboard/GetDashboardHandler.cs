@@ -30,15 +30,28 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
         var amountOfBottlesPerWineTypeData = new[] { amountOfWhites, amountOfRoses, amountOfReds, amountOfSparkling };
 
+        var dict = new Dictionary<WineType, double>();
+        dict.Add(WineType.White, amountOfWhites);
+        dict.Add(WineType.Rosé, amountOfRoses);
+        dict.Add(WineType.Red, amountOfReds);
+        dict.Add(WineType.Sparkling, amountOfSparkling);
+        var favouriteWineType = GetFavouriteWineType(dict);
+
         var amountOfBottlesPerWineTypeLabels = new[]
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
+
+        var favouriteWine = GetFavouriteWine(userWines);
+        var favouriteWineName = $"{favouriteWine.Name} - {favouriteWine.Winery.Name}";
 
         return new GetDashboardResponse()
         {
             AmountOfBottlesInCellar =
                 Convert.ToInt32(amountOfWhites + amountOfRoses + amountOfReds + amountOfSparkling),
             AmountOfBottlesPerWineTypeData = amountOfBottlesPerWineTypeData,
-            AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels
+            AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels,
+            FavouriteWineType = favouriteWineType,
+            AmountOfBottlesPerWineType = dict,
+            FavouriteWine = favouriteWineName
         };
     }
 
@@ -52,5 +65,15 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         }
 
         return amount;
+    }
+
+    private WineType GetFavouriteWineType(Dictionary<WineType, double> dict)
+    {
+        return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+    }
+
+    private Wine GetFavouriteWine(IEnumerable<UserWine> userWines)
+    {
+        return userWines.Aggregate((agg, next) => next.Amount > agg.Amount ? next : agg).Wine;
     }
 }

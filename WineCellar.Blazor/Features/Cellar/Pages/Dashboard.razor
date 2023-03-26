@@ -7,6 +7,36 @@
 
 @if (_dashboardResponse is not null)
 {
+    <MudGrid>
+        <MudItem xs="3">
+            <MudText>Total</MudText>
+            <MudText>@_dashboardResponse.AmountOfBottlesInCellar</MudText>
+        </MudItem>
+        <MudItem xs="3">
+            <MudText>Favourite type</MudText>
+            <MudText>@_dashboardResponse.FavouriteWineType</MudText>
+        </MudItem>
+        <MudItem xs="3">
+            <MudText>Favourite wine</MudText>
+            <MudText>@_dashboardResponse.FavouriteWine</MudText>
+        </MudItem>
+        <MudItem xs="3">
+            <MudText>Favourite producer</MudText>
+            <MudText>@_dashboardResponse.FavouriteWinery</MudText>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        @foreach (var wineType in _dashboardResponse.AmountOfBottlesPerWineType)
+        {
+            <MudItem xs="3">
+                <MudText>@wineType.Key</MudText>
+                <MudText>@wineType.Value</MudText>
+            </MudItem>
+        }
+
+    </MudGrid>
+
     <WineTypeDonut AmountOfBottlesInCellar="@_dashboardResponse.AmountOfBottlesInCellar"
                    AmountOfBottlesPerWineTypeData="@_dashboardResponse.AmountOfBottlesPerWineTypeData"
                    AmountOfBottlesPerWineTypeLabels="@_dashboardResponse.AmountOfBottlesPerWineTypeLabels"/>
