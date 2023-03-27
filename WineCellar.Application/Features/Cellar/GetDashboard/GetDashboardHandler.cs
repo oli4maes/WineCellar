@@ -44,7 +44,7 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
         var favouriteWine = GetFavouriteWine(userWines);
-        var favouriteWineName = $"{favouriteWine?.Name}";
+        var favouriteWineName = favouriteWine?.Name;
 
         var groupedByWinery = userWines.GroupBy(x => x.Wine!.WineryId);
         var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
@@ -59,8 +59,8 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels,
             FavouriteWineType = favouriteWineType,
             AmountOfBottlesPerWineType = wineTypeDict,
-            FavouriteWine = favouriteWineName,
-            FavouriteWinery = favouriteWineryName ?? favouriteWineName
+            FavouriteWine = favouriteWineName ?? string.Empty,
+            FavouriteWinery = favouriteWineryName ?? string.Empty
         };
     }
 
