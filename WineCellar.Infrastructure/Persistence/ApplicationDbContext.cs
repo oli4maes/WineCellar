@@ -7,13 +7,13 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
-        Debug.WriteLine($"{ContextId} context created.");
+        Debug.WriteLine($"{ContextId!} context created.");
     }
 
-    public DbSet<Grape>? Grapes { get; set; }
-    public DbSet<Winery>? Wineries { get; set; }
-    public DbSet<Wine>? Wines { get; set; }
-    public DbSet<UserWine>? UserWines { get; set; }
+    public DbSet<Grape> Grapes { get; set; }
+    public DbSet<Winery> Wineries { get; set; }
+    public DbSet<Wine> Wines { get; set; }
+    public DbSet<UserWine> UserWines { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

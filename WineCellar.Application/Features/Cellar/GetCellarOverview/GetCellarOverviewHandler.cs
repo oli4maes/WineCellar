@@ -21,7 +21,7 @@ internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOvervi
                 Id = x.Id,
                 Amount = x.Amount,
                 WineId = x.WineId,
-                WineName = x.Wine.Name,
+                WineName = x.Wine!.Name,
                 WineType = x.Wine.WineType,
                 WineryName = x.Wine.Winery.Name
             })

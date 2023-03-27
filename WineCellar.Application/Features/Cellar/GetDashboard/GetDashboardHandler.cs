@@ -14,7 +14,8 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
     public async ValueTask<GetDashboardResponse> Handle(GetDashboardRequest request,
         CancellationToken cancellationToken)
     {
-        var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
+        var uWines = await _userWineRepository.GetUserWines(request.Auth0Id);
+        var userWines = uWines.ToList();
 
         var whites = userWines.Where(x => x.Wine?.WineType == WineType.White);
         var amountOfWhites = GetAmountOfBottles(whites.ToList());
@@ -30,18 +31,25 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
         var amountOfBottlesPerWineTypeData = new[] { amountOfWhites, amountOfRoses, amountOfReds, amountOfSparkling };
 
-        var dict = new Dictionary<WineType, double>();
-        dict.Add(WineType.White, amountOfWhites);
-        dict.Add(WineType.Rosé, amountOfRoses);
-        dict.Add(WineType.Red, amountOfReds);
-        dict.Add(WineType.Sparkling, amountOfSparkling);
-        var favouriteWineType = GetFavouriteWineType(dict);
+        var wineTypeDict = new Dictionary<WineType, double>
+        {
+            { WineType.White, amountOfWhites },
+            { WineType.Rosé, amountOfRoses },
+            { WineType.Red, amountOfReds },
+            { WineType.Sparkling, amountOfSparkling }
+        };
+        var favouriteWineType = GetFavouriteWineType(wineTypeDict);
 
         var amountOfBottlesPerWineTypeLabels = new[]
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
         var favouriteWine = GetFavouriteWine(userWines);
-        var favouriteWineName = $"{favouriteWine.Name} - {favouriteWine.Winery.Name}";
+        var favouriteWineName = $"{favouriteWine?.Name}";
+
+        var groupedByWinery = userWines.GroupBy(x => x.Wine!.WineryId);
+        var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
+        var favouriteWinery = userWines.First(x => x.Wine?.WineryId == favouriteWineryId).Wine?.Winery;
+        var favouriteWineryName = favouriteWinery?.Name;
 
         return new GetDashboardResponse()
         {
@@ -50,8 +58,9 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             AmountOfBottlesPerWineTypeData = amountOfBottlesPerWineTypeData,
             AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels,
             FavouriteWineType = favouriteWineType,
-            AmountOfBottlesPerWineType = dict,
-            FavouriteWine = favouriteWineName
+            AmountOfBottlesPerWineType = wineTypeDict,
+            FavouriteWine = favouriteWineName,
+            FavouriteWinery = favouriteWineryName ?? favouriteWineName
         };
     }
 
@@ -72,8 +81,27 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
     }
 
-    private Wine GetFavouriteWine(IEnumerable<UserWine> userWines)
+    private Wine? GetFavouriteWine(List<UserWine> userWines)
     {
         return userWines.Aggregate((agg, next) => next.Amount > agg.Amount ? next : agg).Wine;
+    }
+
+    private int? GetFavouriteWinery(IEnumerable<IGrouping<int, UserWine>> grouping)
+    {
+        var dict = new Dictionary<int, int>();
+
+        foreach (var x in grouping)
+        {
+            var amount = 0;
+
+            foreach (var uw in x)
+            {
+                amount += uw.Amount;
+            }
+
+            dict.Add(x.Key, amount);
+        }
+
+        return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
     }
 }

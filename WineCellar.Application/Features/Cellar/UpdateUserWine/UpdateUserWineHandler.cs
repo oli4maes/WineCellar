@@ -13,7 +13,7 @@ internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWineRequ
     {
         var userWine = await _userWineRepository.GetById(request.Id);
 
-        if (userWine.Auth0Id != request.Auth0Id)
+        if (userWine?.Auth0Id != request.Auth0Id)
         {
             return new UpdateUserWineResponse()
             {
