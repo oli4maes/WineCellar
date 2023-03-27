@@ -30,7 +30,7 @@ internal sealed class GetUserWineByIdHandler : IRequestHandler<GetUserWineDetail
                 WineId = userWine.WineId,
                 Wine = new WineDto()
                 {
-                    Id = userWine.Wine.Id,
+                    Id = userWine.Wine!.Id,
                     Name = userWine.Wine.Name,
                     WineType = userWine.Wine.WineType,
                     Winery = new WineryDto()

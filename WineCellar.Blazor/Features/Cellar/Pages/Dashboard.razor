@@ -7,22 +7,18 @@
 
 @if (_dashboardResponse is not null)
 {
-    <MudGrid>
-        <MudItem xs="3">
-            <MudText>Total</MudText>
-            <MudText>@_dashboardResponse.AmountOfBottlesInCellar</MudText>
+    <MudGrid Class="pt-4">
+        <MudItem xs="6" md="3">
+            <DashboardCard Title="Total" Statistic="@_dashboardResponse.AmountOfBottlesInCellar.ToString()"/>
         </MudItem>
-        <MudItem xs="3">
-            <MudText>Favourite type</MudText>
-            <MudText>@_dashboardResponse.FavouriteWineType</MudText>
+        <MudItem xs="6" md="3">
+            <DashboardCard Title="Favourite type" Statistic="@_dashboardResponse.FavouriteWineType.ToString()"/>
         </MudItem>
-        <MudItem xs="3">
-            <MudText>Favourite wine</MudText>
-            <MudText>@_dashboardResponse.FavouriteWine</MudText>
+        <MudItem xs="6" md="3">
+            <DashboardCard Title="Favourite wine" Statistic="@_dashboardResponse.FavouriteWine"/>
         </MudItem>
-        <MudItem xs="3">
-            <MudText>Favourite producer</MudText>
-            <MudText>@_dashboardResponse.FavouriteWinery</MudText>
+        <MudItem xs="6" md="3">
+            <DashboardCard Title="Favourite producer" Statistic="@_dashboardResponse.FavouriteWinery"/>
         </MudItem>
     </MudGrid>
 
