@@ -1,4 +1,4 @@
-﻿namespace WineCellar.Blazor.Features.Wine.Components;
+﻿namespace WineCellar.Blazor.Shared.Components.Chips;
 
 public partial class GrapeChip : ComponentBase
 {
