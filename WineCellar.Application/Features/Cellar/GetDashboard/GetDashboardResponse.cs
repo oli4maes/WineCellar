@@ -10,5 +10,7 @@ public sealed class GetDashboardResponse
     public WineType FavouriteWineType { get; set; }
     public Dictionary<WineType, double>? AmountOfBottlesPerWineType { get; set; }
     public string FavouriteWine { get; set; } = String.Empty;
+    public int? FavouriteWineId { get; set; }
     public string FavouriteWinery { get; set; } = String.Empty;
+    public int? FavouriteWineryId { get; set; }
 }

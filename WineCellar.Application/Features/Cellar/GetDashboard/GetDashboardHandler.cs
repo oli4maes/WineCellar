@@ -60,7 +60,9 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             FavouriteWineType = favouriteWineType,
             AmountOfBottlesPerWineType = wineTypeDict,
             FavouriteWine = favouriteWineName ?? string.Empty,
-            FavouriteWinery = favouriteWineryName ?? string.Empty
+            FavouriteWineId = favouriteWine?.Id,
+            FavouriteWinery = favouriteWineryName ?? string.Empty,
+            FavouriteWineryId = favouriteWineryId
         };
     }
 
