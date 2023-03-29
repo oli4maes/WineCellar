@@ -9,31 +9,39 @@
 {
     <MudGrid Class="pt-4">
         <MudItem xs="6" md="3">
-            <DashboardCard Title="Total" Statistic="@_dashboardResponse.AmountOfBottlesInCellar.ToString()"/>
+            <DashboardCard Title="Total"
+                           Statistic="@_dashboardResponse.AmountOfBottlesInCellar.ToString()"/>
         </MudItem>
         <MudItem xs="6" md="3">
-            <DashboardCard Title="Favourite type" Statistic="@_dashboardResponse.FavouriteWineType.ToString()"/>
+            <DashboardCard Title="Favourite type"
+                           Statistic="@_dashboardResponse.FavouriteWineType.ToString()"/>
         </MudItem>
         <MudItem xs="6" md="3">
-            <DashboardCard Title="Favourite wine" Statistic="@_dashboardResponse.FavouriteWine"/>
+            <DashboardCard Title="Favourite wine"
+                           Statistic="@_dashboardResponse.FavouriteWine"
+                           FavouriteWineId="@_dashboardResponse.FavouriteWineId"
+                           OnNavigateToWineDetail="NavigateToWineDetail"/>
         </MudItem>
         <MudItem xs="6" md="3">
-            <DashboardCard Title="Favourite producer" Statistic="@_dashboardResponse.FavouriteWinery"/>
+            <DashboardCard Title="Favourite producer"
+                           Statistic="@_dashboardResponse.FavouriteWinery"
+                           FavouriteWineryId="@_dashboardResponse.FavouriteWineryId"
+                           OnNavigateToWineryDetail="NavigateToWineryDetail"/>
         </MudItem>
     </MudGrid>
 
-    <MudGrid>
-        @foreach (var wineType in _dashboardResponse.AmountOfBottlesPerWineType)
-        {
-            <MudItem xs="3">
-                <MudText>@wineType.Key</MudText>
-                <MudText>@wineType.Value</MudText>
+
+    <MudPaper Class="pa-2 mt-4">
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <WineTypeStatistics AmountOfBottlesPerWineType="@_dashboardResponse.AmountOfBottlesPerWineType"/>
             </MudItem>
-        }
 
-    </MudGrid>
-
-    <WineTypeDonut AmountOfBottlesInCellar="@_dashboardResponse.AmountOfBottlesInCellar"
-                   AmountOfBottlesPerWineTypeData="@_dashboardResponse.AmountOfBottlesPerWineTypeData"
-                   AmountOfBottlesPerWineTypeLabels="@_dashboardResponse.AmountOfBottlesPerWineTypeLabels"/>
+            <MudItem xs="12" md="6">
+                <WineTypeDonut AmountOfBottlesInCellar="@_dashboardResponse.AmountOfBottlesInCellar"
+                               AmountOfBottlesPerWineTypeData="@_dashboardResponse.AmountOfBottlesPerWineTypeData"
+                               AmountOfBottlesPerWineTypeLabels="@_dashboardResponse.AmountOfBottlesPerWineTypeLabels"/>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
 }
