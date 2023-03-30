@@ -1,3 +1,4 @@
+using WineCellar.Application.Features.Countries.GetCountries;
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Application.Features.Wines.AddGrapeToWine;
@@ -23,6 +24,7 @@ public partial class Detail : ComponentBase
     private string _userName { get; set; } = string.Empty;
     private List<WineryDto> _wineries = new();
     private List<GrapeDto> _grapes = new();
+    private List<CountryDto> _countries = new();
     private GrapeDto? _selectedGrape { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -32,6 +34,9 @@ public partial class Detail : ComponentBase
 
         var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
         _grapes = getGrapesResponse.Grapes;
+
+        var getCountriesResponse = await _mediator.Send(new GetCountriesRequest());
+        _countries = getCountriesResponse.Countries;
 
         if (Id is not 0)
         {
@@ -61,6 +66,7 @@ public partial class Detail : ComponentBase
 
         if (Id is 0)
         {
+            // TODO: move logic to check if wine exists to backend
             var getWineByNameResponse = await _mediator.Send(new GetWineByNameRequest(_wine.Name));
             if (getWineByNameResponse.Wine != null)
             {
@@ -69,7 +75,8 @@ public partial class Detail : ComponentBase
             }
 
             var response =
-                await _mediator.Send(new CreateWineRequest(_wine.Name, _wine.WineType, _wine.WineryId, _userName));
+                await _mediator.Send(new CreateWineRequest(_wine.Name, _wine.WineType, _wine.WineryId, _userName,
+                    _wine.Country?.Id));
             _wine = response.Wine ?? new WineDto();
 
             if (_wine.Id is not 0)
@@ -89,7 +96,8 @@ public partial class Detail : ComponentBase
         else
         {
             await _mediator.Send(
-                new UpdateWineRequest(_wine.Id, _wine.Name, _wine.WineType, _wine.WineryId, _userName));
+                new UpdateWineRequest(_wine.Id, _wine.Name, _wine.WineType, _wine.WineryId, _userName,
+                    _wine.Country?.Id));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
