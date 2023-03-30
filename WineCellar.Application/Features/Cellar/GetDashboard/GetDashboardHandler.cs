@@ -1,4 +1,5 @@
 ﻿using WineCellar.Domain.Enums;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Cellar.GetDashboard;
 

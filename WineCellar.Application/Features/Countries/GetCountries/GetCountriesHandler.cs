@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Countries.GetCountries;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Countries.GetCountries;
 
 internal sealed class GetCountriesHandler : IRequestHandler<GetCountriesRequest, GetCountriesResponse>
 {

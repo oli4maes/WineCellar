@@ -1,3 +1,5 @@
+using WineCellar.Domain.Persistence.Repositories;
+
 namespace WineCellar.Application.Features.Cellar.RemoveWineFromCellar;
 
 internal sealed class RemoveWineFromCellarHandler : IRequestHandler<RemoveWineFromCellarRequest, RemoveWineFromCellarResponse> 

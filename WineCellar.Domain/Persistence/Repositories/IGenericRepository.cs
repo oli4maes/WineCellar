@@ -1,4 +1,4 @@
-﻿namespace WineCellar.Domain.Interfaces.Repositories;
+﻿namespace WineCellar.Domain.Persistence.Repositories;
 
 public interface IGenericRepository<T> where T : class
 {

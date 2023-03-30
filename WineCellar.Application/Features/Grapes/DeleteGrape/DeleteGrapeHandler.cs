@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Grapes.DeleteGrape;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Grapes.DeleteGrape;
 
 internal sealed class DeleteGrapeHandler : IRequestHandler<DeleteGrapeRequest, DeleteGrapeResponse>
 {
