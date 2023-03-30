@@ -69,6 +69,7 @@ public class WineryRepository : IWineryRepository
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.Wineries
+            .OrderBy(x => x.Name)
             .Include(x => x.Country)
             .AsNoTracking()
             .ToListAsync();
