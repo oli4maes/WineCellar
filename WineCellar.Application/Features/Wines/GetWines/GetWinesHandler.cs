@@ -20,6 +20,8 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
                 Id = x.Id,
                 Name = x.Name,
                 WineType = x.WineType,
+                CountryId = x.CountryId,
+                CountryName = x.Country?.Name,
                 WineryName = x.Winery.Name
             })
         };

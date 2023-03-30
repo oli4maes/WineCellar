@@ -43,6 +43,7 @@ public class WineryRepository : IWineryRepository
 
         wineryModel.Name = winery.Name;
         wineryModel.Description = winery.Description;
+        wineryModel.CountryId = winery.CountryId;
         wineryModel.LastModified = DateTime.UtcNow;
         wineryModel.LastModifiedBy = winery.LastModifiedBy;
 
@@ -65,7 +66,10 @@ public class WineryRepository : IWineryRepository
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Wineries.AsNoTracking().ToListAsync();
+        return await context.Wineries
+            .Include(x => x.Country)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Winery?> GetById(int id)
@@ -74,7 +78,10 @@ public class WineryRepository : IWineryRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Wineries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        return await context.Wineries
+            .Include(x => x.Country)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Winery?> GetByName(string name)
@@ -83,6 +90,9 @@ public class WineryRepository : IWineryRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Wineries.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+        return await context.Wineries
+            .Include(x => x.Country)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }

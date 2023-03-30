@@ -14,6 +14,7 @@ public class WineRepository : IWineRepository
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.Wines
+            .Include(x => x.Country)
             .Include(x => x.Winery)
             .AsNoTracking()
             .ToListAsync();
@@ -26,6 +27,7 @@ public class WineRepository : IWineRepository
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.Wines
+            .Include(x => x.Country)
             .Include(x => x.Winery)
             .Include(x => x.Grapes)
             .AsNoTracking()
@@ -67,6 +69,7 @@ public class WineRepository : IWineRepository
         wineModel.Name = wine.Name;
         wineModel.WineryId = wine.WineryId;
         wineModel.WineType = wine.WineType;
+        wineModel.CountryId = wine.CountryId;
         wineModel.LastModified = DateTime.UtcNow;
         wineModel.LastModifiedBy = wine.LastModifiedBy;
 

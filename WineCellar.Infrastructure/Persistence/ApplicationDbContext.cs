@@ -14,6 +14,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Winery> Wineries { get; set; }
     public DbSet<Wine> Wines { get; set; }
     public DbSet<UserWine> UserWines { get; set; }
+    public DbSet<Country> Countries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,13 +24,13 @@ public class ApplicationDbContext : DbContext
         CreateUserWineModel(modelBuilder);
         CreateCountryModel(modelBuilder);
     }
-    
+
     public override void Dispose()
     {
         Debug.WriteLine($"{ContextId} context disposed.");
         base.Dispose();
     }
-    
+
     public override ValueTask DisposeAsync()
     {
         Debug.WriteLine($"{ContextId} context disposed async.");

@@ -20,6 +20,7 @@ internal sealed class CreateWineHandler : IRequestHandler<CreateWineRequest, Cre
             Name = request.Name,
             WineType = request.WineType,
             WineryId = request.WineryId,
+            CountryId = request.CountryId,
             CreatedBy = request.UserName
         };
 
