@@ -1,3 +1,4 @@
+using WineCellar.Application.Features.Countries.GetCountries;
 using WineCellar.Application.Features.Wineries.CreateWinery;
 using WineCellar.Application.Features.Wineries.GetWineryById;
 using WineCellar.Application.Features.Wineries.GetWineryByName;
@@ -17,9 +18,13 @@ public partial class Detail : ComponentBase
     private WineryDto _winery { get; set; } = new();
     private bool _editMode { get; set; } = false;
     private string _userName { get; set; } = string.Empty;
+    private List<CountryDto> _countries = new();
 
     protected override async Task OnInitializedAsync()
     {
+        var getCountriesResponse = await _mediator.Send(new GetCountriesRequest());
+        _countries = getCountriesResponse.Countries;
+
         if (Id != 0)
         {
             var response = await _mediator.Send(new GetWineryByIdRequest(Id));
@@ -47,11 +52,14 @@ public partial class Detail : ComponentBase
             var getWineryByNameResponse = await _mediator.Send(new GetWineryByNameRequest(_winery.Name));
             if (getWineryByNameResponse.Winery != null)
             {
-                _snackbar.Add($"The winery with name: {getWineryByNameResponse.Winery.Name} already exists.", Severity.Error);
+                _snackbar.Add($"The winery with name: {getWineryByNameResponse.Winery.Name} already exists.",
+                    Severity.Error);
                 return;
             }
 
-            var response = await _mediator.Send(new CreateWineryRequest(_winery.Name, _winery.Description, _userName));
+            var response =
+                await _mediator.Send(new CreateWineryRequest(_winery.Name, _winery.Description, _userName,
+                    _winery.Country?.Id));
             _winery = response.Winery;
 
             if (_winery.Id is not 0)
@@ -70,7 +78,8 @@ public partial class Detail : ComponentBase
         }
         else
         {
-            await _mediator.Send(new UpdateWineryRequest(_winery.Id, _winery.Name, _winery.Description, _userName));
+            await _mediator.Send(new UpdateWineryRequest(_winery.Id, _winery.Name, _winery.Description, _userName,
+                _winery.Country?.Id));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);

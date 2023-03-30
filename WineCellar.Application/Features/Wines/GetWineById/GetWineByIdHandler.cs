@@ -21,6 +21,14 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
             };
         }
 
+        var country = new CountryDto();
+
+        if (wine.Country is not null)
+        {
+            country.Id = wine.Country.Id;
+            country.Name = wine.Country.Name;
+        }
+
         return new GetWineByIdResponse()
         {
             Wine = new WineDto()
@@ -28,6 +36,9 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
                 Id = wine.Id,
                 Name = wine.Name,
                 WineType = wine.WineType,
+                CountryId = wine.CountryId,
+                Country = country,
+                CountryName = wine.Country?.Name,
                 WineryName = wine.Winery.Name,
                 Winery = new WineryDto()
                 {

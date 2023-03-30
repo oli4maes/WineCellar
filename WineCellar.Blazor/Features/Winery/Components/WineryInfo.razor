@@ -1,1 +1,5 @@
+@if (!string.IsNullOrEmpty(Winery?.CountryName))
+{
+    <MudText>@Winery?.CountryName</MudText>
+}
 <MudText>@Winery?.Description</MudText>

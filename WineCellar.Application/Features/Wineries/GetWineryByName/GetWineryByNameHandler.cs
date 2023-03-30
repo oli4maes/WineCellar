@@ -25,6 +25,8 @@ internal sealed class GetWineryByNameHandler : IRequestHandler<GetWineryByNameRe
             {
                 Id = winery.Id,
                 Name = winery.Name,
+                CountryName = winery.Country?.Name,
+                CountryId = winery.CountryId,
                 Description = winery.Description
             }
         };

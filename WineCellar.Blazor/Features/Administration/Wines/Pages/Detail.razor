@@ -1,6 +1,7 @@
 ﻿@page "/Administration/Wines/{id:int}"
 @using Microsoft.AspNetCore.Components.Forms
 @using WineCellar.Application.Dtos
+@using WineCellar.Application.Features.Countries.GetCountries
 @using WineCellar.Domain.Enums;
 
 <PageTitle>Kave - Administration - Wine Detail</PageTitle>
@@ -35,6 +36,18 @@
                         @foreach (var item in Enum.GetValues(typeof(WineType)))
                         {
                             <MudSelectItem T="WineType" Value="(WineType)item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                    <!-- Country -->
+                    <MudSelect
+                        @bind-Value="_wine.Country"
+                        Label="Country"
+                        Disabled="!_editMode"
+                        Class="mt-3">
+                        @foreach (var item in _countries)
+                        {
+                            <MudSelectItem T="CountryDto" Value="item">@item.Name</MudSelectItem>
                         }
                     </MudSelect>
 

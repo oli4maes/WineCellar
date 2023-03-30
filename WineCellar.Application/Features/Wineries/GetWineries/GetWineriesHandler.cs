@@ -19,6 +19,8 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
             {
                 Id = x.Id,
                 Name = x.Name,
+                CountryId = x.CountryId,
+                CountryName = x.Country?.Name,
                 Description = x.Description
             }).ToList()
         };

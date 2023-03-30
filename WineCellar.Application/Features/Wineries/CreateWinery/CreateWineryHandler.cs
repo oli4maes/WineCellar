@@ -16,6 +16,7 @@ internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryRequest,
         {
             Name = request.Name,
             Description = request.Description,
+            CountryId = request.CountryId,
             CreatedBy = request.UserName
         };
 
@@ -27,6 +28,7 @@ internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryRequest,
             {
                 Id = winery.Id,
                 Name = winery.Name,
+                CountryId = winery.CountryId,
                 Description = winery.Description
             }
         };
