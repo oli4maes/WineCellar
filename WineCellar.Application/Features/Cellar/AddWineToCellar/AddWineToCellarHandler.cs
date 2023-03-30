@@ -1,3 +1,5 @@
+using WineCellar.Domain.Persistence.Repositories;
+
 namespace WineCellar.Application.Features.Cellar.AddWineToCellar;
 
 internal sealed class AddWineToCellarHandler : IRequestHandler<AddWineToCellarRequest, AddWineToCellarResponse>

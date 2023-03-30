@@ -1,8 +1,5 @@
 ﻿@page "/Administration/Wines/{id:int}"
 @using Microsoft.AspNetCore.Components.Forms
-@using WineCellar.Application.Dtos
-@using WineCellar.Application.Features.Countries.GetCountries
-@using WineCellar.Domain.Enums;
 
 <PageTitle>Kave - Administration - Wine Detail</PageTitle>
 
@@ -39,17 +36,21 @@
                         }
                     </MudSelect>
 
-                    <!-- Country -->
-                    <MudSelect
-                        @bind-Value="_wine.Country"
-                        Label="Country"
-                        Disabled="!_editMode"
-                        Class="mt-3">
-                        @foreach (var item in _countries)
-                        {
-                            <MudSelectItem T="CountryDto" Value="item">@item.Name</MudSelectItem>
-                        }
-                    </MudSelect>
+                    <!-- Region -->
+                    @if (_regions.Any())
+                    {
+                        <MudSelect
+                            T="RegionDto"
+                            @bind-Value="_wine.Region"
+                            Label="Region"
+                            Disabled="!_editMode"
+                            Class="mt-3">
+                            @foreach (var item in _regions)
+                            {
+                                <MudSelectItem T="RegionDto" Value="item">@item.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    }
 
                     <!-- Winery -->
                     <MudAutocomplete T="WineryDto"
@@ -67,7 +68,7 @@
                                      Class="mt-3"/>
 
                     <!-- Grapes -->
-                    @if (Id is not 0)
+                    @if (Id is not 0 && _editMode)
                     {
                         <MudAutocomplete T="GrapeDto"
                                          Label="Grape"

@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wineries.QueryWineries;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wineries.QueryWineries;
 
 public sealed class QueryWineriesHandler : IRequestHandler<QueryWineriesRequest, QueryWineriesResponse>
 {

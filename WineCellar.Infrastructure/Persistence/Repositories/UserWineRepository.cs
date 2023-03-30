@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Infrastructure.Persistence.Repositories;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Infrastructure.Persistence.Repositories;
 
 public class UserWineRepository : IUserWineRepository
 {

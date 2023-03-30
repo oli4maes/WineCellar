@@ -1,7 +1,7 @@
 ﻿using WineCellar.Application.Dtos;
 using WineCellar.Application.Features.Cellar.AddWineToCellar;
 using WineCellar.Domain.Entities;
-using WineCellar.Domain.Interfaces.Repositories;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.UnitTests.Features.Cellar.AddWineToCellar;
 

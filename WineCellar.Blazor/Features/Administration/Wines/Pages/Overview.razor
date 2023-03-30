@@ -1,5 +1,4 @@
 ﻿@page "/Administration/Wines"
-@using WineCellar.Application.Dtos
 
 <PageTitle>Kave - Administration - Wines</PageTitle>
 
@@ -36,10 +35,9 @@
                             </MudTextField>
                         </ToolBarContent>
                         <Columns>
-                            <Column T="WineDto" Field="Id" Title="Id" Sortable="true" Filterable="false" IsEditable="false"/>
-                            <Column T="WineDto" Field="WineryName" Title="Winery" Sortable="true" Filterable="true"/>
                             <Column T="WineDto" Field="Name" Title="Name" Sortable="true" Filterable="true"/>
-                            <Column T="WineDto" Field="CountryName" Title="Country" Sortable="true" Filterable="true"/>
+                            <Column T="WineDto" Field="WineryName" Title="Winery" Sortable="true" Filterable="true"/>
+                            <Column T="WineDto" Field="RegionName" Title="Region" Sortable="true" Filterable="true"/>
                             <Column T="WineDto" Context="WineEditContext">
                                 <CellTemplate>
                                     @{

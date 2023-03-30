@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Grapes.UpdateGrape;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Grapes.UpdateGrape;
 
 internal sealed class UpdateGrapeHandler : IRequestHandler<UpdateGrapeRequest, UpdateGrapeResponse>
 {

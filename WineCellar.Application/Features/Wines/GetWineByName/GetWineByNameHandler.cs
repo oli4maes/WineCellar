@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.GetWineByName;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.GetWineByName;
 
 internal sealed class GetWineByNameHandler : IRequestHandler<GetWineByNameRequest, GetWineByNameResponse>
 {

@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.GetWineById;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.GetWineById;
 
 internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, GetWineByIdResponse>
 {
@@ -21,12 +23,12 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
             };
         }
 
-        var country = new CountryDto();
+        var region = new RegionDto();
 
-        if (wine.Country is not null)
+        if (wine.Region is not null)
         {
-            country.Id = wine.Country.Id;
-            country.Name = wine.Country.Name;
+            region.Id = wine.Region.Id;
+            region.Name = wine.Region.Name;
         }
 
         return new GetWineByIdResponse()
@@ -36,14 +38,15 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
                 Id = wine.Id,
                 Name = wine.Name,
                 WineType = wine.WineType,
-                CountryId = wine.CountryId,
-                Country = country,
-                CountryName = wine.Country?.Name,
+                Region = region,
+                RegionId = wine.Region?.Id,
+                RegionName = wine.Region?.Name,
                 WineryName = wine.Winery.Name,
                 Winery = new WineryDto()
                 {
                     Id = wine.Winery.Id,
                     Name = wine.Winery.Name,
+                    CountryId = wine.Winery.CountryId,
                     Description = wine.Winery.Description
                 },
                 Grapes = wine?.Grapes.Select(x => new GrapeDto()
