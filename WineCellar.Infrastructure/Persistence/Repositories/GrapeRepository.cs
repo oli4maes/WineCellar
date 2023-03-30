@@ -68,7 +68,10 @@ public class GrapeRepository :  IGrapeRepository
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Grapes.AsNoTracking().ToListAsync();
+        return await context.Grapes
+            .OrderBy(x => x.Name)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Grape?> GetById(int id)

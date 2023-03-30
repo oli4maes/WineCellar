@@ -10,7 +10,7 @@ public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
 
-    [Inject] Mediator.IMediator _mediator { get; set; }
+    [Inject] IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
@@ -49,17 +49,16 @@ public partial class Detail : ComponentBase
 
         if (Id == 0)
         {
-            var getWineryByNameResponse = await _mediator.Send(new GetWineryByNameRequest(_winery.Name));
-            if (getWineryByNameResponse.Winery != null)
-            {
-                _snackbar.Add($"The winery with name: {getWineryByNameResponse.Winery.Name} already exists.",
-                    Severity.Error);
-                return;
-            }
-
             var response =
                 await _mediator.Send(new CreateWineryRequest(_winery.Name, _winery.Description, _userName,
                     _winery.Country?.Id));
+
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                _snackbar.Add(response.ErrorMessage, Severity.Error);
+                return;
+            }
+
             _winery = response.Winery;
 
             if (_winery.Id is not 0)
