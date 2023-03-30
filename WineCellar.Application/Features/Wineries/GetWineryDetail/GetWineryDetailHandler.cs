@@ -60,6 +60,8 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
         {
             Id = winery.Id,
             Name = winery.Name,
+            CountryId = winery.CountryId,
+            CountryName = winery.Country?.Name,
             Description = winery.Description
         };
     }

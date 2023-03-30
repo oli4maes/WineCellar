@@ -22,12 +22,23 @@ internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdReques
             };
         }
 
+        var country = new CountryDto();
+
+        if (winery.Country is not null)
+        {
+            country.Id = winery.Country.Id;
+            country.Name = winery.Country.Name;
+        }
+
         return new GetWineryByIdResponse()
         {
             Winery = new WineryDto()
             {
                 Id = winery.Id,
                 Name = winery.Name,
+                Country = country,
+                CountryName = winery.Country?.Name,
+                CountryId = winery.CountryId,
                 Description = winery.Description
             }
         };
