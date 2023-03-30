@@ -25,6 +25,8 @@ public sealed class QueryWineriesHandler : IRequestHandler<QueryWineriesRequest,
             {
                 Id = x.Id,
                 Name = x.Name,
+                CountryId = x.CountryId,
+                CountryName = x.Country?.Name,
                 Description = x.Description
             }).ToList()
         };

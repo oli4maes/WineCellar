@@ -36,6 +36,21 @@
                         }
                     </MudSelect>
 
+                    <!-- Winery -->
+                    <MudAutocomplete T="WineryDto"
+                                     Label="Winery"
+                                     @bind-Value="_wine.Winery"
+                                     SearchFunc="@SearchWinery"
+                                     ResetValueOnEmptyText=true
+                                     CoerceText=false
+                                     CoerceValue=false
+                                     AdornmentIcon="@Icons.Material.Filled.Search"
+                                     AdornmentColor="Color.Primary"
+                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                     Disabled="!_editMode"
+                                     For="@(() => _wine.Winery)"
+                                     Class="mt-3"/>
+
                     <!-- Region -->
                     @if (_regions.Any())
                     {
@@ -51,21 +66,6 @@
                             }
                         </MudSelect>
                     }
-
-                    <!-- Winery -->
-                    <MudAutocomplete T="WineryDto"
-                                     Label="Winery"
-                                     @bind-Value="_wine.Winery"
-                                     SearchFunc="@SearchWinery"
-                                     ResetValueOnEmptyText=true
-                                     CoerceText=false
-                                     CoerceValue=false
-                                     AdornmentIcon="@Icons.Material.Filled.Search"
-                                     AdornmentColor="Color.Primary"
-                                     ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                     Disabled="!_editMode"
-                                     For="@(() => _wine.Winery)"
-                                     Class="mt-3"/>
 
                     <!-- Grapes -->
                     @if (Id is not 0 && _editMode)

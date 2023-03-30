@@ -40,11 +40,10 @@ public partial class Detail : ComponentBase
         {
             var response = await _mediator.Send(new GetWineByIdRequest(Id));
             _wine = response.Wine ?? new WineDto();
-            
+
             if (_wine.Winery.CountryId is not null)
             {
-                var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
-                _regions = regionsResponse.Regions;
+                await GetRegions();
             }
         }
         else
@@ -67,22 +66,17 @@ public partial class Detail : ComponentBase
 
         if (Id is 0)
         {
-            // TODO: move logic to check if wine exists to backend
-            var getWineByNameResponse = await _mediator.Send(new GetWineByNameRequest(_wine.Name));
-            if (getWineByNameResponse.Wine != null)
-            {
-                _snackbar.Add($"The wine with name: {getWineByNameResponse.Wine.Name} already exists.", Severity.Error);
-                return;
-            }
-
             var response =
                 await _mediator.Send(new CreateWineRequest(_wine.Name, _wine.WineType, _wine.WineryId, _userName,
                     _wine.Region?.Id));
+
             _wine = response.Wine ?? new WineDto();
 
             if (_wine.Id is not 0)
             {
                 Id = _wine.Id;
+
+                await GetRegions();
 
                 _editMode = false;
                 _snackbar.Add("Saved", Severity.Success);
@@ -152,5 +146,11 @@ public partial class Detail : ComponentBase
 
         var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
         _grapes = getGrapesResponse.Grapes;
+    }
+
+    private async Task GetRegions()
+    {
+        var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
+        _regions = regionsResponse.Regions;
     }
 }

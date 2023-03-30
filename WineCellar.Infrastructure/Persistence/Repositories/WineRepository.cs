@@ -32,6 +32,7 @@ public class WineRepository : IWineRepository
         return await context.Wines
             .Include(x => x.Region)
             .Include(x => x.Winery)
+            .ThenInclude(y => y.Country)
             .Include(x => x.Grapes)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == id);
