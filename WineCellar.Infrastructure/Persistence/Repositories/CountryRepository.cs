@@ -16,6 +16,7 @@ public class CountryRepository : ICountryRepository
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.Countries
+            .OrderBy(x => x.Name)
             .AsNoTracking()
             .ToListAsync();
     }

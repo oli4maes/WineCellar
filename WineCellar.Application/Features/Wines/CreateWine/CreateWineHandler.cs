@@ -1,4 +1,5 @@
 ﻿using WineCellar.Application.Features.Wines.GetWineById;
+using WineCellar.Application.Features.Wines.GetWineByName;
 using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Wines.CreateWine;

@@ -44,16 +44,16 @@ public partial class Detail : ComponentBase
 
         if (Id == 0)
         {
-            var grapeByNameResponse = await _mediator.Send(new GetGrapeByNameRequest(_grape.Name));
-            if (grapeByNameResponse.Grape != null)
-            {
-                _snackbar.Add($"The grape with name: {grapeByNameResponse.Grape.Name} already exists.", Severity.Error);
-                return;
-            }
-
             var response =
                 await _mediator.Send(new CreateGrapeRequest(_grape.Name, _grape.Description, _userName,
                     _grape.GrapeType));
+
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                _snackbar.Add(response.ErrorMessage, Severity.Error);
+                return;
+            }
+
             _grape = response.Grape;
 
             Id = _grape.Id;
@@ -72,7 +72,8 @@ public partial class Detail : ComponentBase
         }
         else
         {
-            await _mediator.Send(new UpdateGrapeRequest(_grape.Id, _grape.Name, _grape.Description, _userName, _grape.GrapeType));
+            await _mediator.Send(new UpdateGrapeRequest(_grape.Id, _grape.Name, _grape.Description, _userName,
+                _grape.GrapeType));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
