@@ -2,20 +2,21 @@
 
 namespace WineCellar.Infrastructure.Persistence.Repositories;
 
-public class CountryRepository : ICountryRepository
+public class RegionRepository : IRegionRepository
 {
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
 
-    public CountryRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
+    public RegionRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<List<Country>> All()
+    public async Task<List<Region>> GetByCountry(int countryId)
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        return await context.Countries
+        return await context.Regions
+            .Where(x => x.CountryId == countryId)
             .AsNoTracking()
             .ToListAsync();
     }

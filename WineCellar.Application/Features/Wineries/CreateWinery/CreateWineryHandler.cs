@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wineries.CreateWinery;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wineries.CreateWinery;
 
 internal sealed class CreateWineryHandler : IRequestHandler<CreateWineryRequest, CreateWineryResponse>
 {

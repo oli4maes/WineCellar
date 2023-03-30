@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Grapes.CreateGrape;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Grapes.CreateGrape;
 
 internal sealed class CreateGrapeHandler : IRequestHandler<CreateGrapeRequest, CreateGrapeResponse>
 {

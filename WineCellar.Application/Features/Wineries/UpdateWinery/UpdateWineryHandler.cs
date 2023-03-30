@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wineries.UpdateWinery;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wineries.UpdateWinery;
 
 internal sealed class UpdateWineryHandler : IRequestHandler<UpdateWineryRequest, UpdateWineryResponse>
 {

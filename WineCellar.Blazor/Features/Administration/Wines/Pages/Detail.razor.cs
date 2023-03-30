@@ -1,5 +1,6 @@
 using WineCellar.Application.Features.Countries.GetCountries;
 using WineCellar.Application.Features.Grapes.GetGrapes;
+using WineCellar.Application.Features.Regions.GetRegionsByCountry;
 using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Application.Features.Wines.AddGrapeToWine;
 using WineCellar.Application.Features.Wines.CreateWine;
@@ -22,26 +23,29 @@ public partial class Detail : ComponentBase
     private WineDto _wine { get; set; } = new();
     private bool _editMode { get; set; }
     private string _userName { get; set; } = string.Empty;
-    private List<WineryDto> _wineries = new();
-    private List<GrapeDto> _grapes = new();
-    private List<CountryDto> _countries = new();
+
+    private List<WineryDto> _wineries { get; set; } = new();
+    private List<GrapeDto> _grapes { get; set; } = new();
+    private List<RegionDto> _regions { get; set; } = new();
     private GrapeDto? _selectedGrape { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var getWineriesResponse = await _mediator.Send(new GetWineriesRequest());
-        _wineries = getWineriesResponse.Wineries.ToList();
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        _userName = authState.User.Identity?.Name ?? string.Empty;
 
-        var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
-        _grapes = getGrapesResponse.Grapes;
-
-        var getCountriesResponse = await _mediator.Send(new GetCountriesRequest());
-        _countries = getCountriesResponse.Countries;
+        await GetInitialData();
 
         if (Id is not 0)
         {
             var response = await _mediator.Send(new GetWineByIdRequest(Id));
             _wine = response.Wine ?? new WineDto();
+            
+            if (_wine.Winery.CountryId is not null)
+            {
+                var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
+                _regions = regionsResponse.Regions;
+            }
         }
         else
         {
@@ -59,9 +63,6 @@ public partial class Detail : ComponentBase
 
     private async void HandleValidSubmit()
     {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        _userName = authState.User.Identity?.Name ?? string.Empty;
-
         _wine.WineryId = _wine.Winery.Id;
 
         if (Id is 0)
@@ -76,7 +77,7 @@ public partial class Detail : ComponentBase
 
             var response =
                 await _mediator.Send(new CreateWineRequest(_wine.Name, _wine.WineType, _wine.WineryId, _userName,
-                    _wine.Country?.Id));
+                    _wine.Region?.Id));
             _wine = response.Wine ?? new WineDto();
 
             if (_wine.Id is not 0)
@@ -97,7 +98,7 @@ public partial class Detail : ComponentBase
         {
             await _mediator.Send(
                 new UpdateWineRequest(_wine.Id, _wine.Name, _wine.WineType, _wine.WineryId, _userName,
-                    _wine.Country?.Id));
+                    _wine.Region?.Id));
 
             _editMode = false;
             _snackbar.Add("Saved", Severity.Success);
@@ -142,5 +143,14 @@ public partial class Detail : ComponentBase
 
             await _mediator.Send(new AddGrapeToWineRequest(_selectedGrape.Id, Id));
         }
+    }
+
+    private async Task GetInitialData()
+    {
+        var getWineriesResponse = await _mediator.Send(new GetWineriesRequest());
+        _wineries = getWineriesResponse.Wineries.ToList();
+
+        var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
+        _grapes = getGrapesResponse.Grapes;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.AddGrapeToWine;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.AddGrapeToWine;
 
 internal class AddGrapeToWineHandler : IRequestHandler<AddGrapeToWineRequest, AddGrapeToWineResponse>
 {

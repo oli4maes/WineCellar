@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wineries.GetWineryById;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wineries.GetWineryById;
 
 internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdRequest, GetWineryByIdResponse>
 {

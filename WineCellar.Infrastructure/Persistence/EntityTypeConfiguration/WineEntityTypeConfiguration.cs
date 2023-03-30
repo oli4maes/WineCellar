@@ -31,8 +31,8 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
                 gw => { gw.HasKey(gw => new { gw.GrapeId, gw.WineId }); }
             );
 
-        builder.HasOne(x => x.Country)
+        builder.HasOne(x => x.Region)
             .WithMany()
-            .HasForeignKey(x => x.CountryId);
+            .HasForeignKey(x => x.RegionId);
     }
 }

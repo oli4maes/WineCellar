@@ -1,3 +1,5 @@
+using WineCellar.Domain.Persistence.Repositories;
+
 namespace WineCellar.Application.Features.Wineries.GetWineryDetail;
 
 public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequest, GetWineryDetailResponse>

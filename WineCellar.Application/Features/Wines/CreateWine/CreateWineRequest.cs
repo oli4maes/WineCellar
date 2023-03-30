@@ -2,4 +2,4 @@
 
 namespace WineCellar.Application.Features.Wines.CreateWine;
 
-public sealed record CreateWineRequest(string Name, WineType WineType, int WineryId, string UserName, int? CountryId) : IRequest<CreateWineResponse>;
+public sealed record CreateWineRequest(string Name, WineType WineType, int WineryId, string UserName, int? RegionId) : IRequest<CreateWineResponse>;

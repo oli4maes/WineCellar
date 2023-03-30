@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WineCellar.Domain.Persistence;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Infrastructure;
 
@@ -16,6 +18,7 @@ public static class DependencyInjection
         services.AddTransient<IWineRepository, WineRepository>();
         services.AddTransient<IWineryRepository, WineryRepository>();
         services.AddTransient<ICountryRepository, CountryRepository>();
+        services.AddTransient<IRegionRepository, RegionRepository>();
 
         return services;
     }

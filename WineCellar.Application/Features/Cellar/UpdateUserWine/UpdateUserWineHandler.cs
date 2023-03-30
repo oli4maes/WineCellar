@@ -1,3 +1,5 @@
+using WineCellar.Domain.Persistence.Repositories;
+
 namespace WineCellar.Application.Features.Cellar.UpdateUserWine;
 
 internal sealed class UpdateUserWineHandler : IRequestHandler<UpdateUserWineRequest, UpdateUserWineResponse>
