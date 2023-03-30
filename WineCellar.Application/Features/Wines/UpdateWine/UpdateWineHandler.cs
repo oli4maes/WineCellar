@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.UpdateWine;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.UpdateWine;
 
 internal sealed class UpdateWineHandler : IRequestHandler<UpdateWineRequest, UpdateWineResponse>
 {
@@ -17,7 +19,7 @@ internal sealed class UpdateWineHandler : IRequestHandler<UpdateWineRequest, Upd
             Name = request.Name,
             WineType = request.WineType,
             WineryId = request.WineryId,
-            CountryId = request.CountryId,
+            RegionId = request.RegionId,
             LastModifiedBy = request.UserName
         };
 

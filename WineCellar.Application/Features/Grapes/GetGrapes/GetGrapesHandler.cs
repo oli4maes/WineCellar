@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Grapes.GetGrapes;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Grapes.GetGrapes;
 
 internal sealed class GetGrapesHandler : IRequestHandler<GetGrapesRequest, GetGrapesResponse>
 {

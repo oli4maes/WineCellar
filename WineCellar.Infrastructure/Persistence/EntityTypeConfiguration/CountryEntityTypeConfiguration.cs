@@ -14,6 +14,9 @@ public class CountryEntityTypeConfiguration : IEntityTypeConfiguration<Country>
             .IsRequired()
             .HasMaxLength(250);
 
+        builder.HasMany<Region>(x => x.Regions)
+            .WithOne(y => y.Country);
+
         builder.HasData(
             new { Id = 1, Name = "Argentina" },
             new { Id = 2, Name = "Australia" },

@@ -15,7 +15,7 @@ public class WineDto
 
     public List<GrapeDto> Grapes { get; set; } = new();
 
-    public int? CountryId { get; set; }
-    public string? CountryName { get; set; }
-    public CountryDto? Country { get; set; }
+    public int? RegionId { get; set; }
+    public string? RegionName { get; set; }
+    public RegionDto? Region { get; set; }
 }

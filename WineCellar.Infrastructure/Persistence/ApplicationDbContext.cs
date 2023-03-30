@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Wine> Wines { get; set; }
     public DbSet<UserWine> UserWines { get; set; }
     public DbSet<Country> Countries { get; set; }
+    public DbSet<Region> Regions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,7 @@ public class ApplicationDbContext : DbContext
         CreateWineryModel(modelBuilder);
         CreateUserWineModel(modelBuilder);
         CreateCountryModel(modelBuilder);
+        CreateRegionModel(modelBuilder);
     }
 
     public override void Dispose()
@@ -60,5 +62,10 @@ public class ApplicationDbContext : DbContext
     private void CreateCountryModel(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new CountryEntityTypeConfiguration());
+    }
+
+    private void CreateRegionModel(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new RegionEntityTypeConfiguration());
     }
 }

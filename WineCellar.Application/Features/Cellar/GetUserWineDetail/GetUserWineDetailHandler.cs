@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Cellar.GetUserWineDetail;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Cellar.GetUserWineDetail;
 
 internal sealed class GetUserWineByIdHandler : IRequestHandler<GetUserWineDetailRequest, GetUserWineDetailResponse>
 {

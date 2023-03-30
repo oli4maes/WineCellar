@@ -1,7 +1,7 @@
 ﻿using WineCellar.Application.Features.Cellar.GetCellarOverview;
 using WineCellar.Domain.Entities;
 using WineCellar.Domain.Enums;
-using WineCellar.Domain.Interfaces.Repositories;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.UnitTests.Features.Cellar.GetCellarOverview;
 

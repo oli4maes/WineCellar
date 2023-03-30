@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.GetWines;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.GetWines;
 
 internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWinesResponse>
 {
@@ -20,8 +22,8 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
                 Id = x.Id,
                 Name = x.Name,
                 WineType = x.WineType,
-                CountryId = x.CountryId,
-                CountryName = x.Country?.Name,
+                RegionId = x.RegionId,
+                RegionName = x.Region?.Name,
                 WineryName = x.Winery.Name
             })
         };

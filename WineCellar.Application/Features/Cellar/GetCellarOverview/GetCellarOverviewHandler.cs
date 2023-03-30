@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Cellar.GetCellarOverview;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Cellar.GetCellarOverview;
 
 internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOverviewRequest, GetCellarOverviewResponse>
 {

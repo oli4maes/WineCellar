@@ -1,4 +1,5 @@
 ﻿using WineCellar.Application.Features.Wines.GetWineById;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Wines.CreateWine;
 
@@ -20,7 +21,7 @@ internal sealed class CreateWineHandler : IRequestHandler<CreateWineRequest, Cre
             Name = request.Name,
             WineType = request.WineType,
             WineryId = request.WineryId,
-            CountryId = request.CountryId,
+            RegionId = request.RegionId,
             CreatedBy = request.UserName
         };
 

@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Application.Features.Wines.RemoveGrapeFromWine;
+﻿using WineCellar.Domain.Persistence.Repositories;
+
+namespace WineCellar.Application.Features.Wines.RemoveGrapeFromWine;
 
 public class RemoveGrapeFromWineHandler : IRequestHandler<RemoveGrapeFromWineRequest, RemoveGrapeFromWineResponse>
 {
