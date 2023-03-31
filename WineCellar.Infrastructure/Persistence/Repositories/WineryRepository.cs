@@ -1,4 +1,5 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using System.Collections;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Infrastructure.Persistence.Repositories;
 
@@ -45,6 +46,7 @@ public class WineryRepository : IWineryRepository
 
         wineryModel.Name = winery.Name;
         wineryModel.Description = winery.Description;
+        wineryModel.IsSpotlit = winery.IsSpotlit;
         wineryModel.CountryId = winery.CountryId;
         wineryModel.LastModified = DateTime.UtcNow;
         wineryModel.LastModifiedBy = winery.LastModifiedBy;
@@ -69,6 +71,19 @@ public class WineryRepository : IWineryRepository
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
         return await context.Wineries
+            .Include(x => x.Country)
+            .OrderBy(x => x.Name)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Winery>> GetAllSpotlit()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wineries
+            .Where(x => x.IsSpotlit)
+            .OrderBy(x => x.Name)
             .Include(x => x.Country)
             .AsNoTracking()
             .ToListAsync();
@@ -96,5 +111,27 @@ public class WineryRepository : IWineryRepository
             .Include(x => x.Country)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+    }
+
+    public async Task<bool> ToggleIsSpotlit(int id, string userName)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (wineryModel is not null)
+        {
+            wineryModel.IsSpotlit = !wineryModel.IsSpotlit;
+            wineryModel.LastModified = DateTime.UtcNow;
+            wineryModel.LastModifiedBy = userName;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        return false;
     }
 }

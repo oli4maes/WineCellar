@@ -9,9 +9,19 @@ public class WineryEntityTypeConfiguration : IEntityTypeConfiguration<Winery>
         builder.ToTable("Wineries");
 
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Name).IsRequired().HasMaxLength(250);
-        builder.Property(x => x.Description).HasMaxLength(2000);
-        builder.HasMany(x => x.Wines).WithOne(x => x.Winery);
+
+        builder.Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(250);
+
+        builder.Property(x => x.Description)
+            .HasMaxLength(2000);
+
+        builder.Property(x => x.IsSpotlit)
+            .HasDefaultValue(false);
+
+        builder.HasMany(x => x.Wines)
+            .WithOne(x => x.Winery);
 
         builder.HasOne(x => x.Country)
             .WithMany()
