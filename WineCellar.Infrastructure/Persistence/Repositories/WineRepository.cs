@@ -149,6 +149,7 @@ public class WineRepository : IWineRepository
 
         return await context.Wines
             .Where(x => x.WineryId == wineryId)
+            .Include(x => x.Region)
             .AsNoTracking()
             .ToListAsync();
     }

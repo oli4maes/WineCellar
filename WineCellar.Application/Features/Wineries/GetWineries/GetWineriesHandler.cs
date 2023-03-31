@@ -13,7 +13,16 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
 
     public async ValueTask<GetWineriesResponse> Handle(GetWineriesRequest request, CancellationToken cancellationToken)
     {
-        var wineries = await _wineryRepository.All();
+        var wineries = Enumerable.Empty<Winery>();
+
+        if (request.IsSpotlit)
+        {
+            wineries = await _wineryRepository.GetAllSpotlit();
+        }
+        else
+        {
+            wineries = await _wineryRepository.All();
+        }
 
         return new GetWineriesResponse()
         {
@@ -23,7 +32,8 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
                 Name = x.Name,
                 CountryId = x.CountryId,
                 CountryName = x.Country?.Name,
-                Description = x.Description
+                Description = x.Description,
+                IsSpotlit = x.IsSpotlit
             }).ToList()
         };
     }

@@ -1,28 +1,27 @@
 using WineCellar.Application.Features.Wineries.DeleteWinery;
 using WineCellar.Application.Features.Wineries.GetWineries;
+using WineCellar.Application.Features.Wineries.SetWineryIsSpotlit;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
 namespace WineCellar.Blazor.Features.Administration.Wineries.Pages;
 
 public partial class Overview : ComponentBase
 {
-    [Inject]
-    private Mediator.IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
+    [Inject] private ISnackbar _snackbar { get; set; }
+    [Inject] private NavigationManager _navManager { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
-    [Inject]
-    private ISnackbar _snackbar { get; set; }
-
-    [Inject]
-    private NavigationManager _navManager { get; set; }
-
-    [Inject]
-    private IDialogService _dialogService { get; set; }
-
-    private IEnumerable<WineryDto> _wineries = Enumerable.Empty<WineryDto>();
-    private string _searchString = String.Empty;
+    private IEnumerable<WineryDto> _wineries { get; set; } = Enumerable.Empty<WineryDto>();
+    private string _searchString { get; set; } = String.Empty;
+    private string _userName { get; set; } = String.Empty;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();    
+        _userName = authState.User.Identity?.Name ?? string.Empty;
+        
         await GetWineries();
     }
 
@@ -69,6 +68,18 @@ public partial class Overview : ComponentBase
                 _snackbar.Add($"Could not delete winery {winery.Name}", Severity.Error);
             }
         }
+    }
+
+    private async Task ToggleIsSpotlit(WineryDto winery)
+    {
+        var response = await _mediator.Send(new SetWineryIsSpotlitRequest(winery.Id, _userName));
+
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _snackbar.Add(response.ErrorMessage, Severity.Error);
+        }
+
+        await GetWineries();
     }
 
     private async Task GetWineries()

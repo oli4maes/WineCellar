@@ -7,6 +7,7 @@ public class Winery : BaseAuditableEntity
 {
     public string Name { get; set; } = String.Empty;
     public string? Description { get; set; }
+    public bool IsSpotlit { get; set; }
 
     public int? CountryId { get; set; }
     public Country? Country { get; set; }

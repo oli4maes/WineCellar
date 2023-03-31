@@ -3,25 +3,29 @@
 
 <PageTitle>Kave - Wineries</PageTitle>
 
-<MudGrid>
-    <MudItem xs="12" md="6">
-        <MudText Typo="Typo.h3" Color="Color.Primary" Class="pb-1">Wineries</MudText>
-    </MudItem>
-    <MudItem xs="12" md="6">
-        <WinerySearchInput OnSearchWineries="SearchWineries"/>
-    </MudItem>
-</MudGrid>
+<MudContainer Fixed="true">
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudText Typo="Typo.h4" Class="mt-4">Wineries</MudText>
+        </MudItem>
+        <MudItem xs="12" md="6" Class="mt-1">
+            <WinerySearchInput OnSearchWineries="SearchWineries"/>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
 <MudDivider/>
 
-
-@if (_wineries.Any())
-{
-    <MudGrid Class="pt-4 d-flex align-stretch">
-        @foreach (var winery in _wineries)
-        {
-            <MudItem xs="12" md="6">
-                <WineryCard Winery="winery" OnNavigateToWineryDetail="NavigateToWineryDetail"/>
-            </MudItem>
-        }
-    </MudGrid>
-}
+<MudContainer Fixed="true">
+    @if (_wineries.Any())
+    {
+        <MudGrid Class="pt-4 d-flex align-stretch">
+            @foreach (var winery in _wineries)
+            {
+                <MudItem xs="6" md="4">
+                    <WineryCard Winery="winery" OnNavigateToWineryDetail="NavigateToWineryDetail"/>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>

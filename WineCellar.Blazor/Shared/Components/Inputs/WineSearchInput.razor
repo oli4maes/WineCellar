@@ -1,11 +1,11 @@
 ﻿<MudAutocomplete T=WineDto
-                 Label="Search wine"
                  SearchFunc=@SearchWine
                  ResetValueOnEmptyText=true
                  CoerceText=false
                  CoerceValue=false
                  AdornmentIcon=@Icons.Material.Filled.Search
-                 AdornmentColor="Color.Secondary"
+                 Adornment="Adornment.Start"
+                 Placeholder="Search"
                  ToStringFunc=@(e => e == null ? null : $"{e.Name} - {e.WineryName}")
                  Variant=Variant.Text
                  Dense=@Dense

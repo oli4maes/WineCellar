@@ -1,0 +1,54 @@
+﻿@using WineCellar.Application.Features.Cellar.GetCellarOverview
+<MudTable T="GetCellarOverviewResponse.UserWineOverviewDto"
+          Items="@UserWines"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          Loading="@Loading"
+          LoadingProgressColor="Color.Primary"
+          Filter="new Func<GetCellarOverviewResponse.UserWineOverviewDto, bool>(FilterFunc)"
+          OnRowClick="RowClickEvent"
+          FixedHeader="true"
+          Dense="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h5" Class="pt-4">Wines</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="_searchString"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"/>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.UserWineOverviewDto, object>(x => x.WineryName)"
+                               InitialDirection="SortDirection.Ascending">
+                Winery
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.UserWineOverviewDto, object>(x => x.WineName)">Wine</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.UserWineOverviewDto, object>(x => x.WineType)">Type</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.UserWineOverviewDto, object>(x => x.RegionName)">Region</MudTableSortLabel>
+        </MudTh>
+        <MudTh>Amount</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Winery">@context.WineryName</MudTd>
+        <MudTd DataLabel="Wine">@context.WineName</MudTd>
+        <MudTd DataLabel="Type" HideSmall="true">@context.WineType</MudTd>
+        <MudTd DataLabel="Region">@context.RegionName</MudTd>
+        <MudTd DataLabel="Amount">@context.Amount</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Remove" @onclick="() => RemoveBottle(context.Id)" Size="Size.Small" Color="Color.Primary"/>
+            <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="() => AddBottle(context.Id)" Size="Size.Small" Color="Color.Primary"/>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Items per page"/>
+    </PagerContent>
+</MudTable>

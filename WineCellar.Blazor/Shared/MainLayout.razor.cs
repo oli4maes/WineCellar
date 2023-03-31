@@ -5,7 +5,7 @@ public partial class MainLayout
     private bool _drawerOpen = true;
     private bool _isDarkMode;
     private readonly DrawerClipMode _clipMode = DrawerClipMode.Always;
-    private MudThemeProvider _mudThemeProvider;
+    private MudThemeProvider? _mudThemeProvider;
 
     private readonly MudTheme _theme = new()
     {
@@ -16,41 +16,44 @@ public partial class MainLayout
                 FontFamily = new[] { "Open Sans", "Helvetica", "Arial", "sans-serif" },
                 FontWeight = 500
             },
-            H1 = new H1()
+            H1 = new H1() // ONLY USED FOR LOGIN SCREEN
             {
-                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 900
             },
-            H2 = new H2()
+            H2 = new H2() // ONLY USED FOR APPBAR LOGO
             {
-                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" }
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 900,
+                FontSize = "2.125rem"
             },
             H3 = new H3()
             {
-                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
                 FontWeight = 200
             },
-            H4 = new H4()
+            H4 = new H4() // USED FOR PAGE HEADERS
             {
-                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
+                FontWeight = 300
+            },
+            H5 = new H5() // USED FOR CARD HEADERS
+            {
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
                 FontWeight = 400
             },
-            H5 = new H5()
+            H6 = new H6()
             {
-                FontFamily = new[] { "Poppins", "Helvetica", "Arial", "sans-serif" },
-                FontWeight = 300
+                FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
             }
         },
         Palette = new Palette()
         {
-            DrawerBackground = Colors.Grey.Lighten5,
-            AppbarBackground = "#42707f",
-            AppbarText = "#fff6e5",
-            Primary = "#42707f",
-            PrimaryContrastText = "#fff6e5",
-            Secondary = "#B87D4B",
-            SecondaryContrastText = "#19282C",
-            Tertiary = "#fff6e5",
-            TertiaryContrastText = "#B87D4B"
+            DrawerBackground = "#fbfbfc",
+            TextPrimary = "#5f4d46",
+            Background = "#fbfbfc",
+            AppbarBackground = "#fbfbfc",
+            Primary = "#f1511b"
         }
     };
 
