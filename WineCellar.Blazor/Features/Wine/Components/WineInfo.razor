@@ -2,6 +2,11 @@
 
 @if (Wine is not null)
 {
-    <MudText>@Wine.RegionName - @Wine.Winery.CountryName</MudText>
-    <WineTypeChip WineType="@Wine.WineType"/>
+    <MudLink OnClick="NavigateToWinery" Underline="Underline.None" Color="Color.Default">
+        <MudText Typo="Typo.h5">@Wine?.WineryName</MudText>
+    </MudLink>
+    <MudText Class="mt-2">@Wine.RegionName - @Wine.Winery.CountryName</MudText>
+    <div class="mb-2">
+        <WineTypeChip WineType="@Wine.WineType"/>
+    </div>
 }

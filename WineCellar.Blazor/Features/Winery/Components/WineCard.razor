@@ -13,16 +13,16 @@
         <MudCardContent>
             @if (Wine.IsInUserCellar)
             {
-                <MudIconButton Icon="@Icons.Material.Outlined.Workspaces" 
-                               Color="Color.Primary" 
-                               Title="Wine in cellar" 
+                <MudIconButton Icon="@Icons.Material.Outlined.Workspaces"
+                               Color="Color.Primary"
+                               Title="Wine in cellar"
                                @onclick="NavigateToCellar"/>
             }
             else
             {
-                <MudIconButton Icon="@Icons.Material.Outlined.Add" 
-                               Color="Color.Primary" 
-                               Title="Add to cellar" 
+                <MudIconButton Icon="@Icons.Material.Outlined.Add"
+                               Color="Color.Primary"
+                               Title="Add to cellar"
                                @onclick="AddToCellar"/>
             }
         </MudCardContent>
