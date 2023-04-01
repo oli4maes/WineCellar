@@ -2,5 +2,6 @@
 
 public sealed class CreateWineryResponse
 {
-    public WineryDto Winery { get; set; } = new WineryDto();
+    public string? ErrorMessage { get; set; }
+    public WineryDto Winery { get; set; } = new();
 }

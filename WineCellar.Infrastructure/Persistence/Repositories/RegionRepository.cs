@@ -17,6 +17,7 @@ public class RegionRepository : IRegionRepository
 
         return await context.Regions
             .Where(x => x.CountryId == countryId)
+            .OrderBy(x => x.Name)
             .AsNoTracking()
             .ToListAsync();
     }
