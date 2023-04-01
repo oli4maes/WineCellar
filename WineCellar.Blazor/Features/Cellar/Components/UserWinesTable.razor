@@ -10,13 +10,16 @@
           FixedHeader="true"
           Dense="true">
     <ToolBarContent>
-        <MudText Typo="Typo.h5" Class="pt-4">Wines</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Primary">Wines</MudText>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString"
                       Placeholder="Search"
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Filled.Search"
-                      IconSize="Size.Medium"/>
+                      IconSize="Size.Medium"
+                      HelperText="Press enter to search"
+                      HelperTextOnFocus="true"/>
+
     </ToolBarContent>
     <HeaderContent>
         <MudTh>

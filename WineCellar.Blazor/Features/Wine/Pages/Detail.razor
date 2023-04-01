@@ -3,38 +3,47 @@
 
 <PageTitle>Kave - Wine</PageTitle>
 
-<div class="d-flex flex-row justify-space-between">
-    <MudText Typo="Typo.h3" Color="Color.Primary">@_wine?.Name</MudText>
-    @if (!_isWineInUserWines)
-    {
-        <MudFab Title="Add wine to cellar"
-                StartIcon="@Icons.Material.Filled.Add"
-                Color="Color.Primary"
-                @onclick="AddWineToCellar"
-                Size="Size.Large"/>
-    }
-</div>
-<MudLink OnClick="NavigateToWinery" Underline="Underline.None">
-    <MudText Typo="Typo.h5" Color="Color.Primary">@_wine?.WineryName</MudText>
-</MudLink>
+<MudContainer Fixed="true">
+    <div class="d-flex flex-row justify-space-between">
+        <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_wine?.Name</MudText>
+        @if (!_isWineInUserWines)
+        {
+            <MudFab Title="Add wine to cellar"
+                    StartIcon="@Icons.Material.Filled.Add"
+                    Color="Color.Primary"
+                    @onclick="AddWineToCellar"
+                    Size="Size.Medium"
+                    Class="mt-2"/>
+        }
+    </div>
+</MudContainer>
 
 <MudDivider/>
-<MudGrid Class="pt-4">
-    <MudItem md="12">
-        <WineInfo Wine="_wine"/>
-    </MudItem>
 
-    @if (_wine?.Grapes.Count > 0)
-    {
-        <MudItem xs="12" md="6">
-            <GrapesList Grapes="_wine.Grapes"/>
-        </MudItem>
-    }
+<MudContainer Fixed="true" Class="mt-4">
+    <WineInfo Wine="_wine" OnNavigateToWinery="NavigateToWinery"/>
+</MudContainer>
 
-    @if (_isWineInUserWines)
-    {
-        <MudItem xs="12" md="6">
-            <WineInCellar Amount="@_userWine.Amount" OnAddBottle="AddBottle" OnRemoveBottle="RemoveBottle"/>
-        </MudItem>
-    }
-</MudGrid>
+<MudDivider/>
+
+<MudContainer Fixed="true">
+    <MudGrid Class="mt-4">
+        @if (_wine?.Grapes.Count > 0)
+        {
+            <MudItem xs="12" md="6">
+                <GrapesList Grapes="_wine.Grapes"/>
+            </MudItem>
+        }
+    </MudGrid>
+
+    <MudGrid Class="mt-2">
+        @if (_isWineInUserWines)
+        {
+            <MudItem xs="12" md="6">
+                <WineInCellar Amount="@_userWine.Amount"
+                              OnAddBottle="AddBottle"
+                              OnRemoveBottle="RemoveBottle"/>
+            </MudItem>
+        }
+    </MudGrid>
+</MudContainer>
