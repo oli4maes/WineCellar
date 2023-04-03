@@ -45,7 +45,8 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
                 IsInUserCellar = isWineInUserCellar,
                 Id = wine.Id,
                 Name = wine.Name,
-                WineType = wine.WineType
+                WineType = wine.WineType,
+                RegionName = wine.Region?.Name
             });
         }
 

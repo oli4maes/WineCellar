@@ -1,10 +1,10 @@
 ﻿<MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2" Margin="Margin.Dense">
     <MudNavLink Icon="@Icons.Material.Outlined.Workspaces" Href="/Cellar">Cellar</MudNavLink>
     <MudNavLink Icon="@Icons.Material.Outlined.Warehouse" Href="/Wineries">Wineries</MudNavLink>
-    
+
     <AuthorizeView Policy="AdminRole">
         <Authorized>
-            <MudNavGroup Title="Administration" Icon="@Icons.Material.Filled.Settings" Expanded="false" >
+            <MudNavGroup Title="Administration" Icon="@Icons.Material.Outlined.Settings" Expanded="false">
                 <MudNavLink Href="/Administration/Grapes">Grapes</MudNavLink>
                 <MudNavLink Href="/Administration/Wineries">Wineries</MudNavLink>
                 <MudNavLink Href="/Administration/Wines">Wines</MudNavLink>

@@ -1,5 +1,2 @@
-@if (!string.IsNullOrEmpty(Winery?.CountryName))
-{
-    <MudText>@Winery?.CountryName</MudText>
-}
-<MudText>@Winery?.Description</MudText>
+<MudText Typo="Typo.h5">@Winery?.CountryName</MudText>
+<MudText Class="mt-2 mb-2">@Winery?.Description</MudText>

@@ -1,15 +1,28 @@
-﻿<MudPaper Elevation="2" Class="pa-3">
-    <MudText Typo="Typo.h5" Class="mb-2" Color="Color.Primary">Cellar</MudText>
-    @if (Amount == 1)
-    {
-        <MudText Class="mb-2">1 bottle in cellar.</MudText>
-    }
-    @if (Amount > 1)
-    {
-        <MudText Class="mb-2">@Amount bottles in cellar.</MudText>
-    }
-    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
-        <MudIconButton Icon="@Icons.Material.Filled.Remove" @onclick="RemoveBottle"/>
-        <MudIconButton Icon="@Icons.Material.Filled.Add" @onclick="AddBottle"/>
-    </MudButtonGroup>
-</MudPaper>
+﻿<MudCard Elevation="2">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudLink Href="/Cellar" Underline="Underline.None">
+                <MudText Typo="Typo.h5" Class="mb-2" Color="Color.Primary">Cellar</MudText>
+            </MudLink>
+            @if (Amount == 1)
+            {
+                <MudText Typo="Typo.h6">1 bottle in cellar.</MudText>
+            }
+            @if (Amount > 1)
+            {
+                <MudText Typo="Typo.h6">@Amount bottles in cellar.</MudText>
+            }
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudIconButton Icon="@Icons.Material.Filled.Remove"
+                       @onclick="RemoveBottle"
+                       Color="Color.Primary"
+                       Title="Remove a bottle"/>
+
+        <MudIconButton Icon="@Icons.Material.Filled.Add"
+                       @onclick="AddBottle"
+                       Color="Color.Primary"
+                       Title="Add a bottle"/>
+    </MudCardContent>
+</MudCard>

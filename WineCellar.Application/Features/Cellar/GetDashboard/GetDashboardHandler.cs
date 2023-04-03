@@ -39,17 +39,33 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             { WineType.Red, amountOfReds },
             { WineType.Sparkling, amountOfSparkling }
         };
-        var favouriteWineType = GetFavouriteWineType(wineTypeDict);
+
+        WineType? favouriteWineType = null;
+        if (userWines.Any())
+        {
+            favouriteWineType = GetFavouriteWineType(wineTypeDict);
+        }
 
         var amountOfBottlesPerWineTypeLabels = new[]
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
-        var favouriteWine = GetFavouriteWine(userWines);
+        var favouriteWine = new Wine();
+        if (userWines.Any())
+        {
+            favouriteWine = GetFavouriteWine(userWines);
+        }
+
         var favouriteWineName = favouriteWine?.Name;
 
         var groupedByWinery = userWines.GroupBy(x => x.Wine!.WineryId);
         var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
-        var favouriteWinery = userWines.First(x => x.Wine?.WineryId == favouriteWineryId).Wine?.Winery;
+
+        var favouriteWinery = new Winery();
+        if (userWines.Any())
+        {
+            favouriteWinery = userWines.First(x => x.Wine?.WineryId == favouriteWineryId).Wine?.Winery;
+        }
+
         var favouriteWineryName = favouriteWinery?.Name;
 
         return new GetDashboardResponse()
@@ -91,20 +107,25 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
     private int? GetFavouriteWinery(IEnumerable<IGrouping<int, UserWine>> grouping)
     {
-        var dict = new Dictionary<int, int>();
-
-        foreach (var x in grouping)
+        if (grouping.Any())
         {
-            var amount = 0;
+            var dict = new Dictionary<int, int>();
 
-            foreach (var uw in x)
+            foreach (var x in grouping)
             {
-                amount += uw.Amount;
+                var amount = 0;
+
+                foreach (var uw in x)
+                {
+                    amount += uw.Amount;
+                }
+
+                dict.Add(x.Key, amount);
             }
 
-            dict.Add(x.Key, amount);
+            return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
         }
 
-        return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+        return null;
     }
 }

@@ -2,8 +2,16 @@
 
 <PageTitle>Kave - Cellar</PageTitle>
 
-<MudText Typo="Typo.h3" Color="Color.Primary">Cellar</MudText>
+<MudContainer Fixed="true">
+    <MudText Typo="Typo.h4" Class="mt-3 mb-2">Cellar</MudText>
+</MudContainer>
 
-<div class="pt-6">
-    <UserWinesDataGrid UserWines="@_userWines" OnOpenWine="OpenWine" OnDeleteUserWine="DeleteUserWine"/>
-</div>
+<MudDivider/>
+
+<MudContainer Fixed="true" Class="pt-4">
+    <UserWinesTable UserWines="_userWines"
+                    OnOpenWine="OpenWine"
+                    Loading="_loading"
+                    OnAddBottle="AddBottle"
+                    OnRemoveBottle="RemoveBottle"/>
+</MudContainer>
