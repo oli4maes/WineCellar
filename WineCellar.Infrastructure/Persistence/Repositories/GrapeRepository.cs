@@ -64,7 +64,7 @@ public class GrapeRepository :  IGrapeRepository
         return entity;
     }
 
-    public async Task<IEnumerable<Grape>> All()
+    public async Task<List<Grape>> All()
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 

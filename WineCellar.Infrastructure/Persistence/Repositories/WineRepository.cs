@@ -11,7 +11,7 @@ public class WineRepository : IWineRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<IEnumerable<Wine>> All()
+    public async Task<List<Wine>> All()
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
@@ -142,7 +142,7 @@ public class WineRepository : IWineRepository
             .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 
-    public async Task<IEnumerable<Wine>> GetByWineryId(int wineryId)
+    public async Task<List<Wine>> GetByWineryId(int wineryId)
     {
         ArgumentNullException.ThrowIfNull(wineryId);
 
@@ -153,5 +153,41 @@ public class WineRepository : IWineRepository
             .Include(x => x.Region)
             .AsNoTracking()
             .ToListAsync();
+    }
+
+    public async Task<List<Wine>> GetAllSpotlit()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Wines
+            .Include(x => x.Region)
+            .ThenInclude(y => y.Country)
+            .Include(x => x.Winery)
+            .Where(x => x.IsSpotlit)
+            .OrderBy(x => x.Name)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<bool> ToggleIsSpotlit(int id, string userName)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        var wineModel = await context.Wines.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (wineModel is not null)
+        {
+            wineModel.IsSpotlit = !wineModel.IsSpotlit;
+            wineModel.LastModified = DateTime.UtcNow;
+            wineModel.LastModifiedBy = userName;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        return false;
     }
 }

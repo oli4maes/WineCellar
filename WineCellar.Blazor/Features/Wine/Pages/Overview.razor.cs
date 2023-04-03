@@ -1,22 +1,20 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.AddWineToCellar;
-using WineCellar.Application.Features.Wineries.GetWineryDetail;
+using WineCellar.Application.Features.Wines.GetWines;
+using WineCellar.Application.Features.Wines.QueryWines;
 
-namespace WineCellar.Blazor.Features.Winery.Pages;
+namespace WineCellar.Blazor.Features.Wine.Pages;
 
-public partial class Detail : ComponentBase
+public partial class Overview : ComponentBase
 {
-    [Parameter] public int Id { get; set; }
     [Inject] private IMediator _mediator { get; set; }
-    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
 
+    private List<WineDto> _wines { get; set; } = new();
     private string _auth0Id { get; set; } = String.Empty;
     private string _userName { get; set; } = String.Empty;
-    private WineryDto _winery { get; set; }
-
-    private IEnumerable<WineDto> _wines { get; set; } = new List<WineDto>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,6 +23,17 @@ public partial class Detail : ComponentBase
         _userName = authState.User.Identity?.Name ?? string.Empty;
 
         await GetData();
+    }
+
+    private async void SearchWines(string query)
+    {
+        if (!string.IsNullOrEmpty(query))
+        {
+            var response = await _mediator.Send(new QueryWinesRequest(query, _auth0Id));
+            _wines = response.Wines;
+
+            StateHasChanged();
+        }
     }
 
     private void NavigateToWineDetail(int wineId)
@@ -51,8 +60,7 @@ public partial class Detail : ComponentBase
 
     private async Task GetData()
     {
-        var getWineryByIdResponse = await _mediator.Send(new GetWineryDetailRequest(Id, _auth0Id));
-        _winery = getWineryByIdResponse.Winery ?? new WineryDto();
-        _wines = getWineryByIdResponse.Wines.OrderByDescending(x => x.IsInUserCellar);
+        var response = await _mediator.Send(new GetWinesRequest(_auth0Id, true));
+        _wines = response.Wines.OrderBy(x => x.IsInUserCellar).ToList();
     }
 }

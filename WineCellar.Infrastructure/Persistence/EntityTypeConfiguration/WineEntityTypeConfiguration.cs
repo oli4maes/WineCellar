@@ -16,6 +16,9 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
         builder.Property(x => x.WineType)
             .IsRequired();
 
+        builder.Property(x => x.IsSpotlit)
+            .HasDefaultValue(false);
+
         builder
             .HasMany(wine => wine.Grapes)
             .WithMany(grape => grape.Wines)

@@ -2,5 +2,5 @@
 
 public sealed class GetWinesResponse
 {
-    public IEnumerable<WineDto> Wines { get; set; } = new List<WineDto>();
+    public List<WineDto> Wines { get; set; } = new ();
 }

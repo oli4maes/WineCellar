@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using WineCellar.Domain.Persistence.Repositories;
+﻿using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Infrastructure.Persistence.Repositories;
 
@@ -66,7 +65,7 @@ public class WineryRepository : IWineryRepository
         return entity;
     }
 
-    public async Task<IEnumerable<Winery>> All()
+    public async Task<List<Winery>> All()
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
@@ -78,7 +77,7 @@ public class WineryRepository : IWineryRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Winery>> GetAllSpotlit()
+    public async Task<List<Winery>> GetAllSpotlit()
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
