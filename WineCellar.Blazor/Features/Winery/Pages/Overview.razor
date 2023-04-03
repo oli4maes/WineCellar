@@ -1,5 +1,6 @@
 ﻿@page "/Wineries"
 @using WineCellar.Blazor.Features.Winery.Components
+@using WineCellar.Blazor.Shared.Components.Inputs
 
 <PageTitle>Kave - Wineries</PageTitle>
 
@@ -9,7 +10,7 @@
             <MudText Typo="Typo.h4" Class="mt-4">Wineries</MudText>
         </MudItem>
         <MudItem xs="12" md="6" Class="mt-1">
-            <WinerySearchInput OnSearchWineries="SearchWineries"/>
+            <SearchInput OnSearch="SearchWineries"/>
         </MudItem>
     </MudGrid>
 </MudContainer>

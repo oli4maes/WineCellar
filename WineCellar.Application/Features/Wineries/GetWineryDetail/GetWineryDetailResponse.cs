@@ -6,14 +6,5 @@ public sealed class GetWineryDetailResponse
 {
     public string? ErrorMessage { get; set; }
     public WineryDto? Winery { get; set; }
-    public IEnumerable<WineDto> Wines { get; set; } = new List<WineDto>();
-
-    public sealed class WineDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = String.Empty;
-        public WineType WineType { get; set; }
-        public bool IsInUserCellar { get; set; }
-        public string? RegionName { get; set; }
-    }
+    public List<WineDto> Wines { get; set; } = new ();
 }

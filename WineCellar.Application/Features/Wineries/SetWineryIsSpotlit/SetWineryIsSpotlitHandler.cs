@@ -13,9 +13,9 @@ internal sealed class SetWineryIsSpotlitHandler : IRequestHandler<SetWineryIsSpo
     
     public async ValueTask<SetWineryIsSpotlitResponse> Handle(SetWineryIsSpotlitRequest request, CancellationToken cancellationToken)
     {
-        var succes = await _wineryRepository.ToggleIsSpotlit(request.WineryId, request.UserName);
+        var success = await _wineryRepository.ToggleIsSpotlit(request.WineryId, request.UserName);
 
-        if (succes)
+        if (success)
         {
             return new SetWineryIsSpotlitResponse();
         }

@@ -1,5 +1,6 @@
 using WineCellar.Application.Features.Wines.DeleteWine;
 using WineCellar.Application.Features.Wines.GetWines;
+using WineCellar.Application.Features.Wines.SetWineIsSpotlit;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
 namespace WineCellar.Blazor.Features.Administration.Wines.Pages;
@@ -10,12 +11,17 @@ public partial class Overview : ComponentBase
     [Inject] private ISnackbar _snackbar { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
     [Inject] private IDialogService _dialogService { get; set; }
+    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
     private IEnumerable<WineDto> _wines = Enumerable.Empty<WineDto>();
     private string _searchString = String.Empty;
+    private string _userName { get; set; } = String.Empty;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();    
+        _userName = authState.User.Identity?.Name ?? string.Empty;
+        
         await GetWines();
     }
 
@@ -66,7 +72,19 @@ public partial class Overview : ComponentBase
 
     private async Task GetWines()
     {
-        var response = await _mediator.Send(new GetWinesRequest());
+        var response = await _mediator.Send(new GetWinesRequest(null));
         _wines = response.Wines;
+    }
+    
+    private async Task ToggleIsSpotlit(WineDto wine)
+    {
+        var response = await _mediator.Send(new SetWineIsSpotlitRequest(wine.Id, _userName));
+
+        if (!string.IsNullOrEmpty(response.ErrorMessage))
+        {
+            _snackbar.Add(response.ErrorMessage, Severity.Error);
+        }
+
+        await GetWines();
     }
 }
