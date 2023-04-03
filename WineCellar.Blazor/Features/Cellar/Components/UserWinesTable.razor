@@ -1,4 +1,6 @@
 ﻿@using WineCellar.Application.Features.Cellar.GetCellarOverview
+@using WineCellar.Blazor.Shared.Components.Common
+
 <MudTable T="GetCellarOverviewResponse.UserWineOverviewDto"
           Items="@UserWines"
           Hover="true"
@@ -43,7 +45,10 @@
     <RowTemplate>
         <MudTd DataLabel="Winery">@context.WineryName</MudTd>
         <MudTd DataLabel="Wine">@context.WineName</MudTd>
-        <MudTd DataLabel="Type" HideSmall="true">@context.WineType</MudTd>
+        <MudTd DataLabel="Type" HideSmall="true">
+            <WineTypeDot WineType="@context.WineType" />
+            @context.WineType
+        </MudTd>
         <MudTd DataLabel="Region">@context.RegionName</MudTd>
         <MudTd DataLabel="Amount">@context.Amount</MudTd>
         <MudTd DataLabel="Actions">
