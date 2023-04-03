@@ -11,7 +11,7 @@ public class UserWineRepository : IUserWineRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<IEnumerable<UserWine>> All()
+    public async Task<List<UserWine>> All()
     {
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
@@ -58,7 +58,7 @@ public class UserWineRepository : IUserWineRepository
         return true;
     }
 
-    public async Task<IEnumerable<UserWine>> GetUserWines(string auth0Id)
+    public async Task<List<UserWine>> GetUserWines(string auth0Id)
     {
         ArgumentException.ThrowIfNullOrEmpty(auth0Id);
 
@@ -73,7 +73,7 @@ public class UserWineRepository : IUserWineRepository
             .ToListAsync();
     }
 
-    public async Task<UserWine?> GetByWineId(int wineId)
+    public async Task<UserWine?> GetByWineId(int wineId, string auth0Id)
     {
         ArgumentNullException.ThrowIfNull(wineId);
 
@@ -81,9 +81,9 @@ public class UserWineRepository : IUserWineRepository
 
         return await context.UserWines!
             .Include(x => x.Wine)
-            .ThenInclude(w => w.Winery)
+            .ThenInclude(w => w!.Winery)
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Wine.Id == wineId);
+            .SingleOrDefaultAsync(x => x.Wine!.Id == wineId && x.Auth0Id == auth0Id);
     }
 
     public async Task Update(UserWine userWine)

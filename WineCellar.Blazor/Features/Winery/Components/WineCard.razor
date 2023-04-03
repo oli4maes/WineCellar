@@ -4,7 +4,14 @@
         <MudCardHeader>
             <CardHeaderContent>
                 <MudText Typo="Typo.h5" Class="mb-2" Color="Color.Primary">@Wine?.Name</MudText>
-                <MudText Typo="Typo.h6">@Wine?.RegionName</MudText>
+                @if (ShowWinery)
+                {
+                    <MudText Typo="Typo.h6">@Wine?.WineryName</MudText>
+                }
+                @if (!ShowWinery)
+                {
+                    <MudText Typo="Typo.h6">@Wine?.RegionName</MudText>
+                }
             </CardHeaderContent>
             <CardHeaderActions>
                 <WineTypeChip WineType="@Wine.WineType"/>

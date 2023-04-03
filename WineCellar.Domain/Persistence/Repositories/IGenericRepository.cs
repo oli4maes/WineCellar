@@ -3,7 +3,7 @@
 public interface IGenericRepository<T> where T : class
 {
     // Get all entities
-    Task<IEnumerable<T>> All();
+    Task<List<T>> All();
 
     // Get specific entity by id
     Task<T?> GetById(int id);

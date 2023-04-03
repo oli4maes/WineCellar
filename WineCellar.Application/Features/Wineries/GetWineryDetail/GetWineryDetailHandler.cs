@@ -33,14 +33,14 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
 
         var wines = await _wineRepository.GetByWineryId(request.WineryId);
         var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
-        var wineryWines = new List<GetWineryDetailResponse.WineDto>();
+        var wineryWines = new List<WineDto>();
 
         foreach (var wine in wines)
         {
             var enumerable = userWines.ToList();
             bool isWineInUserCellar = enumerable.Any(x => x.WineId == wine.Id);
 
-            wineryWines.Add(new GetWineryDetailResponse.WineDto()
+            wineryWines.Add(new WineDto()
             {
                 IsInUserCellar = isWineInUserCellar,
                 Id = wine.Id,

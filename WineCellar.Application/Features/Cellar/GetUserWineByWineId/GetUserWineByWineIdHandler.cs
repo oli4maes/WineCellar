@@ -13,7 +13,7 @@ public sealed class GetUserWineByWineIdHandler : IRequestHandler<GetUserWineByWi
 
     public async ValueTask<GetUserWineByWineIdResponse> Handle(GetUserWineByWineIdRequest request, CancellationToken cancellationToken)
     {
-        var userWine = await _userWineRepository.GetByWineId(request.WineId);
+        var userWine = await _userWineRepository.GetByWineId(request.WineId, request.Auth0Id);
 
         if (userWine?.Auth0Id != request.Auth0Id)
         {
