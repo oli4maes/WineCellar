@@ -7,6 +7,7 @@ public class Wine : BaseAuditableEntity
 {
     public string Name { get; set; } = String.Empty;
     public WineType WineType { get; set; }
+    public bool IsSpotlit { get; set; }
 
     public int WineryId { get; set; }
     public Winery Winery { get; set; }

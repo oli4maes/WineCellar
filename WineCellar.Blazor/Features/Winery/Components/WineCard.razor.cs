@@ -4,10 +4,12 @@ namespace WineCellar.Blazor.Features.Winery.Components;
 
 public partial class WineCard : ComponentBase
 {
-    [Parameter] public GetWineryDetailResponse.WineDto Wine { get; set; }
+    [Parameter] public WineDto Wine { get; set; }
+    [Parameter] public bool ShowWinery { get; set; }
     [Parameter] public EventCallback<int> OnNavigateToWineDetail { get; set; }
     [Parameter] public EventCallback OnNavigateToCellar { get; set; }
     [Parameter] public EventCallback<int> OnAddToCellar { get; set; }
+    
 
     private async void NavigateToWineDetail()
     {
