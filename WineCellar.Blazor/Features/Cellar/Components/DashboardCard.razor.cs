@@ -11,12 +11,12 @@ public partial class DashboardCard : ComponentBase
 
     private async void Navigate()
     {
-        if (FavouriteWineId is not null)
+        if (FavouriteWineId is not null && FavouriteWineId is not 0)
         {
             await OnNavigateToWineDetail.InvokeAsync((int)FavouriteWineId);
         }
 
-        if (FavouriteWineryId is not null)
+        if (FavouriteWineryId is not null && FavouriteWineryId is not 0)
         {
             await OnNavigateToWineryDetail.InvokeAsync((int)FavouriteWineryId);
         }

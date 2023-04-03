@@ -10,13 +10,13 @@
     <AuthorizeView>
         <Authorized>
             <MudAppBar Elevation="2">
-                <MudLink Href="/" Typo="Typo.h4"  Color="Color.Tertiary" Underline="Underline.None" Class="mt-1">
+                <MudLink Href="/" Typo="Typo.h2" Color="Color.Primary" Underline="Underline.None" Class="mt-1">
                     Kave
                 </MudLink>
-                
+
                 <MudSpacer/>
                 <MudItem md="4">
-                    <WineSearchInput Dense="true" Margin="Margin.Dense"></WineSearchInput>
+                    <WineSearchInput Dense="true" Margin="Margin.Dense"/>
                 </MudItem>
             </MudAppBar>
             <MudDrawer @bind-Open="_drawerOpen" ClipMode="_clipMode" Elevation="1">
@@ -25,15 +25,13 @@
         </Authorized>
     </AuthorizeView>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="pt-10 px-10">
-            <AuthorizeView>
-                <Authorized>
-                    @Body
-                </Authorized>
-                <NotAuthorized>
-                    <AppLanding />
-                </NotAuthorized>
-            </AuthorizeView>
-        </MudContainer>
+        <AuthorizeView>
+            <Authorized>
+                @Body
+            </Authorized>
+            <NotAuthorized>
+                <AppLanding/>
+            </NotAuthorized>
+        </AuthorizeView>
     </MudMainContent>
 </MudLayout>

@@ -67,6 +67,7 @@ public class UserWineRepository : IUserWineRepository
         return await context.UserWines!
             .Include(x => x.Wine)
             .ThenInclude(w => w.Winery)
+            .Include(w => w.Wine.Region)
             .Where(x => x.Auth0Id == auth0Id)
             .AsNoTracking()
             .ToListAsync();
