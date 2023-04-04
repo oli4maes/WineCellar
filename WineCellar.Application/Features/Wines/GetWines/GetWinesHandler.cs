@@ -44,6 +44,14 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
             wines = wines?.Where(x => x.IsSpotlit).ToList();
         }
 
+        if (request.Query is not null)
+        {
+            wines = wines
+                .Where(x => x.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase) ||
+                            x.Winery.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase))
+                .ToList();
+        }
+
         return new GetWinesResponse()
         {
             Wines = wines.Select(x => new WineDto()
