@@ -1,4 +1,5 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.Extensions.Caching.Memory;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Wines.GetWines;
 
@@ -6,30 +7,41 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
 {
     private readonly IWineRepository _wineRepository;
     private readonly IUserWineRepository _userWineRepository;
+    private readonly IMemoryCache _memoryCache;
 
-    public GetWinesHandler(IWineRepository wineRepository, IUserWineRepository userWineRepository)
+    public GetWinesHandler(IWineRepository wineRepository,
+        IUserWineRepository userWineRepository,
+        IMemoryCache memoryCache)
     {
         _wineRepository = wineRepository;
         _userWineRepository = userWineRepository;
+        _memoryCache = memoryCache;
     }
 
     public async ValueTask<GetWinesResponse> Handle(GetWinesRequest request, CancellationToken cancellationToken)
     {
-        List<Wine> wines;
-        var userWines = new List<UserWine>();
-
-        if (request.IsSpotlit)
-        {
-            wines = await _wineRepository.GetAllSpotlit();
-        }
-        else
+        if (!_memoryCache.TryGetValue("wines", out List<Wine>? wines))
         {
             wines = await _wineRepository.All();
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+                .SetPriority(CacheItemPriority.Normal);
+
+            _memoryCache.Set("wines", wines, cacheEntryOptions);
         }
+
+        var userWines = new List<UserWine>();
 
         if (request.Auth0Id is not null)
         {
             userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
+        }
+
+        if (request.IsSpotlit)
+        {
+            wines = wines?.Where(x => x.IsSpotlit).ToList();
         }
 
         return new GetWinesResponse()
