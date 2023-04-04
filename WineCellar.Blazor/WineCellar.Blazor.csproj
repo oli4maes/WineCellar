@@ -21,23 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\WineCellar.Infrastructure\WineCellar.Infrastructure.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="MudBlazor" />
-    <None Remove="Pages\Administration\" />
-    <None Remove="Pages\Administration\Grapes\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\css\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="Features\Cellar\Pages\Overview.razor" />
-    <AdditionalFiles Include="Features\Wine\Pages\Detail.razor" />
-    <AdditionalFiles Include="Shared\Components\Dialogs\DeleteDialog.razor" />
-  </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Administration\Wineries\Detail.razor" />
     <_ContentIncludedByDefault Remove="Pages\Administration\Wineries\Overview.razor" />
