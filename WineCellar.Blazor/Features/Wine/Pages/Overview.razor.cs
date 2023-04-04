@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.AddWineToCellar;
 using WineCellar.Application.Features.Wines.GetWines;
-using WineCellar.Application.Features.Wines.QueryWines;
 
 namespace WineCellar.Blazor.Features.Wine.Pages;
 
@@ -29,7 +28,7 @@ public partial class Overview : ComponentBase
     {
         if (!string.IsNullOrEmpty(query))
         {
-            var response = await _mediator.Send(new QueryWinesRequest(query, _auth0Id));
+            var response = await _mediator.Send(new GetWinesRequest(query, _auth0Id));
             _wines = response.Wines;
 
             StateHasChanged();
@@ -60,7 +59,7 @@ public partial class Overview : ComponentBase
 
     private async Task GetData()
     {
-        var response = await _mediator.Send(new GetWinesRequest(_auth0Id, true));
+        var response = await _mediator.Send(new GetWinesRequest(null, _auth0Id, true));
         _wines = response.Wines.OrderBy(x => x.IsInUserCellar).ToList();
     }
 }

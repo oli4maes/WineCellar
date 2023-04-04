@@ -72,7 +72,7 @@ public partial class Overview : ComponentBase
 
     private async Task GetWines()
     {
-        var response = await _mediator.Send(new GetWinesRequest(null));
+        var response = await _mediator.Send(new GetWinesRequest(null, null));
         _wines = response.Wines;
     }
     
