@@ -1,9 +1,9 @@
 ﻿namespace WineCellar.Blazor.Shared.Components.Common;
 
-public partial class WineTypeDot : ComponentBase
+public partial class WineTypeIndicator : ComponentBase
 {
     [Parameter] public WineType WineType { get; set; }
-    private string _wineTypeColor { get; set; } = String.Empty;
+    private string _wineTypeColor { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
