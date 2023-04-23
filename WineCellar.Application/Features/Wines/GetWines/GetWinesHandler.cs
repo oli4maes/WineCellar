@@ -20,7 +20,7 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
 
     public async ValueTask<GetWinesResponse> Handle(GetWinesRequest request, CancellationToken cancellationToken)
     {
-        if (!_memoryCache.TryGetValue("wines", out List<Wine>? wines))
+        if (!_memoryCache.TryGetValue("wines", out List<Wine>? wines) || request.ClearCache)
         {
             wines = await _wineRepository.All();
 
