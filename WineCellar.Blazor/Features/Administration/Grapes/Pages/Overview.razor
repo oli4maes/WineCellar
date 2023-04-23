@@ -34,16 +34,16 @@
                             </MudTextField>
                         </ToolBarContent>
                         <Columns>
-                            <Column T="GrapeDto" Field="Name" Title="Name" Sortable="true" Filterable="true"/>
-                            <Column T="GrapeDto" Context="GrapeEditContext">
-                                <CellTemplate>
+                            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true"/>
+                            <TemplateColumn>
+                                <CellTemplate Context="GrapeEditContext">
                                     @{
                                         var grape = GrapeEditContext.Item;
                                     }
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenGrape(grape)"/>
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteGrape(grape)"/>
                                 </CellTemplate>
-                            </Column>
+                            </TemplateColumn>
                         </Columns>
                         <PagerContent>
                             <MudDataGridPager T="GrapeDto"/>
