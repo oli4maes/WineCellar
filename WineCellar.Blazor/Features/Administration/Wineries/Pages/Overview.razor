@@ -34,10 +34,10 @@
                             </MudTextField>
                         </ToolBarContent>
                         <Columns>
-                            <Column T="WineryDto" Field="Name" Title="Name" Sortable="true" Filterable="true"/>
-                            <Column T="WineryDto" Field="CountryName" Title="Country" Sortable="true" Filterable="true"/>
-                            <Column T="WineryDto" Context="WineryEditContext">
-                                <CellTemplate>
+                            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true"/>
+                            <PropertyColumn Property="x => x.CountryName" Title="Country" Sortable="true" Filterable="true"/>
+                            <TemplateColumn>
+                                <CellTemplate Context="WineryEditContext">
                                     @{
                                         var winery = WineryEditContext.Item;
                                     }
@@ -55,7 +55,7 @@
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenWinery(winery)"/>
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteWinery(winery)"/>
                                 </CellTemplate>
-                            </Column>
+                            </TemplateColumn>
                         </Columns>
                         <PagerContent>
                             <MudDataGridPager T="WineryDto"/>

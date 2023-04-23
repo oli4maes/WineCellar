@@ -34,11 +34,11 @@
                             </MudTextField>
                         </ToolBarContent>
                         <Columns>
-                            <Column T="WineDto" Field="Name" Title="Name" Sortable="true" Filterable="true"/>
-                            <Column T="WineDto" Field="WineryName" Title="Winery" Sortable="true" Filterable="true"/>
-                            <Column T="WineDto" Field="RegionName" Title="Region" Sortable="true" Filterable="true"/>
-                            <Column T="WineDto" Context="WineEditContext">
-                                <CellTemplate>
+                            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true"/>
+                            <PropertyColumn Property="x => x.WineryName" Title="Winery" Sortable="true" Filterable="true"/>
+                            <PropertyColumn Property="x => x.RegionName" Title="Region" Sortable="true" Filterable="true"/>
+                            <TemplateColumn>
+                                <CellTemplate Context="WineEditContext">
                                     @{
                                         var wine = WineEditContext.Item;
                                     }
@@ -56,7 +56,7 @@
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenWine(wine)"/>
                                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteWine(wine)"/>
                                 </CellTemplate>
-                            </Column>
+                            </TemplateColumn>
                         </Columns>
                         <PagerContent>
                             <MudDataGridPager T="WineDto"/>
