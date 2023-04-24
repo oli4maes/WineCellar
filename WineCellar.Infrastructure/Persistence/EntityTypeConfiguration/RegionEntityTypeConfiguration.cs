@@ -12,6 +12,9 @@ public class RegionEntityTypeConfiguration : IEntityTypeConfiguration<Region>
 
         builder.Property(x => x.Name)
             .HasMaxLength(250);
+        
+        builder.Property(x => x.IsSpotlit)
+            .HasDefaultValue(false);
 
         builder.HasOne<Country>(x => x.Country)
             .WithMany(y => y.Regions)
