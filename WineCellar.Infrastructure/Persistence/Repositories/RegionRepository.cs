@@ -21,4 +21,40 @@ public class RegionRepository : IRegionRepository
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<List<Region>> All()
+    {
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Regions
+            .OrderBy(x => x.Name)
+            .Include(x => x.Country)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public Task<Region?> GetById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Region?> GetByName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> Delete(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Update(Region entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Region> Create(Region entity)
+    {
+        throw new NotImplementedException();
+    }
 }
