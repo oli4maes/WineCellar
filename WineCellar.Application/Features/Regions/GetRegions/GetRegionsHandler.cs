@@ -35,7 +35,8 @@ internal sealed class GetRegionsHandler : IRequestHandler<GetRegionsRequest, Get
             {
                 Id = x.Id,
                 Name = x.Name,
-                CountryName = x.Country.Name
+                CountryName = x.Country.Name,
+                IsSpotlit = x.IsSpotlit
             }).ToList()
         };
     }
