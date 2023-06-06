@@ -33,6 +33,28 @@ public class RegionRepository : IRegionRepository
             .ToListAsync();
     }
 
+    public async Task<bool> ToggleIsSpotlit(int id, string userName)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+        
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        var regionModel = await context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+        if (regionModel is not null)
+        {
+            regionModel.IsSpotlit = !regionModel.IsSpotlit;
+            regionModel.LastModified = DateTime.UtcNow;
+            regionModel.LastModifiedBy = userName;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        return false;
+    }
+
     public Task<Region?> GetById(int id)
     {
         throw new NotImplementedException();

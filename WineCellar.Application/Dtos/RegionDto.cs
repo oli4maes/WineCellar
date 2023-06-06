@@ -4,6 +4,7 @@ public class RegionDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = String.Empty;
+    public bool IsSpotlit { get; set; }
     public string CountryName { get; set; } =String.Empty;
 
     public CountryDto Country { get; set; } = new();
