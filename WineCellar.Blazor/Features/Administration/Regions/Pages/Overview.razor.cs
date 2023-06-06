@@ -11,7 +11,6 @@ public partial class Overview : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
     private IEnumerable<RegionDto> _regions = Enumerable.Empty<RegionDto>();
-    private string _searchString = String.Empty;
     
     private string _userName { get; set; } = String.Empty;
 
@@ -40,15 +39,4 @@ public partial class Overview : ComponentBase
 
         await GetRegions();
     }
-
-    private Func<RegionDto, bool> QuickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 }

@@ -115,7 +115,6 @@ public class RegionEntityTypeConfiguration : IEntityTypeConfiguration<Region>
             new Region() { Id = 74, Name = "Abruzzo", CountryId = 10 },
             new Region() { Id = 75, Name = "Lombardy", CountryId = 10 },
             new Region() { Id = 76, Name = "Friuli-Venesia Giulia", CountryId = 10 },
-            new Region() { Id = 77, Name = "Abruzzo", CountryId = 10 },
             new Region() { Id = 78, Name = "Sardegna", CountryId = 10 },
             new Region() { Id = 79, Name = "Lazio", CountryId = 10 },
             new Region() { Id = 80, Name = "Umbria", CountryId = 10 },
