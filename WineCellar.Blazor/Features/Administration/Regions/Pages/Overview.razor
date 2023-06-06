@@ -1,0 +1,19 @@
+﻿@page "/Administration/Regions"
+
+<PageTitle>Kave - Administration - Regions</PageTitle>
+
+<AuthorizeView Policy="AdminRole">
+    <Authorized>
+
+        <MudContainer Fixed="true">
+            <MudText Typo="Typo.h4" Class="mt-3 mb-2">Regions</MudText>
+        </MudContainer>
+
+        <MudDivider/>
+
+        <MudContainer Fixed="true" Class="pt-4">
+            <RegionsTable Regions="_regions"
+                          OnToggleSpotlit="ToggleIsSpotlit"/>
+        </MudContainer>
+    </Authorized>
+</AuthorizeView>

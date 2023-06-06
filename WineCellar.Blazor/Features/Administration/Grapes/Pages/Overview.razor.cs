@@ -6,8 +6,7 @@ namespace WineCellar.Blazor.Features.Administration.Grapes.Pages;
 
 public partial class Overview : ComponentBase
 {
-    [Inject]
-    private Mediator.IMediator _mediator { get; set; }
+    [Inject] private IMediator _mediator { get; set; }
 
     [Inject] private ISnackbar _snackbar { get; set; }
 
