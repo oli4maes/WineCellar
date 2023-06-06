@@ -5,44 +5,51 @@
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
-        <MudCard>
+
+        <MudContainer Fixed="true">
+            <MudGrid>
+                <MudItem md="11">
+                    <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_grape.Name</MudText>
+                </MudItem>
+                <MudItem md="1" Class="mt-3">
+                    @if (!_editMode)
+                    {
+                        <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
+                    }
+
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+        <MudDivider/>
+
+        <MudContainer Fixed="true" Class="pt-4">
             <EditForm Model="@_grape" OnValidSubmit="HandleValidSubmit" Context="editContext">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h4">@_grape.Name</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        @if (!_editMode)
-                        {
-                            <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
-                        }
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <!-- Name -->
-                    <MudTextField @bind-Value="_grape.Name" Label="Name" Disabled="!_editMode" For="@(() => _grape.Name)" Class="mt-3"/>
+                <!-- Name -->
+                <MudTextField @bind-Value="_grape.Name" Label="Name" Disabled="!_editMode" For="@(() => _grape.Name)" Class="mt-3"/>
 
-                    <!-- Description -->
-                    <MudTextField @bind-Value="_grape.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
+                <!-- Description -->
+                <MudTextField @bind-Value="_grape.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
 
-                    <!-- Grape Type -->
-                    <MudSelect T="GrapeType"
-                               @bind-Value="_grape.GrapeType"
-                               Placeholder="Select grape type"
-                               Label="Type"
-                               Disabled="!_editMode"
-                               For="@(() => _grape.GrapeType)"
-                               Class="pt-5">
-                        @foreach (var item in Enum.GetValues(typeof(GrapeType)))
-                        {
-                            <MudSelectItem T="GrapeType" Value="(GrapeType)item">@item</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudCardContent>
-                <MudCardActions>
+                <!-- Grape Type -->
+                <MudSelect T="GrapeType"
+                           @bind-Value="_grape.GrapeType"
+                           Placeholder="Select grape type"
+                           Label="Type"
+                           Disabled="!_editMode"
+                           For="@(() => _grape.GrapeType)"
+                           Class="pt-5">
+                    @foreach (var item in Enum.GetValues(typeof(GrapeType)))
+                    {
+                        <MudSelectItem T="GrapeType" Value="(GrapeType)item">@item</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <div class="mt-4">
                     <MudButton ButtonType="ButtonType.Button"
                                Variant="Variant.Outlined"
-                               Color="Color.Error"
+                               StartIcon="@Icons.Material.Outlined.ArrowBack"
+                               Color="Color.Primary"
                                OnClick="Back">
                         Back
                     </MudButton>
@@ -50,14 +57,15 @@
                     {
                         <MudButton Class="ml-4"
                                    ButtonType="ButtonType.Submit"
-                                   Variant="Variant.Outlined"
-                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Outlined.Save"
                                    Color="Color.Primary">
                             Save
                         </MudButton>
                     }
-                </MudCardActions>
+                </div>
             </EditForm>
-        </MudCard>
+        </MudContainer>
+
     </Authorized>
 </AuthorizeView>

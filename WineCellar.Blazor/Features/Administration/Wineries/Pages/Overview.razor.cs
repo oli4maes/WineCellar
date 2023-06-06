@@ -14,7 +14,6 @@ public partial class Overview : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
     private IEnumerable<WineryDto> _wineries { get; set; } = Enumerable.Empty<WineryDto>();
-    private string _searchString { get; set; } = String.Empty;
     private string _userName { get; set; } = String.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -24,18 +23,6 @@ public partial class Overview : ComponentBase
         
         await GetWineries();
     }
-
-    // Quick filter - filter globally across multiple columns (Name) with the same input
-    private Func<WineryDto, bool> QuickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 
     private void OpenWinery(WineryDto winery)
     {

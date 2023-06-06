@@ -1,0 +1,35 @@
+﻿<MudDataGrid T="GrapeDto"
+             Items="Grapes"
+             SortMode="SortMode.Single"
+             QuickFilter="QuickFilter"
+             Hideable=true
+             LoadingProgressColor="Color.Primary"
+             Dense="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h5" Color="Color.Primary">Grapes</MudText>
+        <MudSpacer/>
+        <MudTextField @bind-Value="_searchString"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      Immediate="true"
+                      AdornmentIcon="@Icons.Material.Outlined.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0">
+        </MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="false"/>
+        <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
+            <CellTemplate Context="GrapeEditContext">
+                @{
+                    var grape = GrapeEditContext.Item;
+                }
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenGrape(grape)"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteGrape(grape)"/>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="GrapeDto"/>
+    </PagerContent>
+</MudDataGrid>
