@@ -1,14 +1,12 @@
-﻿<MudDataGrid @ref="_dataGrid"
-             MultiSelection="false"
-             Items="Regions"
-             Filterable="false"
-             Groupable="true"
-             GroupExpanded="false"
+﻿<MudDataGrid T="WineDto"
+             Items="Wines"
              SortMode="SortMode.Single"
-             Dense="true"
-             QuickFilter="QuickFilter">
+             QuickFilter="QuickFilter"
+             Hideable=true
+             LoadingProgressColor="Color.Primary"
+             Dense="true">
     <ToolBarContent>
-        <MudText Typo="Typo.h5" Color="Color.Primary">Regions</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Primary">Wines</MudText>
         <MudSpacer/>
         <MudTextField @bind-Value="_searchString"
                       Placeholder="Search"
@@ -20,19 +18,16 @@
         </MudTextField>
     </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="x => x.CountryName" Title="Country" Grouping>
-            <GroupTemplate>
-                <span style="font-weight: bold">@context.Grouping.Key</span>
-            </GroupTemplate>
-        </PropertyColumn>
-        <PropertyColumn Property="x => x.Name" Title="Region" Sortable="false" Groupable="false"/>
+        <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.WineryName" Title="Winery" Sortable="true" Filterable="true"/>
+        <PropertyColumn Property="x => x.RegionName" Title="Region" Sortable="true" Filterable="true"/>
         <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
-            <CellTemplate Context="RegionEditContext">
+            <CellTemplate Context="WineEditContext">
                 @{
-                    var region = RegionEditContext.Item;
+                    var wine = WineEditContext.Item;
                 }
-                <MudToggleIconButton Toggled="@region.IsSpotlit"
-                                     ToggledChanged="() => ToggleIsSpotlit(region)"
+                <MudToggleIconButton Toggled="@wine.IsSpotlit"
+                                     ToggledChanged="() => ToggleIsSpotlit(wine)"
                                      Size="Size.Small"
                                      Icon="@Icons.Material.Outlined.ExploreOff"
                                      Color="Color.Error"
@@ -41,7 +36,13 @@
                                      ToggledIcon="@Icons.Material.Outlined.Explore"
                                      ToggledColor="Color.Success"
                                      ToggledTitle="Spotlit"/>
+
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenWine(wine)"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteWine(wine)"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>
+    <PagerContent>
+        <MudDataGridPager T="WineDto"/>
+    </PagerContent>
 </MudDataGrid>

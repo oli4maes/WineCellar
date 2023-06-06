@@ -15,24 +15,12 @@ public partial class Overview : ComponentBase
     [Inject] private IDialogService _dialogService { get; set; }
 
     private IEnumerable<GrapeDto> _grapes = Enumerable.Empty<GrapeDto>();
-    private string _searchString = String.Empty;
+
 
     protected override async Task OnInitializedAsync()
     {
         await GetGrapes();
     }
-
-    // Quick filter - filter globally across multiple columns (Name) with the same input
-    private Func<GrapeDto, bool> QuickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 
     private void OpenGrape(GrapeDto grape)
     {

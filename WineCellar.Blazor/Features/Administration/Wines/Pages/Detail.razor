@@ -5,112 +5,119 @@
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
-        <MudCard>
-            <EditForm Model="@_wine" OnValidSubmit="HandleValidSubmit" Context="editContext">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h4">@_wine.Name</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        @if (!_editMode)
-                        {
-                            <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
-                        }
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <!-- Name -->
-                    <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" Class="mt-3"/>
 
-                    <!-- Wine Type-->
-                    <MudSelect T="WineType"
-                               @bind-Value="_wine.WineType"
-                               Placeholder="Select wine type"
-                               Label="Type"
-                               Disabled="!_editMode"
-                               For="@(() => _wine.WineType)"
-                               Class="mt-3">
-                        @foreach (var item in Enum.GetValues(typeof(WineType)))
+        <MudContainer Fixed="true">
+            <MudGrid>
+                <MudItem md="11">
+                    <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_wine.Name</MudText>
+                </MudItem>
+                <MudItem md="1" Class="mt-3">
+                    @if (!_editMode)
+                    {
+                        <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
+                    }
+
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+        <MudDivider/>
+
+        <MudContainer Fixed="true" Class="pt-4">
+            <EditForm Model="@_wine" OnValidSubmit="HandleValidSubmit" Context="editContext">
+                <!-- Name -->
+                <MudTextField @bind-Value="_wine.Name" Label="Name" Disabled="!_editMode" For="@(() => _wine.Name)" Class="mt-3"/>
+
+                <!-- Wine Type-->
+                <MudSelect T="WineType"
+                           @bind-Value="_wine.WineType"
+                           Placeholder="Select wine type"
+                           Label="Type"
+                           Disabled="!_editMode"
+                           For="@(() => _wine.WineType)"
+                           Class="mt-3">
+                    @foreach (var item in Enum.GetValues(typeof(WineType)))
+                    {
+                        <MudSelectItem T="WineType" Value="(WineType)item">@item</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <!-- Winery -->
+                <MudAutocomplete T="WineryDto"
+                                 Label="Winery"
+                                 @bind-Value="_wine.Winery"
+                                 SearchFunc="@SearchWinery"
+                                 ResetValueOnEmptyText=true
+                                 CoerceText=false
+                                 CoerceValue=false
+                                 AdornmentIcon="@Icons.Material.Filled.Search"
+                                 AdornmentColor="Color.Primary"
+                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
+                                 Disabled="!_editMode"
+                                 For="@(() => _wine.Winery)"
+                                 Class="mt-3"/>
+
+                <!-- Region -->
+                @if (_regions.Any())
+                {
+                    <MudSelect
+                        T="RegionDto"
+                        @bind-Value="_wine.Region"
+                        Label="Region"
+                        Disabled="!_editMode"
+                        Class="mt-3">
+                        @foreach (var item in _regions)
                         {
-                            <MudSelectItem T="WineType" Value="(WineType)item">@item</MudSelectItem>
+                            <MudSelectItem T="RegionDto" Value="item">@item.Name</MudSelectItem>
                         }
                     </MudSelect>
+                }
 
-                    <!-- Winery -->
-                    <MudAutocomplete T="WineryDto"
-                                     Label="Winery"
-                                     @bind-Value="_wine.Winery"
-                                     SearchFunc="@SearchWinery"
+                <!-- Grapes -->
+                @if (Id is not 0 && _editMode)
+                {
+                    <MudAutocomplete T="GrapeDto"
+                                     Label="Grape"
+                                     @bind-Value="@_selectedGrape"
+                                     SearchFunc="SearchGrape"
                                      ResetValueOnEmptyText=true
                                      CoerceText=false
                                      CoerceValue=false
                                      AdornmentIcon="@Icons.Material.Filled.Search"
                                      AdornmentColor="Color.Primary"
                                      ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                     Disabled="!_editMode"
-                                     For="@(() => _wine.Winery)"
                                      Class="mt-3"/>
 
-                    <!-- Region -->
-                    @if (_regions.Any())
-                    {
-                        <MudSelect
-                            T="RegionDto"
-                            @bind-Value="_wine.Region"
-                            Label="Region"
-                            Disabled="!_editMode"
-                            Class="mt-3">
-                            @foreach (var item in _regions)
-                            {
-                                <MudSelectItem T="RegionDto" Value="item">@item.Name</MudSelectItem>
-                            }
-                        </MudSelect>
-                    }
 
-                    <!-- Grapes -->
-                    @if (Id is not 0 && _editMode)
-                    {
-                        <MudAutocomplete T="GrapeDto"
-                                         Label="Grape"
-                                         @bind-Value="@_selectedGrape"
-                                         SearchFunc="SearchGrape"
-                                         ResetValueOnEmptyText=true
-                                         CoerceText=false
-                                         CoerceValue=false
-                                         AdornmentIcon="@Icons.Material.Filled.Search"
-                                         AdornmentColor="Color.Primary"
-                                         ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                         Class="mt-3"/>
-
-
-                        <MudButton ButtonType="ButtonType.Button"
-                                   Variant="Variant.Outlined"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.Add"
-                                   OnClick="AddGrape"
-                                   Class="mt-3">
-                            Add Grape
-                        </MudButton>
-                    }
-
-                    @if (_wine.Grapes.Any())
-                    {
-                        <MudList Class="mt-3" Dense=true>
-                            <MudListSubheader>Grapes</MudListSubheader>
-                            @foreach (var grape in _wine.Grapes)
-                            {
-                                <MudListItem>
-                                    @grape.Name
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small"/>
-                                </MudListItem>
-                            }
-                        </MudList>
-                    }
-                </MudCardContent>
-                <MudCardActions>
                     <MudButton ButtonType="ButtonType.Button"
                                Variant="Variant.Outlined"
-                               Color="Color.Error"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.Add"
+                               OnClick="AddGrape"
+                               Class="mt-3">
+                        Add Grape
+                    </MudButton>
+                }
+
+                @if (_wine.Grapes.Any())
+                {
+                    <MudList Class="mt-3" Dense=true>
+                        <MudListSubheader>Grapes</MudListSubheader>
+                        @foreach (var grape in _wine.Grapes)
+                        {
+                            <MudListItem>
+                                @grape.Name
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" OnClick="@(() => RemoveGrape(grape))" Color="Color.Error" Size="Size.Small"/>
+                            </MudListItem>
+                        }
+                    </MudList>
+                }
+
+                <div class="mt-4">
+                    <MudButton ButtonType="ButtonType.Button"
+                               Variant="Variant.Outlined"
+                               StartIcon="@Icons.Material.Outlined.ArrowBack"
+                               Color="Color.Primary"
                                OnClick="Back">
                         Back
                     </MudButton>
@@ -118,14 +125,14 @@
                     {
                         <MudButton Class="ml-4"
                                    ButtonType="ButtonType.Submit"
-                                   Variant="Variant.Outlined"
-                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Outlined.Save"
                                    Color="Color.Primary">
                             Save
                         </MudButton>
                     }
-                </MudCardActions>
+                </div>
             </EditForm>
-        </MudCard>
+        </MudContainer>
     </Authorized>
 </AuthorizeView>

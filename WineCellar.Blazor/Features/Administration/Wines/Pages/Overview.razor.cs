@@ -14,7 +14,6 @@ public partial class Overview : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
 
     private IEnumerable<WineDto> _wines = Enumerable.Empty<WineDto>();
-    private string _searchString = String.Empty;
     private string _userName { get; set; } = String.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -24,18 +23,6 @@ public partial class Overview : ComponentBase
         
         await GetWines();
     }
-
-    private Func<WineDto, bool> QuickFilter => x =>
-    {
-        if (string.IsNullOrWhiteSpace(_searchString))
-            return true;
-
-        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
-            x.WineryName.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
-            return true;
-
-        return false;
-    };
 
     private void OpenWine(WineDto wine)
     {
