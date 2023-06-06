@@ -5,42 +5,50 @@
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
-        <MudCard>
+
+        <MudContainer Fixed="true">
+            <MudGrid>
+                <MudItem md="11">
+                    <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_winery.Name</MudText>
+                </MudItem>
+                <MudItem md="1" Class="mt-3">
+                    @if (!_editMode)
+                    {
+                        <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
+                    }
+
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+        <MudDivider/>
+
+        <MudContainer Fixed="true" Class="pt-4">
             <EditForm Model="@_winery" OnValidSubmit="HandleValidSubmit" Context="editContext">
-                <MudCardHeader>
-                    <CardHeaderContent>
-                        <MudText Typo="Typo.h4">@_winery.Name</MudText>
-                    </CardHeaderContent>
-                    <CardHeaderActions>
-                        @if (!_editMode)
-                        {
-                            <MudFab StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary" @onclick="SetEditMode" Size="Size.Small"></MudFab>
-                        }
-                    </CardHeaderActions>
-                </MudCardHeader>
-                <MudCardContent>
-                    <!-- Name -->
-                    <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" Class="mt-3"/>
 
-                    <!-- Description -->
-                    <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
+                <!-- Name -->
+                <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" Class="mt-3"/>
 
-                    <!-- Country -->
-                    <MudSelect
-                        @bind-Value="_winery.Country"
-                        Label="Country"
-                        Disabled="!_editMode"
-                        Class="mt-3">
-                        @foreach (var item in _countries)
-                        {
-                            <MudSelectItem T="CountryDto" Value="item">@item.Name</MudSelectItem>
-                        }
-                    </MudSelect>
-                </MudCardContent>
-                <MudCardActions>
+                <!-- Description -->
+                <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
+
+                <!-- Country -->
+                <MudSelect
+                    @bind-Value="_winery.Country"
+                    Label="Country"
+                    Disabled="!_editMode"
+                    Class="mt-5">
+                    @foreach (var item in _countries)
+                    {
+                        <MudSelectItem T="CountryDto" Value="item">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <div class="mt-4">
                     <MudButton ButtonType="ButtonType.Button"
                                Variant="Variant.Outlined"
-                               Color="Color.Error"
+                               StartIcon="@Icons.Material.Outlined.ArrowBack"
+                               Color="Color.Primary"
                                OnClick="Back">
                         Back
                     </MudButton>
@@ -48,14 +56,15 @@
                     {
                         <MudButton Class="ml-4"
                                    ButtonType="ButtonType.Submit"
-                                   Variant="Variant.Outlined"
-                                   StartIcon="@Icons.Material.Filled.Save"
+                                   Variant="Variant.Filled"
+                                   StartIcon="@Icons.Material.Outlined.Save"
                                    Color="Color.Primary">
                             Save
                         </MudButton>
                     }
-                </MudCardActions>
+                </div>
             </EditForm>
-        </MudCard>
+        </MudContainer>
+
     </Authorized>
 </AuthorizeView>

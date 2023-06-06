@@ -4,53 +4,22 @@
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h4">Grapes</MudText>
-                </CardHeaderContent>
-                <CardHeaderActions>
-                    <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="AddGrape" Size="Size.Small"/>
-                </CardHeaderActions>
-            </MudCardHeader>
-            <MudCardContent>
-                @if (_grapes.Any())
-                {
-                    <MudDataGrid T="GrapeDto"
-                                 Items="@_grapes"
-                                 SortMode="SortMode.Multiple"
-                                 QuickFilter="QuickFilter"
-                                 Hideable=true>
-                        <ToolBarContent>
-                            <MudText Typo="Typo.h6">Grapes</MudText>
-                            <MudSpacer/>
-                            <MudTextField @bind-Value="_searchString"
-                                          Placeholder="Search"
-                                          Adornment="Adornment.Start"
-                                          Immediate="true"
-                                          AdornmentIcon="@Icons.Material.Filled.Search"
-                                          IconSize="Size.Medium"
-                                          Class="mt-0">
-                            </MudTextField>
-                        </ToolBarContent>
-                        <Columns>
-                            <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="true"/>
-                            <TemplateColumn>
-                                <CellTemplate Context="GrapeEditContext">
-                                    @{
-                                        var grape = GrapeEditContext.Item;
-                                    }
-                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenGrape(grape)"/>
-                                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteGrape(grape)"/>
-                                </CellTemplate>
-                            </TemplateColumn>
-                        </Columns>
-                        <PagerContent>
-                            <MudDataGridPager T="GrapeDto"/>
-                        </PagerContent>
-                    </MudDataGrid>
-                }
-            </MudCardContent>
-        </MudCard>
+
+        <MudContainer Fixed="true">
+            <MudGrid>
+                <MudItem md="11">
+                    <MudText Typo="Typo.h4" Class="mt-3 mb-2">Grapes</MudText>
+                </MudItem>
+                <MudItem md="1" Class="mt-3">
+                        <MudFab StartIcon="@Icons.Material.Filled.Add" Color="Color.Primary" OnClick="AddGrape" Size="Size.Small"/>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+
+        <MudDivider/>
+        
+        <MudContainer Fixed="true" Class="pt-4">
+            <GrapesTable Grapes="_grapes" OnDeleteGrape="DeleteGrape" OnOpenGrape="OpenGrape"/>
+        </MudContainer>
     </Authorized>
 </AuthorizeView>
