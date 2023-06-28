@@ -1,6 +1,8 @@
-﻿namespace WineCellar.Domain.Entities;
+﻿using WineCellar.Domain.Common;
 
-public class Country
+namespace WineCellar.Domain.Entities;
+
+public class Country : BaseAuditableEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = String.Empty;

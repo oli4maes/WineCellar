@@ -22,21 +22,13 @@ internal sealed class GetRegionsHandler : IRequestHandler<GetRegionsRequest, Get
                 .ToList();
         }
 
-        if (request.IsSpotlit)
-        {
-            regions = regions
-                .Where(x => x.IsSpotlit)
-                .ToList();
-        }
-
         return new GetRegionsResponse()
         {
             Regions = regions.Select(x => new RegionDto()
             {
                 Id = x.Id,
                 Name = x.Name,
-                CountryName = x.Country.Name,
-                IsSpotlit = x.IsSpotlit
+                CountryName = x.Country.Name
             }).ToList()
         };
     }

@@ -1,5 +1,4 @@
 ﻿using WineCellar.Application.Features.Regions.GetRegions;
-using WineCellar.Application.Features.Regions.SetRegionsIsSpotlit;
 
 namespace WineCellar.Blazor.Features.Administration.Regions.Pages;
 
@@ -26,17 +25,5 @@ public partial class Overview : ComponentBase
     {
         var getRegionsResponse = await _mediator.Send(new GetRegionsRequest(null));
         _regions = getRegionsResponse.Regions;
-    }
-
-    private async Task ToggleIsSpotlit(RegionDto region)
-    {
-        var response = await _mediator.Send(new SetRegionIsSpotlitRequest(region.Id, _userName));
-
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _snackbar.Add(response.ErrorMessage, Severity.Error);
-        }
-
-        await GetRegions();
     }
 }

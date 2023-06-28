@@ -1,6 +1,5 @@
 using WineCellar.Application.Features.Wines.DeleteWine;
 using WineCellar.Application.Features.Wines.GetWines;
-using WineCellar.Application.Features.Wines.SetWineIsSpotlit;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
 namespace WineCellar.Blazor.Features.Administration.Wines.Pages;
@@ -59,19 +58,7 @@ public partial class Overview : ComponentBase
 
     private async Task GetWines()
     {
-        var response = await _mediator.Send(new GetWinesRequest(null, null, false, true));
+        var response = await _mediator.Send(new GetWinesRequest(null, null, true));
         _wines = response.Wines;
-    }
-    
-    private async Task ToggleIsSpotlit(WineDto wine)
-    {
-        var response = await _mediator.Send(new SetWineIsSpotlitRequest(wine.Id, _userName));
-
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _snackbar.Add(response.ErrorMessage, Severity.Error);
-        }
-
-        await GetWines();
     }
 }

@@ -3,7 +3,6 @@
 public partial class RegionsTable : ComponentBase
 {
     [Parameter] public IEnumerable<RegionDto> Regions { get; set; }
-    [Parameter] public EventCallback<RegionDto> OnToggleSpotlit { get; set; }
 
     private MudDataGrid<RegionDto> _dataGrid;
 
@@ -20,9 +19,4 @@ public partial class RegionsTable : ComponentBase
 
         return false;
     };
-    
-    private void ToggleIsSpotlit(RegionDto region)
-    {
-        OnToggleSpotlit.InvokeAsync(region);
-    }
 }

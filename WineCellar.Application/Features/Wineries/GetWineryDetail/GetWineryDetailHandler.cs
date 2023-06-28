@@ -6,16 +6,16 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
 {
     private readonly IWineryRepository _wineryRepository;
     private readonly IWineRepository _wineRepository;
-    private readonly IUserWineRepository _userWineRepository;
+    private readonly IBottleRepository _bottleRepository;
 
     public GetWineryDetailHandler(
         IWineryRepository wineryRepository,
         IWineRepository wineRepository,
-        IUserWineRepository userWineRepository)
+        IBottleRepository bottleRepository)
     {
         _wineryRepository = wineryRepository;
         _wineRepository = wineRepository;
-        _userWineRepository = userWineRepository;
+        _bottleRepository = bottleRepository;
     }
 
     public async ValueTask<GetWineryDetailResponse> Handle(GetWineryDetailRequest request,
@@ -32,7 +32,7 @@ public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequ
         }
 
         var wines = await _wineRepository.GetByWineryId(request.WineryId);
-        var userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
+        var userWines = await _bottleRepository.GetUserBottles(request.Auth0Id);
         var wineryWines = new List<WineDto>();
 
         foreach (var wine in wines)

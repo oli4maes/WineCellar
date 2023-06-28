@@ -3,17 +3,17 @@ using WineCellar.Infrastructure.Persistence.EntityTypeConfiguration;
 
 namespace WineCellar.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext
+public sealed class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
-        Debug.WriteLine($"{ContextId!} context created.");
+        Debug.WriteLine($"{ContextId} context created.");
     }
 
     public DbSet<Grape> Grapes { get; set; }
     public DbSet<Winery> Wineries { get; set; }
     public DbSet<Wine> Wines { get; set; }
-    public DbSet<UserWine> UserWines { get; set; }
+    public DbSet<Bottle> Bottles { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<Region> Regions { get; set; }
 
@@ -22,7 +22,7 @@ public class ApplicationDbContext : DbContext
         CreateGrapeModel(modelBuilder);
         CreateWineModel(modelBuilder);
         CreateWineryModel(modelBuilder);
-        CreateUserWineModel(modelBuilder);
+        CreateBottleModel(modelBuilder);
         CreateCountryModel(modelBuilder);
         CreateRegionModel(modelBuilder);
     }
@@ -54,9 +54,9 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfiguration(new WineryEntityTypeConfiguration());
     }
 
-    private void CreateUserWineModel(ModelBuilder modelBuilder)
+    private void CreateBottleModel(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new UserWineEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new BottleEntityTypeConfiguration());
     }
 
     private void CreateCountryModel(ModelBuilder modelBuilder)
