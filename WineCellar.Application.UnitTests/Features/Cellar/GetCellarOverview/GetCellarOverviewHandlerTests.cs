@@ -61,27 +61,27 @@ public class GetCellarOverviewHandlerTests
         var request = new GetCellarOverviewRequest(AUTH0ID);
         var SUT = new GetCellarOverviewHandler(_userWineRepositoryMock.Object);
 
-        _userWineRepositoryMock.Setup(x => x.GetUserWines(request.Auth0Id))
+        _userWineRepositoryMock.Setup(x => x.GetUserBottles(request.Auth0Id))
             .ReturnsAsync(userWines);
 
         // Act
         var result = await SUT.Handle(request, default);
 
         // Assert
-        _userWineRepositoryMock.Verify(x => x.GetUserWines(request.Auth0Id), Times.Once);
+        _userWineRepositoryMock.Verify(x => x.GetUserBottles(request.Auth0Id), Times.Once);
 
         result.Should().NotBeNull();
         result.Should().BeOfType<GetCellarOverviewResponse>();
-        result.UserWines.Count().Should().Be(2);
+        result.Bottles.Count().Should().Be(2);
 
-        result.UserWines.ToList()[0].WineId.Should().Be(expectedUserWine1.WineId);
-        result.UserWines.ToList()[0].WineName.Should().Be(expectedUserWine1.Wine.Name);
-        result.UserWines.ToList()[0].WineryName.Should().Be(expectedUserWine1.Wine.Winery.Name);
-        result.UserWines.ToList()[0].WineType.Should().Be(expectedUserWine1.Wine.WineType);
+        result.Bottles.ToList()[0].WineId.Should().Be(expectedUserWine1.WineId);
+        result.Bottles.ToList()[0].WineName.Should().Be(expectedUserWine1.Wine.Name);
+        result.Bottles.ToList()[0].WineryName.Should().Be(expectedUserWine1.Wine.Winery.Name);
+        result.Bottles.ToList()[0].WineType.Should().Be(expectedUserWine1.Wine.WineType);
 
-        result.UserWines.ToList()[1].WineId.Should().Be(expectedUserWine2.WineId);
-        result.UserWines.ToList()[1].WineName.Should().Be(expectedUserWine2.Wine.Name);
-        result.UserWines.ToList()[1].WineryName.Should().Be(expectedUserWine2.Wine.Winery.Name);
-        result.UserWines.ToList()[1].WineType.Should().Be(expectedUserWine2.Wine.WineType);
+        result.Bottles.ToList()[1].WineId.Should().Be(expectedUserWine2.WineId);
+        result.Bottles.ToList()[1].WineName.Should().Be(expectedUserWine2.Wine.Name);
+        result.Bottles.ToList()[1].WineryName.Should().Be(expectedUserWine2.Wine.Winery.Name);
+        result.Bottles.ToList()[1].WineType.Should().Be(expectedUserWine2.Wine.WineType);
     }
 }
