@@ -15,14 +15,7 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
     {
         var wineries = Enumerable.Empty<Winery>();
 
-        if (request.IsSpotlit)
-        {
-            wineries = await _wineryRepository.GetAllSpotlit();
-        }
-        else
-        {
-            wineries = await _wineryRepository.All();
-        }
+        wineries = await _wineryRepository.All();
 
         return new GetWineriesResponse()
         {
@@ -32,8 +25,7 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
                 Name = x.Name,
                 CountryId = x.CountryId,
                 CountryName = x.Country?.Name,
-                Description = x.Description,
-                IsSpotlit = x.IsSpotlit
+                Description = x.Description
             }).ToList()
         };
     }

@@ -7,8 +7,8 @@ namespace WineCellar.Application.UnitTests.Features.Cellar.GetCellarOverview;
 
 public class GetCellarOverviewHandlerTests
 {
-    private readonly Mock<IUserWineRepository> _userWineRepositoryMock;
-    
+    private readonly Mock<IBottleRepository> _userWineRepositoryMock;
+
     public GetCellarOverviewHandlerTests()
     {
         _userWineRepositoryMock = new();
@@ -22,9 +22,8 @@ public class GetCellarOverviewHandlerTests
         const int WINEID1 = 1;
         const int WINEID2 = 2;
 
-        var expectedUserWine1 = new UserWine()
+        var expectedUserWine1 = new Bottle()
         {
-            Amount = 1,
             WineId = WINEID1,
             Auth0Id = AUTH0ID,
             Wine = new Wine()
@@ -38,10 +37,9 @@ public class GetCellarOverviewHandlerTests
                 }
             }
         };
-        
-        var expectedUserWine2 = new UserWine()
+
+        var expectedUserWine2 = new Bottle()
         {
-            Amount = 3,
             WineId = WINEID2,
             Auth0Id = AUTH0ID,
             Wine = new Wine()
@@ -56,10 +54,10 @@ public class GetCellarOverviewHandlerTests
             }
         };
 
-        var userWines = new List<UserWine>();
+        var userWines = new List<Bottle>();
         userWines.Add(expectedUserWine1);
         userWines.Add(expectedUserWine2);
-        
+
         var request = new GetCellarOverviewRequest(AUTH0ID);
         var SUT = new GetCellarOverviewHandler(_userWineRepositoryMock.Object);
 
@@ -71,18 +69,16 @@ public class GetCellarOverviewHandlerTests
 
         // Assert
         _userWineRepositoryMock.Verify(x => x.GetUserWines(request.Auth0Id), Times.Once);
-        
+
         result.Should().NotBeNull();
         result.Should().BeOfType<GetCellarOverviewResponse>();
         result.UserWines.Count().Should().Be(2);
-        
-        result.UserWines.ToList()[0].Amount.Should().Be(expectedUserWine1.Amount);
+
         result.UserWines.ToList()[0].WineId.Should().Be(expectedUserWine1.WineId);
         result.UserWines.ToList()[0].WineName.Should().Be(expectedUserWine1.Wine.Name);
         result.UserWines.ToList()[0].WineryName.Should().Be(expectedUserWine1.Wine.Winery.Name);
         result.UserWines.ToList()[0].WineType.Should().Be(expectedUserWine1.Wine.WineType);
 
-        result.UserWines.ToList()[1].Amount.Should().Be(expectedUserWine2.Amount);
         result.UserWines.ToList()[1].WineId.Should().Be(expectedUserWine2.WineId);
         result.UserWines.ToList()[1].WineName.Should().Be(expectedUserWine2.Wine.Name);
         result.UserWines.ToList()[1].WineryName.Should().Be(expectedUserWine2.Wine.Winery.Name);

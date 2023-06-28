@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using WineCellar.Application.Features.Cellar.AddWineToCellar;
+using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Application.Features.Wineries.GetWineryDetail;
 
 namespace WineCellar.Blazor.Features.Winery.Pages;
@@ -39,11 +39,12 @@ public partial class Detail : ComponentBase
 
     private async Task AddWineToCellar(int wineId)
     {
-        var response = await _mediator.Send(new AddWineToCellarRequest(wineId, 1, _userName, _auth0Id));
+        var response =
+            await _mediator.Send(new AddBottleToCellarRequest(wineId, BottleSize.Standard, _userName, _auth0Id));
 
-        if (response.UserWine is not null)
+        if (response.Bottle is not null)
         {
-            _snackbar.Add($"Added {response.UserWine.Wine?.Name} to your cellar.", Severity.Success);
+            _snackbar.Add($"Added {response.Bottle.Wine?.Name} to your cellar.", Severity.Success);
             await GetData();
             StateHasChanged();
         }

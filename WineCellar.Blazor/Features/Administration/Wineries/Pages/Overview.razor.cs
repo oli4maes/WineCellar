@@ -1,6 +1,5 @@
 using WineCellar.Application.Features.Wineries.DeleteWinery;
 using WineCellar.Application.Features.Wineries.GetWineries;
-using WineCellar.Application.Features.Wineries.SetWineryIsSpotlit;
 using WineCellar.Blazor.Shared.Components.Dialogs;
 
 namespace WineCellar.Blazor.Features.Administration.Wineries.Pages;
@@ -55,18 +54,6 @@ public partial class Overview : ComponentBase
                 _snackbar.Add($"Could not delete winery {winery.Name}", Severity.Error);
             }
         }
-    }
-
-    private async Task ToggleIsSpotlit(WineryDto winery)
-    {
-        var response = await _mediator.Send(new SetWineryIsSpotlitRequest(winery.Id, _userName));
-
-        if (!string.IsNullOrEmpty(response.ErrorMessage))
-        {
-            _snackbar.Add(response.ErrorMessage, Severity.Error);
-        }
-
-        await GetWineries();
     }
 
     private async Task GetWineries()

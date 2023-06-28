@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WineCellar.Domain.Enums;
 
 namespace WineCellar.Infrastructure.Persistence.EntityTypeConfiguration;
 
-public class UserWineEntityTypeConfiguration : IEntityTypeConfiguration<UserWine>
+public class BottleEntityTypeConfiguration : IEntityTypeConfiguration<Bottle>
 {
-    public void Configure(EntityTypeBuilder<UserWine> builder)
+    public void Configure(EntityTypeBuilder<Bottle> builder)
     {
-        builder.ToTable("UserWines");
+        builder.ToTable("Bottles");
 
         builder.HasKey(x => x.Id);
 
@@ -14,7 +15,8 @@ public class UserWineEntityTypeConfiguration : IEntityTypeConfiguration<UserWine
             .IsRequired()
             .HasMaxLength(250);
 
-        builder.Property(x => x.Amount)
+        builder.Property(x => x.BottleSize)
+            .HasDefaultValue(BottleSize.Standard)
             .IsRequired();
     }
 }

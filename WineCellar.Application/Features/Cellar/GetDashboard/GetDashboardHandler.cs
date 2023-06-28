@@ -5,17 +5,17 @@ namespace WineCellar.Application.Features.Cellar.GetDashboard;
 
 internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest, GetDashboardResponse>
 {
-    private readonly IUserWineRepository _userWineRepository;
+    private readonly IBottleRepository _bottleRepository;
 
-    public GetDashboardHandler(IUserWineRepository userWineRepository)
+    public GetDashboardHandler(IBottleRepository bottleRepository)
     {
-        _userWineRepository = userWineRepository;
+        _bottleRepository = bottleRepository;
     }
 
     public async ValueTask<GetDashboardResponse> Handle(GetDashboardRequest request,
         CancellationToken cancellationToken)
     {
-        var uWines = await _userWineRepository.GetUserWines(request.Auth0Id);
+        var uWines = await _bottleRepository.GetUserBottles(request.Auth0Id);
         var userWines = uWines.ToList();
 
         var whites = userWines.Where(x => x.Wine?.WineType == WineType.White);
@@ -83,13 +83,13 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         };
     }
 
-    private double GetAmountOfBottles(List<UserWine> wines)
+    private double GetAmountOfBottles(List<Bottle> bottles)
     {
         var amount = 0d;
 
-        foreach (var wine in wines)
+        foreach (var bottle in bottles)
         {
-            amount += wine.Amount;
+            amount += 1;
         }
 
         return amount;
@@ -100,12 +100,13 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
     }
 
-    private Wine? GetFavouriteWine(List<UserWine> userWines)
+    private Wine GetFavouriteWine(List<Bottle> bottles)
     {
-        return userWines.Aggregate((agg, next) => next.Amount > agg.Amount ? next : agg).Wine;
+        //return bottles.Aggregate((agg, next) => next.Amount > agg.Amount ? next : agg).Wine;
+        return new Wine();
     }
 
-    private int? GetFavouriteWinery(IEnumerable<IGrouping<int, UserWine>> grouping)
+    private int? GetFavouriteWinery(IEnumerable<IGrouping<int, Bottle>> grouping)
     {
         if (grouping.Any())
         {
@@ -117,7 +118,7 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
                 foreach (var uw in x)
                 {
-                    amount += uw.Amount;
+                    amount += 1;
                 }
 
                 dict.Add(x.Key, amount);

@@ -1,5 +1,5 @@
 ﻿using WineCellar.Application.Dtos;
-using WineCellar.Application.Features.Cellar.AddWineToCellar;
+using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Domain.Entities;
 using WineCellar.Domain.Persistence.Repositories;
 
@@ -7,7 +7,7 @@ namespace WineCellar.Application.UnitTests.Features.Cellar.AddWineToCellar;
 
 public class AddWineToCellarHandlerTests
 {
-    private readonly Mock<IUserWineRepository> _userWineRepositoryMock;
+    private readonly Mock<IBottleRepository> _userWineRepositoryMock;
 
     public AddWineToCellarHandlerTests()
     {
@@ -24,16 +24,15 @@ public class AddWineToCellarHandlerTests
         const int AMOUNT = 1;
         const int USERWINEID = 1;
         
-        var expectedUserWine = new UserWineDto()
+        var expectedUserWine = new BottleDto()
         {
             Id = USERWINEID,
-            Amount = AMOUNT,
             WineId = WINEID,
             Wine = new WineDto()
         };
 
         var addWineToCellarRequest =
-            new AddWineToCellarRequest(expectedUserWine.WineId, expectedUserWine.Amount, USERNAME, AUTH0ID);
+            new AddBottleToCellarRequest(expectedUserWine.WineId, USERNAME, AUTH0ID);
 
         var SUT = new AddWineToCellarHandler(_userWineRepositoryMock.Object);
 
@@ -41,11 +40,11 @@ public class AddWineToCellarHandlerTests
         var result = await SUT.Handle(addWineToCellarRequest, default);
 
         // Assert
-        _userWineRepositoryMock.Verify(x => x.Create(It.IsAny<UserWine>()), Times.Once);
+        _userWineRepositoryMock.Verify(x => x.Create(It.IsAny<Bottle>()), Times.Once);
         
-        result.Should().BeOfType<AddWineToCellarResponse>();
-        result.UserWine.Should().NotBeNull();
-        result.UserWine?.WineId.Should().Be(expectedUserWine.WineId);
-        result.UserWine?.Amount.Should().Be(expectedUserWine.Amount);
+        result.Should().BeOfType<AddBottleToCellarResponse>();
+        result.Bottle.Should().NotBeNull();
+        result.Bottle?.WineId.Should().Be(expectedUserWine.WineId);
+        result.Bottle?.Amount.Should().Be(expectedUserWine.Amount);
     }
 }
