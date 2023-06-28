@@ -23,7 +23,7 @@ public class AddWineToCellarHandlerTests
         const int WINEID = 1;
         const int AMOUNT = 1;
         const int USERWINEID = 1;
-        
+
         var expectedUserWine = new BottleDto()
         {
             Id = USERWINEID,
@@ -32,19 +32,18 @@ public class AddWineToCellarHandlerTests
         };
 
         var addWineToCellarRequest =
-            new AddBottleToCellarRequest(expectedUserWine.WineId, USERNAME, AUTH0ID);
+            new AddBottleToCellarRequest(expectedUserWine.WineId, expectedUserWine.BottleSize, USERNAME, AUTH0ID);
 
-        var SUT = new AddWineToCellarHandler(_userWineRepositoryMock.Object);
+        var SUT = new AddBottleToCellarHandler(_userWineRepositoryMock.Object);
 
         // Act
         var result = await SUT.Handle(addWineToCellarRequest, default);
 
         // Assert
         _userWineRepositoryMock.Verify(x => x.Create(It.IsAny<Bottle>()), Times.Once);
-        
+
         result.Should().BeOfType<AddBottleToCellarResponse>();
         result.Bottle.Should().NotBeNull();
         result.Bottle?.WineId.Should().Be(expectedUserWine.WineId);
-        result.Bottle?.Amount.Should().Be(expectedUserWine.Amount);
     }
 }
