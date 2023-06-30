@@ -1,11 +1,9 @@
-using WineCellar.Application.Features.Countries.GetCountries;
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Application.Features.Regions.GetRegionsByCountry;
 using WineCellar.Application.Features.Wineries.GetWineries;
 using WineCellar.Application.Features.Wines.AddGrapeToWine;
 using WineCellar.Application.Features.Wines.CreateWine;
 using WineCellar.Application.Features.Wines.GetWineById;
-using WineCellar.Application.Features.Wines.GetWineByName;
 using WineCellar.Application.Features.Wines.RemoveGrapeFromWine;
 using WineCellar.Application.Features.Wines.UpdateWine;
 
@@ -150,7 +148,10 @@ public partial class Detail : ComponentBase
 
     private async Task GetRegions()
     {
-        var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
-        _regions = regionsResponse.Regions;
+        if (_wine.Winery.CountryId is not null)
+        {
+            var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
+            _regions = regionsResponse.Regions;
+        }
     }
 }

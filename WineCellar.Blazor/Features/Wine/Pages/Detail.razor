@@ -6,7 +6,7 @@
 <MudContainer Fixed="true">
     <div class="d-flex flex-row justify-space-between">
         <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_wine?.Name</MudText>
-        @if (!_isWineInUserWines)
+        @if (!_isWineInUserCellar)
         {
             <MudFab Title="Add wine to cellar"
                     StartIcon="@Icons.Material.Filled.Add"
@@ -37,7 +37,7 @@
     </MudGrid>
 
     <MudGrid Class="mt-2">
-        @if (_isWineInUserWines)
+        @if (_isWineInUserCellar)
         {
             <MudItem xs="12" md="6">
                 

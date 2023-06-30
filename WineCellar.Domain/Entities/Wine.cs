@@ -13,7 +13,7 @@ public class Wine : BaseAuditableEntity
     public Winery Winery { get; set; }
 
     public int? RegionId { get; set; }
-    public Region Region { get; set; }
+    public Region? Region { get; set; }
 
     public List<Grape> Grapes { get; set; }
     public List<GrapeWine> GrapeWines { get; set; }

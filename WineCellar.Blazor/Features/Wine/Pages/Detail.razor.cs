@@ -14,10 +14,10 @@ public partial class Detail : ComponentBase
     [Inject] private NavigationManager _navigationManager { get; set; }
 
     private WineDto _wine;
-    private BottleDto _userWine { get; set; } = new();
+    private BottleDto _bottle { get; set; } = new();
     private string _userName { get; set; } = string.Empty;
     private string _auth0Id { get; set; } = string.Empty;
-    private bool _isWineInUserWines { get; set; } = false;
+    private bool _isWineInUserCellar { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,7 +47,7 @@ public partial class Detail : ComponentBase
         if (response.Bottle is not null)
         {
             await GetUserWine();
-            _isWineInUserWines = true;
+            _isWineInUserCellar = true;
             _snackbar.Add($"Added {_wine.Name} to your cellar.", Severity.Success);
         }
     }
