@@ -2,8 +2,7 @@
 
 namespace WineCellar.Application.Behaviours;
 
-public class LoggingPipelineBehaviour<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
+public class LoggingPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<LoggingPipelineBehaviour<TRequest, TResponse>> _logger;

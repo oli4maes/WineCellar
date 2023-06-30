@@ -14,25 +14,13 @@ public class CountryEntityTypeConfiguration : IEntityTypeConfiguration<Country>
             .IsRequired()
             .HasMaxLength(250);
 
+        builder.Property(x => x.Description)
+            .HasMaxLength(5000);
+
+        builder.Property(x => x.IsArchived)
+            .HasDefaultValue(false);
+
         builder.HasMany(x => x.Regions)
             .WithOne(y => y.Country);
-
-        builder.HasData(
-            new Country { Id = 1, Name = "Argentina", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 2, Name = "Australia", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 3, Name = "Austria", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 4, Name = "Belgium", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 5, Name = "Chile", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 6, Name = "France", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 7, Name = "Germany", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 8, Name = "Greece", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 9, Name = "Hungary", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 10, Name = "Italy", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 11, Name = "New Zealand", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 12, Name = "Portugal", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 13, Name = "South Africa", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 14, Name = "Spain", Created = DateTime.UtcNow, CreatedBy = "Seeding" },
-            new Country { Id = 15, Name = "United States", Created = DateTime.UtcNow, CreatedBy = "Seeding" }
-        );
     }
 }

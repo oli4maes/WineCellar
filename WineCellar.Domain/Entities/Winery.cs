@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WineCellar.Domain.Common;
+﻿using WineCellar.Domain.Common;
 
 namespace WineCellar.Domain.Entities;
 
@@ -12,5 +11,5 @@ public class Winery : BaseAuditableEntity
     public int? CountryId { get; set; }
     public Country? Country { get; set; }
 
-    public List<Wine> Wines { get; set; } = new();
+    public List<Wine> Wines { get; set; }
 }
