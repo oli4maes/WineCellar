@@ -40,7 +40,6 @@
             <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.CellarOverviewDto, object>(x => x.RegionName)">Region</MudTableSortLabel>
         </MudTh>
         <MudTh>Amount</MudTh>
-        <MudTh>Actions</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Winery">@context.WineryName</MudTd>
@@ -50,9 +49,7 @@
             @context.WineType
         </MudTd>
         <MudTd DataLabel="Region">@context.RegionName</MudTd>
-        <MudTd DataLabel="Actions">
-            
-        </MudTd>
+        <MudTd DataLabel="Amount">@context.Amount</MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager RowsPerPageString="Items per page"/>

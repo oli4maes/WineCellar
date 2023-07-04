@@ -11,7 +11,8 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
         _bottleRepository = bottleRepository;
     }
 
-    public async ValueTask<GetBottlesByWineIdResponse> Handle(GetBottlesByWineIdRequest request, CancellationToken cancellationToken)
+    public async ValueTask<GetBottlesByWineIdResponse> Handle(GetBottlesByWineIdRequest request,
+        CancellationToken cancellationToken)
     {
         var bottles = await _bottleRepository.GetByWineId(request.WineId, request.Auth0Id);
 
@@ -25,13 +26,14 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 };
             }
         }
-        
 
         return new GetBottlesByWineIdResponse()
         {
-            Bottles = bottles.Select(x => new BottleDto()
+            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
             {
-                
+                BottleSize = x.BottleSize,
+                Vintage = x.Vintage,
+                AddedOn = x.Created
             }).ToList()
         };
     }

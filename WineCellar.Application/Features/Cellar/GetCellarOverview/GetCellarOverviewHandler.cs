@@ -1,4 +1,5 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Cellar.GetCellarOverview;
 
@@ -15,20 +16,30 @@ internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOvervi
         CancellationToken cancellationToken)
     {
         var bottles = await _bottleRepository.GetUserBottles(request.Auth0Id);
+        var groupedByWine = bottles.GroupBy(x => x.WineId);
+        var winesInCellar = new List<GetCellarOverviewResponse.CellarOverviewDto>();
+
+        foreach (var group in groupedByWine)
+        {
+            winesInCellar.Add(new GetCellarOverviewResponse.CellarOverviewDto()
+            {
+                WineId = group.Key,
+                WineName = group.First().Wine.Name,
+                WineryName = group.First().Wine.Winery.Name,
+                RegionName = group.First().Wine.Region?.Name,
+                WineType = group.First().Wine.WineType,
+                Amount = GetAmount(group)
+            });
+        }
 
         return new GetCellarOverviewResponse()
         {
-            Bottles = bottles.Select(x => new GetCellarOverviewResponse.CellarOverviewDto()
-            {
-                Id = x.Id,
-                WineId = x.WineId,
-                Vintage = x.Vintage,
-                BottleSize = x.BottleSize,
-                WineName = x.Wine.Name,
-                WineType = x.Wine.WineType,
-                WineryName = x.Wine.Winery.Name,
-                RegionName = x.Wine.Region.Name
-            })
+            Bottles = winesInCellar
         };
+    }
+
+    private int GetAmount(IGrouping<int, Bottle> grouping)
+    {
+        return grouping.Count();
     }
 }

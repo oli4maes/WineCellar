@@ -27,7 +27,7 @@ internal sealed class AddBottleToCellarHandler : IRequestHandler<AddBottleToCell
 
         return new AddBottleToCellarResponse()
         {
-            Bottle = new BottleDto()
+            Bottle = new AddBottleToCellarResponse.BottleDto()
             {
                 Id = bottle.Id,
                 BottleSize = bottle.BottleSize,

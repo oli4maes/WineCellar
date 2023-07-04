@@ -6,7 +6,6 @@ public class WineDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = String.Empty;
-    public bool IsSpotlit { get; set; }
     public bool IsInUserCellar { get; set; }
 
     public int WineryId { get; set; }

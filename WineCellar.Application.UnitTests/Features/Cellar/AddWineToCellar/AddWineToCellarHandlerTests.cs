@@ -24,7 +24,7 @@ public class AddWineToCellarHandlerTests
         const int AMOUNT = 1;
         const int USERWINEID = 1;
 
-        var expectedUserWine = new BottleDto()
+        var expectedUserWine = new AddBottleToCellarResponse.BottleDto()
         {
             Id = USERWINEID,
             WineId = WINEID,
