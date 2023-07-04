@@ -6,14 +6,17 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
 {
     private readonly IWineRepository _wineRepository;
 
-    public GetWineByIdHandler(IWineRepository wineRepository)
+    public GetWineByIdHandler(IWineRepository wineRepository, IMediator mediator)
     {
         _wineRepository = wineRepository;
     }
 
     public async ValueTask<GetWineByIdResponse> Handle(GetWineByIdRequest request, CancellationToken cancellationToken)
     {
+        var isInCellar = false;
+        
         var wine = await _wineRepository.GetById(request.Id);
+        
 
         if (wine is null)
         {
@@ -42,6 +45,7 @@ internal sealed class GetWineByIdHandler : IRequestHandler<GetWineByIdRequest, G
                 RegionId = wine.Region?.Id,
                 RegionName = wine.Region?.Name,
                 WineryName = wine.Winery.Name,
+                IsInUserCellar = isInCellar,
                 Winery = new WineryDto()
                 {
                     Id = wine.Winery.Id,

@@ -14,10 +14,10 @@ public partial class Detail : ComponentBase
     [Inject] private NavigationManager _navigationManager { get; set; }
 
     private WineDto _wine;
-    private BottleDto _bottle { get; set; } = new();
+    private List<GetBottlesByWineIdResponse.BottleDto> _bottles { get; set; } = new();
     private string _userName { get; set; } = string.Empty;
     private string _auth0Id { get; set; } = string.Empty;
-    private bool _isWineInUserCellar { get; set; } = false;
+    private bool _isWineInUserCellar { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -31,12 +31,13 @@ public partial class Detail : ComponentBase
         var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
         _wine = getWineByIdResponse.Wine ?? new();
 
-        await GetUserWine();
+        await GetBottles();
     }
 
-    private async Task GetUserWine()
+    private async Task GetBottles()
     {
         GetBottlesByWineIdResponse response = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id));
+        _bottles = response.Bottles;
     }
 
     private async Task AddWineToCellar()
@@ -46,7 +47,7 @@ public partial class Detail : ComponentBase
 
         if (response.Bottle is not null)
         {
-            await GetUserWine();
+            await GetBottles();
             _isWineInUserCellar = true;
             _snackbar.Add($"Added {_wine.Name} to your cellar.", Severity.Success);
         }
