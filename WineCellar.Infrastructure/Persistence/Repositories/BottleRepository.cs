@@ -1,4 +1,5 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using WineCellar.Domain.Enums;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Infrastructure.Persistence.Repositories;
 
@@ -105,5 +106,26 @@ public class BottleRepository : IBottleRepository
         await context.SaveChangesAsync();
 
         return entity;
+    }
+
+    public async Task SetStatus(int id, BottleStatus status, string userName)
+    {
+        ArgumentNullException.ThrowIfNull(id);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        var userWineModel = await context.Bottles
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (userWineModel == null)
+        {
+            throw new Exception("Couldn't find the user wine to update.");
+        }
+
+        userWineModel.Status = status;
+        userWineModel.LastModified = DateTime.UtcNow;
+        userWineModel.LastModifiedBy = userName;
+
+        await context.SaveChangesAsync();
     }
 }

@@ -3,7 +3,7 @@ using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Application.Features.Cellar.DeleteBottle;
 using WineCellar.Application.Features.Cellar.EditBottle;
 using WineCellar.Application.Features.Cellar.GetBottlesByWineId;
-using WineCellar.Application.Features.Grapes.DeleteGrape;
+using WineCellar.Application.Features.Cellar.SetBottleStatus;
 using WineCellar.Application.Features.Wines.GetWineById;
 using WineCellar.Blazor.Features.Wine.Components;
 using WineCellar.Blazor.Shared.Components.Dialogs;
@@ -20,7 +20,8 @@ public partial class Detail : ComponentBase
     [Inject] private IDialogService _dialogService { get; set; }
 
     private WineDto _wine;
-    private List<GetBottlesByWineIdResponse.BottleDto> _bottles { get; set; } = new();
+    private List<GetBottlesByWineIdResponse.BottleDto> _bottlesInCellar { get; set; } = new();
+    private List<GetBottlesByWineIdResponse.BottleDto> _bottlesConsumed { get; set; } = new();
     private string _userName { get; set; } = string.Empty;
     private string _auth0Id { get; set; } = string.Empty;
 
@@ -38,11 +39,13 @@ public partial class Detail : ComponentBase
 
         await GetBottles();
     }
-
     private async Task GetBottles()
     {
-        GetBottlesByWineIdResponse response = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id));
-        _bottles = response.Bottles;
+        GetBottlesByWineIdResponse responseInCellar = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.InCellar));
+        _bottlesInCellar = responseInCellar.Bottles;
+        
+        GetBottlesByWineIdResponse responseConsumed = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.Consumed));
+        _bottlesConsumed = responseConsumed.Bottles;
     }
 
     private async Task AddBottleToCellar()
@@ -102,6 +105,12 @@ public partial class Detail : ComponentBase
                 _snackbar.Add($"Could not delete bottle.", Severity.Error);
             }
         }
+    }
+
+    private async Task OnConsumeBottle(GetBottlesByWineIdResponse.BottleDto bottle)
+    {
+        await _mediator.Send(new SetBottleStatusRequest(bottle.Id, BottleStatus.Consumed, _userName));
+        await GetBottles();
     }
 
     private void NavigateToWinery()

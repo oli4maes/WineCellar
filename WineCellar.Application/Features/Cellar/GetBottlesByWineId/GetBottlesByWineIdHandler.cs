@@ -16,6 +16,11 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
     {
         var bottles = await _bottleRepository.GetByWineId(request.WineId, request.Auth0Id);
 
+        if (request.Status is not null)
+        {
+            bottles = bottles.Where(x => x.Status == request.Status).ToList();
+        }
+        
         foreach (var bottle in bottles)
         {
             if (bottle.Auth0Id != request.Auth0Id)
@@ -35,7 +40,8 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 BottleSize = x.BottleSize,
                 Vintage = x.Vintage == null ? "N.V." : x.Vintage.ToString(),
                 AddedOn = x.Created,
-                Status = x.Status
+                Status = x.Status,
+                LastModified = x.LastModified
             }).ToList()
         };
     }

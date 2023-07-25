@@ -6,22 +6,42 @@
              LoadingProgressColor="Color.Primary"
              Dense="true">
     <ToolBarContent>
-        <MudText Typo="Typo.h5" Color="Color.Primary">Bottles</MudText>
+        @if (Status == BottleStatus.InCellar)
+        {
+            <MudText Typo="Typo.h5" Color="Color.Primary">Bottles in cellar</MudText>
+        }
+        @if (Status == BottleStatus.Consumed)
+        {
+            <MudText Typo="Typo.h5" Color="Color.Primary">Consumed bottles</MudText>
+        }
     </ToolBarContent>
     <Columns>
         <PropertyColumn Property="x => x.BottleSize" Title="Size" Sortable="true" Filterable="false"/>
         <PropertyColumn Property="x => x.Vintage" Title="Vintage" Sortable="true" Filterable="false"/>
-        <PropertyColumn Property="x => BottleStatusExtensions.GetString(x.Status)" Title="Status" Sortable="true" Filterable="false"/>
-        <PropertyColumn Property="x => x.AddedOn" Title="In cellar since" Sortable="true" Filterable="false"/>
-        <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
-            <CellTemplate Context="BottleEditContext">
-                @{
-                    var bottle = BottleEditContext.Item;
-                }
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => EditBottle(bottle)"/>
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteBottle(bottle)"/>
-            </CellTemplate>
-        </TemplateColumn>
+        @if (Status == BottleStatus.InCellar)
+        {
+            <PropertyColumn Property="x => x.AddedOn" Title="In cellar since" Sortable="true" Filterable="false"/>
+        }
+        @if (Status == BottleStatus.Consumed)
+        {
+            <PropertyColumn Property="x => x.LastModified" Title="Consumed on" Sortable="true" Filterable="false"/>
+        }
+        @if (Status == BottleStatus.InCellar)
+        {
+            <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
+                <CellTemplate Context="BottleEditContext">
+                    @{
+                        var bottle = BottleEditContext.Item;
+                    }
+                    @if (bottle.Status is not BottleStatus.Consumed)
+                    {
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Done" Color="Color.Primary" @onclick="() => ConsumeBottle(bottle)"/>
+                    }
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => EditBottle(bottle)"/>
+                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteBottle(bottle)"/>
+                </CellTemplate>
+            </TemplateColumn>
+        }
     </Columns>
     <PagerContent>
         <MudDataGridPager T="GetBottlesByWineIdResponse.BottleDto"/>

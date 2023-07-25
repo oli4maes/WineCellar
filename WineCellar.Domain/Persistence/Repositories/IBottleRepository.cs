@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Domain.Persistence.Repositories;
+﻿using WineCellar.Domain.Enums;
+
+namespace WineCellar.Domain.Persistence.Repositories;
 
 public interface IBottleRepository
 {
@@ -8,4 +10,5 @@ public interface IBottleRepository
     Task<List<Bottle>> GetByWineId(int wineId, string auth0Id);
     Task Update(Bottle bottle);
     Task<Bottle> Create(Bottle entity);
+    Task SetStatus(int id, BottleStatus status, string userName);
 }
