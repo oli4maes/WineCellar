@@ -18,7 +18,8 @@
                 @{
                     var bottle = BottleEditContext.Item;
                 }
-                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => SetBottleStatus(bottle)"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => EditBottle(bottle)"/>
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteBottle(bottle)"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>

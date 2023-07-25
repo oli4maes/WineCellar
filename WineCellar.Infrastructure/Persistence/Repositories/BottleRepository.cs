@@ -38,7 +38,7 @@ public class BottleRepository : IBottleRepository
             return false;
         }
 
-        context.Bottles!.Remove(userWineModel);
+        context.Bottles.Remove(userWineModel);
         await context.SaveChangesAsync();
 
         return true;
@@ -79,7 +79,7 @@ public class BottleRepository : IBottleRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        var userWineModel = await context.Bottles!
+        var userWineModel = await context.Bottles
             .FirstOrDefaultAsync(x => x.Id == bottle.Id);
 
         if (userWineModel == null)
@@ -87,6 +87,8 @@ public class BottleRepository : IBottleRepository
             throw new Exception("Couldn't find the user wine to update.");
         }
 
+        userWineModel.BottleSize = bottle.BottleSize;
+        userWineModel.Vintage = bottle.Vintage;
         userWineModel.LastModified = DateTime.UtcNow;
         userWineModel.LastModifiedBy = bottle.LastModifiedBy;
 

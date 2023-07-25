@@ -41,8 +41,8 @@
         {
             <MudTabPanel Text="Bottles" BadgeData="_bottles.Count">
                 <MudGrid Class="mt-4">
-                    <MudItem xs="12" md="6">
-                        <BottlesTable Bottles="_bottles" OnSetBottleStatus="SetBottleStatus"/>
+                    <MudItem sm="12" md="9">
+                        <BottlesTable Bottles="_bottles" OnEditBottle="OnEditBottle" OnDeleteBottle="OnDeleteBottle"/>
                     </MudItem>
                 </MudGrid>
             </MudTabPanel>
