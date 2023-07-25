@@ -1,8 +1,12 @@
 ﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.AddBottleToCellar;
+using WineCellar.Application.Features.Cellar.DeleteBottle;
+using WineCellar.Application.Features.Cellar.EditBottle;
 using WineCellar.Application.Features.Cellar.GetBottlesByWineId;
+using WineCellar.Application.Features.Grapes.DeleteGrape;
 using WineCellar.Application.Features.Wines.GetWineById;
 using WineCellar.Blazor.Features.Wine.Components;
+using WineCellar.Blazor.Shared.Components.Dialogs;
 
 namespace WineCellar.Blazor.Features.Wine.Pages;
 
@@ -43,15 +47,14 @@ public partial class Detail : ComponentBase
 
     private async Task AddBottleToCellar()
     {
-        var dialog = await _dialogService.ShowAsync<AddBottleToCellarDialog>();
+        var dialog = await _dialogService.ShowAsync<AddBottleDialog>();
         var result = await dialog.Result;
-        AddBottleToCellarDialog.Bottle bottle = (AddBottleToCellarDialog.Bottle)result.Data;
-        
+        AddBottleDialog.Bottle bottle = (AddBottleDialog.Bottle)result.Data;
+
         if (!result.Canceled)
         {
             var response = await _mediator.Send(
-                new AddBottleToCellarRequest(_wine.Id, bottle.Size, _userName, _auth0Id, bottle.Vintage)
-            );
+                new AddBottleToCellarRequest(_wine.Id, bottle.Size, _userName, _auth0Id, bottle.Vintage));
 
             if (response.Bottle is not null)
             {
@@ -61,8 +64,44 @@ public partial class Detail : ComponentBase
         }
     }
 
-    private async Task SetBottleStatus(GetBottlesByWineIdResponse.BottleDto bottle)
+    private async Task OnEditBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
+        var parameters = new DialogParameters<EditBottleDialog>();
+        parameters.Add(x => x.Bottle, bottle);
+
+        var dialog = await _dialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
+        var result = await dialog.Result;
+
+        int vintage;
+        int.TryParse(bottle.Vintage, out vintage);
+
+        if (!result.Canceled)
+        {
+            await _mediator.Send(new EditBottleRequest(bottle.Id, bottle.BottleSize, _userName, vintage == 0 ? null : vintage));
+        }
+    }
+
+    private async Task OnDeleteBottle(GetBottlesByWineIdResponse.BottleDto bottle)
+    {
+        DialogParameters parameters = new() { { "ItemToDelete", $"{bottle.BottleSize.ToString()} - {bottle.AddedOn.ToShortDateString()}" } };
+        var dialog = await _dialogService.ShowAsync<DeleteDialog>("Delete", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            var response = await _mediator.Send(new DeleteBottleRequest(bottle.Id));
+
+            if (response.SuccessfulDelete)
+            {
+                _snackbar.Add($"Bottle deleted.", Severity.Warning);
+
+                await GetBottles();
+            }
+            else
+            {
+                _snackbar.Add($"Could not delete bottle.", Severity.Error);
+            }
+        }
     }
 
     private void NavigateToWinery()

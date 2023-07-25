@@ -1,6 +1,6 @@
 ﻿namespace WineCellar.Blazor.Features.Wine.Components;
 
-public partial class AddBottleToCellarDialog : ComponentBase
+public partial class AddBottleDialog : ComponentBase
 {
     [CascadingParameter] private MudDialogInstance _mudDialog { get; set; }
 
