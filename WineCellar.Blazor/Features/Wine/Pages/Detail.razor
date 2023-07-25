@@ -5,43 +5,47 @@
 
 <MudContainer Fixed="true">
     <div class="d-flex flex-row justify-space-between">
-        <MudText Typo="Typo.h4" Class="mt-3 mb-2">@_wine?.Name</MudText>
-        @if (!_isWineInUserCellar)
-        {
-            <MudFab Title="Add wine to cellar"
-                    StartIcon="@Icons.Material.Filled.Add"
-                    Color="Color.Primary"
-                    @onclick="AddWineToCellar"
-                    Size="Size.Medium"
-                    Class="mt-2"/>
-        }
+        <MudText Typo="Typo.h4" Class="mt-5 mb-4">@_wine?.WineryName - @_wine?.Name</MudText>
+        <MudFab Title="Add bottle to cellar"
+                StartIcon="@Icons.Material.Filled.Add"
+                Color="Color.Primary"
+                @onclick="AddBottleToCellar"
+                Size="Size.Medium"
+                Class="mt-4"/>
     </div>
 </MudContainer>
 
-<MudDivider/>
+<MudTabs Elevation="1" Rounded="false" ApplyEffectsToContainer="false">
+    <MudTabPanel Text="Details">
+        <div class="mt-3">
+            <MudContainer Fixed="true">
+                <WineInfo Wine="_wine" OnNavigateToWinery="NavigateToWinery"/>
+            </MudContainer>
+            <MudDivider/>
+        </div>
 
-<MudContainer Fixed="true" Class="mt-4">
-    <WineInfo Wine="_wine" OnNavigateToWinery="NavigateToWinery"/>
-</MudContainer>
+        <MudContainer Fixed="true">
+            <MudGrid Class="mt-4">
+                @if (_wine?.Grapes.Count > 0)
+                {
+                    <MudItem xs="12" md="6">
+                        <GrapesList Grapes="_wine.Grapes"/>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudContainer>
 
-<MudDivider/>
-
-<MudContainer Fixed="true">
-    <MudGrid Class="mt-4">
+    </MudTabPanel>
+    <MudContainer Fixed="true">
         @if (_wine?.Grapes.Count > 0)
         {
-            <MudItem xs="12" md="6">
-                <GrapesList Grapes="_wine.Grapes"/>
-            </MudItem>
+            <MudTabPanel Text="Bottles" BadgeData="_bottles.Count">
+                <MudGrid Class="mt-4">
+                    <MudItem xs="12" md="6">
+                        <BottlesTable Bottles="_bottles" OnSetBottleStatus="SetBottleStatus"/>
+                    </MudItem>
+                </MudGrid>
+            </MudTabPanel>
         }
-    </MudGrid>
-
-    <MudGrid Class="mt-2">
-        @if (_isWineInUserCellar)
-        {
-            <MudItem xs="12" md="6">
-                <BottlesList Bottles="_bottles"/>
-            </MudItem>
-        }
-    </MudGrid>
-</MudContainer>
+    </MudContainer>
+</MudTabs>

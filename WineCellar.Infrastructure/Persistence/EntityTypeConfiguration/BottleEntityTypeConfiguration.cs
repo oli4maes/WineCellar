@@ -18,5 +18,9 @@ public class BottleEntityTypeConfiguration : IEntityTypeConfiguration<Bottle>
         builder.Property(x => x.BottleSize)
             .HasDefaultValue(BottleSize.Standard)
             .IsRequired();
+
+        builder.Property(x => x.Status)
+            .HasDefaultValue(BottleStatus.InCellar)
+            .IsRequired();
     }
 }

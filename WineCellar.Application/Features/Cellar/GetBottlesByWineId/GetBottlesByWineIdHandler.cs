@@ -31,9 +31,11 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
         {
             Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
             {
+                Id = x.Id,
                 BottleSize = x.BottleSize,
-                Vintage = x.Vintage,
-                AddedOn = x.Created
+                Vintage = x.Vintage == null ? "N.V." : x.Vintage.ToString(),
+                AddedOn = x.Created,
+                Status = x.Status
             }).ToList()
         };
     }

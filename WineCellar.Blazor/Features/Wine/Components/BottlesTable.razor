@@ -1,0 +1,28 @@
+﻿@using WineCellar.Application.Features.Cellar.GetBottlesByWineId
+<MudDataGrid T="GetBottlesByWineIdResponse.BottleDto"
+             Items="Bottles"
+             SortMode="SortMode.Single"
+             Hideable=true
+             LoadingProgressColor="Color.Primary"
+             Dense="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h5" Color="Color.Primary">Bottles</MudText>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.BottleSize" Title="Size" Sortable="true" Filterable="false"/>
+        <PropertyColumn Property="x => x.Vintage" Title="Vintage" Sortable="true" Filterable="false"/>
+        <PropertyColumn Property="x => BottleStatusExtensions.GetString(x.Status)" Title="Status" Sortable="true" Filterable="false"/>
+        <PropertyColumn Property="x => x.AddedOn" Title="In cellar since" Sortable="true" Filterable="false"/>
+        <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
+            <CellTemplate Context="BottleEditContext">
+                @{
+                    var bottle = BottleEditContext.Item;
+                }
+                <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => SetBottleStatus(bottle)"/>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="GetBottlesByWineIdResponse.BottleDto"/>
+    </PagerContent>
+</MudDataGrid>

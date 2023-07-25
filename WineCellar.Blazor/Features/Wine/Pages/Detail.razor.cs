@@ -2,6 +2,7 @@
 using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Application.Features.Cellar.GetBottlesByWineId;
 using WineCellar.Application.Features.Wines.GetWineById;
+using WineCellar.Blazor.Features.Wine.Components;
 
 namespace WineCellar.Blazor.Features.Wine.Pages;
 
@@ -12,12 +13,12 @@ public partial class Detail : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private ISnackbar _snackbar { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
+    [Inject] private IDialogService _dialogService { get; set; }
 
     private WineDto _wine;
     private List<GetBottlesByWineIdResponse.BottleDto> _bottles { get; set; } = new();
     private string _userName { get; set; } = string.Empty;
     private string _auth0Id { get; set; } = string.Empty;
-    private bool _isWineInUserCellar { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,17 +41,28 @@ public partial class Detail : ComponentBase
         _bottles = response.Bottles;
     }
 
-    private async Task AddWineToCellar()
+    private async Task AddBottleToCellar()
     {
-        var response =
-            await _mediator.Send(new AddBottleToCellarRequest(_wine.Id, BottleSize.Standard, _userName, _auth0Id));
-
-        if (response.Bottle is not null)
+        var dialog = await _dialogService.ShowAsync<AddBottleToCellarDialog>();
+        var result = await dialog.Result;
+        AddBottleToCellarDialog.Bottle bottle = (AddBottleToCellarDialog.Bottle)result.Data;
+        
+        if (!result.Canceled)
         {
-            await GetBottles();
-            _isWineInUserCellar = true;
-            _snackbar.Add($"Added {_wine.Name} to your cellar.", Severity.Success);
+            var response = await _mediator.Send(
+                new AddBottleToCellarRequest(_wine.Id, bottle.Size, _userName, _auth0Id, bottle.Vintage)
+            );
+
+            if (response.Bottle is not null)
+            {
+                await GetBottles();
+                _snackbar.Add($"Added bottle to your cellar.", Severity.Success);
+            }
         }
+    }
+
+    private async Task SetBottleStatus(GetBottlesByWineIdResponse.BottleDto bottle)
+    {
     }
 
     private void NavigateToWinery()

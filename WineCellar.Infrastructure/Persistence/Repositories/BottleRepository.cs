@@ -11,15 +11,6 @@ public class BottleRepository : IBottleRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<List<Bottle>> All()
-    {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles!
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
     public async Task<Bottle?> GetById(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
