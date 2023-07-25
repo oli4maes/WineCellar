@@ -1,4 +1,6 @@
-﻿namespace WineCellar.Blazor.Features.Administration.Grapes.Components;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace WineCellar.Blazor.Features.Administration.Grapes.Components;
 
 public partial class GrapesTable : ComponentBase
 {

@@ -9,8 +9,10 @@ public sealed class GetBottlesByWineIdResponse
 
     public sealed class BottleDto
     {
+        public int Id { get; set; }
         public BottleSize BottleSize { get; set; }
-        public int? Vintage { get; set; }
+        public string Vintage { get; set; }
         public DateTime AddedOn { get; set; }
+        public BottleStatus Status { get; set; }
     }
 }

@@ -282,6 +282,7 @@ BEGIN
     ('Pinot Blanc', GETDATE(), 'SEEDING', 0),
     ('Pinot Gris', GETDATE(), 'SEEDING', 1),
     ('Pinot Meunier', GETDATE(), 'SEEDING', 2),
+    ('Pinot Noir', GETDATE(), 'SEEDING', 2),
     ('Pinotage', GETDATE(), 'SEEDING', 2),
     ('Refosco', GETDATE(), 'SEEDING', 2),
     ('Ribolla Gialla', GETDATE(), 'SEEDING', 0),

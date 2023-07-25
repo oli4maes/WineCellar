@@ -2,7 +2,6 @@
 
 public interface IBottleRepository
 {
-    Task<List<Bottle>> All();
     Task<Bottle?> GetById(int id);
     Task<bool> Delete(int id);
     Task<List<Bottle>> GetUserBottles(string auth0Id);
