@@ -14,5 +14,6 @@ public sealed class GetBottlesByWineIdResponse
         public string Vintage { get; set; }
         public DateTime AddedOn { get; set; }
         public BottleStatus Status { get; set; }
+        public DateTime? LastModified { get; set; }
     }
 }
