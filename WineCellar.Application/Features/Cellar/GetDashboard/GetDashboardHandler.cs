@@ -5,32 +5,31 @@ namespace WineCellar.Application.Features.Cellar.GetDashboard;
 
 internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest, GetDashboardResponse>
 {
-    private readonly IUserWineRepository _userWineRepository;
+    private readonly IBottleRepository _bottleRepository;
 
-    public GetDashboardHandler(IUserWineRepository userWineRepository)
+    public GetDashboardHandler(IBottleRepository bottleRepository)
     {
-        _userWineRepository = userWineRepository;
+        _bottleRepository = bottleRepository;
     }
 
     public async ValueTask<GetDashboardResponse> Handle(GetDashboardRequest request,
         CancellationToken cancellationToken)
     {
-        var uWines = await _userWineRepository.GetUserWines(request.Auth0Id);
-        var userWines = uWines.ToList();
+        var bottles = await _bottleRepository.GetUserBottles(request.Auth0Id);
+        var bottlesInCellar = await _bottleRepository.GetUserBottlesInCellar(request.Auth0Id);
 
-        var whites = userWines.Where(x => x.Wine?.WineType == WineType.White);
-        var amountOfWhites = GetAmountOfBottles(whites.ToList());
+        var amountOfWhites = bottlesInCellar.Count(x => x.Wine.WineType == WineType.White);
+        var amountOfRoses = bottlesInCellar.Count(x => x.Wine.WineType == WineType.Rosé);
+        var amountOfReds = bottlesInCellar.Count(x => x.Wine.WineType == WineType.Red);
+        var amountOfSparkling = bottlesInCellar.Count(x => x.Wine.WineType == WineType.Sparkling);
 
-        var roses = userWines.Where(x => x.Wine?.WineType == WineType.Rosé);
-        var amountOfRoses = GetAmountOfBottles(roses.ToList());
-
-        var reds = userWines.Where(x => x.Wine?.WineType == WineType.Red);
-        var amountOfReds = GetAmountOfBottles(reds.ToList());
-
-        var sparkling = userWines.Where(x => x.Wine?.WineType == WineType.Sparkling);
-        var amountOfSparkling = GetAmountOfBottles(sparkling.ToList());
-
-        var amountOfBottlesPerWineTypeData = new[] { amountOfWhites, amountOfRoses, amountOfReds, amountOfSparkling };
+        var amountOfBottlesPerWineTypeData = new[]
+        {
+            Convert.ToDouble(amountOfWhites),
+            Convert.ToDouble(amountOfRoses),
+            Convert.ToDouble(amountOfReds),
+            Convert.ToDouble(amountOfSparkling)
+        };
 
         var wineTypeDict = new Dictionary<WineType, double>
         {
@@ -41,7 +40,7 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         };
 
         WineType? favouriteWineType = null;
-        if (userWines.Any())
+        if (bottles.Any())
         {
             favouriteWineType = GetFavouriteWineType(wineTypeDict);
         }
@@ -50,28 +49,27 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
         var favouriteWine = new Wine();
-        if (userWines.Any())
+        if (bottles.Any())
         {
-            favouriteWine = GetFavouriteWine(userWines);
+            favouriteWine = GetFavouriteWine(bottles);
         }
 
         var favouriteWineName = favouriteWine?.Name;
 
-        var groupedByWinery = userWines.GroupBy(x => x.Wine!.WineryId);
+        var groupedByWinery = bottles.GroupBy(x => x.Wine!.WineryId);
         var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
 
         var favouriteWinery = new Winery();
-        if (userWines.Any())
+        if (bottles.Any())
         {
-            favouriteWinery = userWines.First(x => x.Wine?.WineryId == favouriteWineryId).Wine?.Winery;
+            favouriteWinery = bottles.First(x => x.Wine?.WineryId == favouriteWineryId).Wine?.Winery;
         }
 
         var favouriteWineryName = favouriteWinery?.Name;
 
         return new GetDashboardResponse()
         {
-            AmountOfBottlesInCellar =
-                Convert.ToInt32(amountOfWhites + amountOfRoses + amountOfReds + amountOfSparkling),
+            AmountOfBottlesInCellar = bottlesInCellar.Count(),
             AmountOfBottlesPerWineTypeData = amountOfBottlesPerWineTypeData,
             AmountOfBottlesPerWineTypeLabels = amountOfBottlesPerWineTypeLabels,
             FavouriteWineType = favouriteWineType,
@@ -83,29 +81,33 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         };
     }
 
-    private double GetAmountOfBottles(List<UserWine> wines)
-    {
-        var amount = 0d;
-
-        foreach (var wine in wines)
-        {
-            amount += wine.Amount;
-        }
-
-        return amount;
-    }
-
     private WineType GetFavouriteWineType(Dictionary<WineType, double> dict)
     {
         return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
     }
 
-    private Wine? GetFavouriteWine(List<UserWine> userWines)
+    private Wine GetFavouriteWine(List<Bottle> bottles)
     {
-        return userWines.Aggregate((agg, next) => next.Amount > agg.Amount ? next : agg).Wine;
+        var grouping = bottles.GroupBy(x => x.WineId);
+
+        var dict = new Dictionary<Wine, int>();
+
+        foreach (var group in grouping)
+        {
+            var amount = 0;
+
+            foreach (var bottle in group)
+            {
+                amount++;
+            }
+            
+            dict.Add(group.First().Wine, amount);
+        }
+        
+        return dict.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
     }
 
-    private int? GetFavouriteWinery(IEnumerable<IGrouping<int, UserWine>> grouping)
+    private int? GetFavouriteWinery(IEnumerable<IGrouping<int, Bottle>> grouping)
     {
         if (grouping.Any())
         {
@@ -117,7 +119,7 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
                 foreach (var uw in x)
                 {
-                    amount += uw.Amount;
+                    amount += 1;
                 }
 
                 dict.Add(x.Key, amount);

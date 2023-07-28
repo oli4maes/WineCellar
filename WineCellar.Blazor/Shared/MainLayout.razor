@@ -3,7 +3,12 @@
 @inherits LayoutComponentBase
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
-<MudDialogProvider MaxWidth="MaxWidth.Large" CloseButton="true"/>
+<MudDialogProvider
+    FullWidth="true"
+    MaxWidth="MaxWidth.Medium"
+    CloseButton="true"
+    CloseOnEscapeKey="true"/>
+
 <MudSnackbarProvider/>
 
 <MudLayout>

@@ -1,0 +1,39 @@
+﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5">Edit bottle</MudText>
+    </TitleContent>
+    <DialogContent>
+        <!-- Vintage -->
+        <MudTextField @bind-Value="@Bottle.Vintage" Label="Vintage"/>
+
+        <!-- Size -->
+        <MudSelect T="BottleSize"
+                   @bind-Value="Bottle.BottleSize"
+                   Placeholder="Select bottle size"
+                   Label="Type"
+                   For="@(() => Bottle.BottleSize)">
+            @foreach (var item in Enum.GetValues(typeof(BottleSize)))
+            {
+                <MudSelectItem T="BottleSize" Value="(BottleSize)item">@item</MudSelectItem>
+            }
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton ButtonType="ButtonType.Button"
+                   Variant="Variant.Outlined"
+                   StartIcon="@Icons.Material.Outlined.Cancel"
+                   Color="Color.Primary"
+                   OnClick="Cancel"
+                   Class="mt-4">
+            Cancel
+        </MudButton>
+        <MudButton Class="ml-4 mt-4"
+                   ButtonType="ButtonType.Button"
+                   Variant="Variant.Filled"
+                   StartIcon="@Icons.Material.Outlined.Save"
+                   Color="Color.Primary"
+                   OnClick="EditBottle">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>

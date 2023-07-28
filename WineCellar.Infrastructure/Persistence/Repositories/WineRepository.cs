@@ -154,40 +154,4 @@ public class WineRepository : IWineRepository
             .AsNoTracking()
             .ToListAsync();
     }
-
-    public async Task<List<Wine>> GetAllSpotlit()
-    {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Wines
-            .Include(x => x.Region)
-            .ThenInclude(y => y.Country)
-            .Include(x => x.Winery)
-            .Where(x => x.IsSpotlit)
-            .OrderBy(x => x.Name)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<bool> ToggleIsSpotlit(int id, string userName)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        var wineModel = await context.Wines.FirstOrDefaultAsync(x => x.Id == id);
-
-        if (wineModel is not null)
-        {
-            wineModel.IsSpotlit = !wineModel.IsSpotlit;
-            wineModel.LastModified = DateTime.UtcNow;
-            wineModel.LastModifiedBy = userName;
-
-            await context.SaveChangesAsync();
-
-            return true;
-        }
-
-        return false;
-    }
 }

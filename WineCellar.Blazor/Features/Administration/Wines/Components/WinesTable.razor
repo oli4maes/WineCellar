@@ -26,17 +26,6 @@
                 @{
                     var wine = WineEditContext.Item;
                 }
-                <MudToggleIconButton Toggled="@wine.IsSpotlit"
-                                     ToggledChanged="() => ToggleIsSpotlit(wine)"
-                                     Size="Size.Small"
-                                     Icon="@Icons.Material.Outlined.ExploreOff"
-                                     Color="Color.Error"
-                                     Title="Not spotlit"
-                                     ToggledSize="Size.Small"
-                                     ToggledIcon="@Icons.Material.Outlined.Explore"
-                                     ToggledColor="Color.Success"
-                                     ToggledTitle="Spotlit"/>
-
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenWine(wine)"/>
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteWine(wine)"/>
             </CellTemplate>
