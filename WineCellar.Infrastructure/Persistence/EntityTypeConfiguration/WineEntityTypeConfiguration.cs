@@ -16,9 +16,6 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
         builder.Property(x => x.WineType)
             .IsRequired();
 
-        builder.Property(x => x.IsSpotlit)
-            .HasDefaultValue(false);
-
         builder
             .HasMany(wine => wine.Grapes)
             .WithMany(grape => grape.Wines)
@@ -34,7 +31,7 @@ public class WineEntityTypeConfiguration : IEntityTypeConfiguration<Wine>
                 gw => { gw.HasKey(gw => new { gw.GrapeId, gw.WineId }); }
             );
 
-        builder.HasOne(x => x.Region)
+        builder.HasOne(wine => wine.Region)
             .WithMany()
             .HasForeignKey(x => x.RegionId);
     }

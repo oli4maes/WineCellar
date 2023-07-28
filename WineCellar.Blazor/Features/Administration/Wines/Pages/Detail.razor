@@ -55,7 +55,8 @@
                                  ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
                                  Disabled="!_editMode"
                                  For="@(() => _wine.Winery)"
-                                 Class="mt-3"/>
+                                 Class="mt-3"
+                                 TextChanged="GetRegions"/>
 
                 <!-- Region -->
                 @if (_regions.Any())

@@ -17,10 +17,61 @@ namespace WineCellar.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WineCellar.Domain.Entities.Bottle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Auth0Id")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("BottleSize")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int?>("Vintage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WineId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WineId");
+
+                    b.ToTable("Bottles", (string)null);
+                });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Country", b =>
                 {
@@ -30,6 +81,30 @@ namespace WineCellar.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -38,83 +113,6 @@ namespace WineCellar.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Argentina"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Australia"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Austria"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Belgium"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Chile"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "France"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Germany"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Greece"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Hungary"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Italy"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "New Zealand"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Portugal"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "South Africa"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Spain"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "United States"
-                        });
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Grape", b =>
@@ -129,12 +127,13 @@ namespace WineCellar.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GrapeType")
                         .HasColumnType("int");
@@ -164,6 +163,24 @@ namespace WineCellar.Infrastructure.Migrations
                     b.Property<int>("WineId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.HasKey("GrapeId", "WineId");
 
                     b.HasIndex("WineId");
@@ -186,10 +203,15 @@ namespace WineCellar.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<bool>("IsSpotlit")
+                    b.Property<string>("Description")
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsArchived")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
@@ -211,1120 +233,6 @@ namespace WineCellar.Infrastructure.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Regions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3850),
-                            IsSpotlit = false,
-                            Name = "Salta"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "Tucamán"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "Catamarca"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "La Rioja"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "San Juan"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "Mendoza"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CountryId = 1,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "Patagonia"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "Western Australia"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3860),
-                            IsSpotlit = false,
-                            Name = "South Australia"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "New South Wales"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Victoria"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Tasmania"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CountryId = 2,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Queensland"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CountryId = 3,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Niederösterreich"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CountryId = 3,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Burgenland"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CountryId = 3,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Steiermark"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CountryId = 3,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Wien"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CountryId = 4,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Flanders"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CountryId = 4,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Wallonia"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Central Valley"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3870),
-                            IsSpotlit = false,
-                            Name = "Aconcagua"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "South Region"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Coquimbo"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Atacama"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CountryId = 5,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Austral Region"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Languadoc-Roussillon"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Rhône Valley"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Bordeaux"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Provence"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Loire Valley"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "South-West"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Burgundy"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Champagne"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Alsace"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3880),
-                            IsSpotlit = false,
-                            Name = "Beaujolais"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            CountryId = 6,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Corsica"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Ahr"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Mosel"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Nahe"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Pfalz"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Baden"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Mittelrhein"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Rheingan"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Rheinhessen"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Hessische Bergstrasse"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Würtemberg"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3890),
-                            IsSpotlit = false,
-                            Name = "Franken"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Saale-Unstrut"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            CountryId = 7,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Sachsen"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            CountryId = 8,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Southern Greece"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            CountryId = 8,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Crete"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            CountryId = 8,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Central Greece"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            CountryId = 8,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Aegean Islands"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            CountryId = 8,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Macedonia"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Badacsony"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Balatonboglár"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Villány"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Szekszárd"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Balatonfüred-Csopak"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3900),
-                            IsSpotlit = false,
-                            Name = "Mátra"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Tokaj"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Eger"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Etyek-Buda"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Pannonhalma"
-                        },
-                        new
-                        {
-                            Id = 65,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Sopron"
-                        },
-                        new
-                        {
-                            Id = 67,
-                            CountryId = 9,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Nagy-Somló"
-                        },
-                        new
-                        {
-                            Id = 68,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Sicily"
-                        },
-                        new
-                        {
-                            Id = 69,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Puglia"
-                        },
-                        new
-                        {
-                            Id = 70,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Veneto"
-                        },
-                        new
-                        {
-                            Id = 71,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3910),
-                            IsSpotlit = false,
-                            Name = "Tuscany"
-                        },
-                        new
-                        {
-                            Id = 72,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3930),
-                            IsSpotlit = false,
-                            Name = "Emilia-Romagna"
-                        },
-                        new
-                        {
-                            Id = 73,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3930),
-                            IsSpotlit = false,
-                            Name = "Piedmont"
-                        },
-                        new
-                        {
-                            Id = 74,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3930),
-                            IsSpotlit = false,
-                            Name = "Abruzzo"
-                        },
-                        new
-                        {
-                            Id = 75,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Lombardy"
-                        },
-                        new
-                        {
-                            Id = 76,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Friuli-Venesia Giulia"
-                        },
-                        new
-                        {
-                            Id = 77,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Abruzzo"
-                        },
-                        new
-                        {
-                            Id = 78,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Sardegna"
-                        },
-                        new
-                        {
-                            Id = 79,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Lazio"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            CountryId = 10,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Umbria"
-                        },
-                        new
-                        {
-                            Id = 81,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Northland"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Waikato / Bay Of Plenty"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Gisborne"
-                        },
-                        new
-                        {
-                            Id = 84,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Wairarapa"
-                        },
-                        new
-                        {
-                            Id = 85,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Marlborough"
-                        },
-                        new
-                        {
-                            Id = 86,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3940),
-                            IsSpotlit = false,
-                            Name = "Caterbury and Waipara"
-                        },
-                        new
-                        {
-                            Id = 87,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Central Otago"
-                        },
-                        new
-                        {
-                            Id = 88,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Nelson"
-                        },
-                        new
-                        {
-                            Id = 89,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Hawke's Bay"
-                        },
-                        new
-                        {
-                            Id = 90,
-                            CountryId = 11,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Auckland"
-                        },
-                        new
-                        {
-                            Id = 91,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Vinho Verde"
-                        },
-                        new
-                        {
-                            Id = 92,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Dão"
-                        },
-                        new
-                        {
-                            Id = 93,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Bairrada"
-                        },
-                        new
-                        {
-                            Id = 94,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Lisboa"
-                        },
-                        new
-                        {
-                            Id = 95,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Setúbal"
-                        },
-                        new
-                        {
-                            Id = 96,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Madeira"
-                        },
-                        new
-                        {
-                            Id = 97,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Algarve"
-                        },
-                        new
-                        {
-                            Id = 98,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Alentejo"
-                        },
-                        new
-                        {
-                            Id = 99,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3950),
-                            IsSpotlit = false,
-                            Name = "Tejo"
-                        },
-                        new
-                        {
-                            Id = 100,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Beira Interior"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Tavaro-Varosa"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Douro Valley"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            CountryId = 12,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Trás-os-Montes"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Olifants River"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Coastal Region"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Breede River Valley"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Northern Cape"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Klein Karoo"
-                        },
-                        new
-                        {
-                            Id = 109,
-                            CountryId = 13,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Cape South Coast"
-                        },
-                        new
-                        {
-                            Id = 110,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Galicia"
-                        },
-                        new
-                        {
-                            Id = 111,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "Pais Vasco"
-                        },
-                        new
-                        {
-                            Id = 112,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3960),
-                            IsSpotlit = false,
-                            Name = "La Rioja"
-                        },
-                        new
-                        {
-                            Id = 113,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Navarra"
-                        },
-                        new
-                        {
-                            Id = 114,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Aragon"
-                        },
-                        new
-                        {
-                            Id = 115,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Catalonia"
-                        },
-                        new
-                        {
-                            Id = 116,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Majorca"
-                        },
-                        new
-                        {
-                            Id = 117,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Valencia"
-                        },
-                        new
-                        {
-                            Id = 118,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Castilla-La Mancha"
-                        },
-                        new
-                        {
-                            Id = 119,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Castilla y León"
-                        },
-                        new
-                        {
-                            Id = 120,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Extremadura"
-                        },
-                        new
-                        {
-                            Id = 121,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Andalucía"
-                        },
-                        new
-                        {
-                            Id = 122,
-                            CountryId = 14,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Canary Islands"
-                        },
-                        new
-                        {
-                            Id = 123,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Oregon"
-                        },
-                        new
-                        {
-                            Id = 124,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Washington"
-                        },
-                        new
-                        {
-                            Id = 125,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3970),
-                            IsSpotlit = false,
-                            Name = "Idaho"
-                        },
-                        new
-                        {
-                            Id = 126,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "California"
-                        },
-                        new
-                        {
-                            Id = 127,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "Colorado"
-                        },
-                        new
-                        {
-                            Id = 128,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "Arizona"
-                        },
-                        new
-                        {
-                            Id = 129,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "New Mexico"
-                        },
-                        new
-                        {
-                            Id = 130,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "Texas"
-                        },
-                        new
-                        {
-                            Id = 131,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "New York"
-                        },
-                        new
-                        {
-                            Id = 132,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "Midwest"
-                        },
-                        new
-                        {
-                            Id = 133,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "Southeast"
-                        },
-                        new
-                        {
-                            Id = 134,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3980),
-                            IsSpotlit = false,
-                            Name = "New Jersey"
-                        },
-                        new
-                        {
-                            Id = 135,
-                            CountryId = 15,
-                            Created = new DateTime(2023, 4, 24, 10, 1, 11, 448, DateTimeKind.Utc).AddTicks(3990),
-                            IsSpotlit = false,
-                            Name = "Virginia"
-                        });
-                });
-
-            modelBuilder.Entity("WineCellar.Domain.Entities.UserWine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Auth0Id")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<int>("WineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WineId");
-
-                    b.ToTable("UserWines", (string)null);
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Wine", b =>
@@ -1339,13 +247,9 @@ namespace WineCellar.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<bool>("IsSpotlit")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -1392,17 +296,13 @@ namespace WineCellar.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
-                    b.Property<bool>("IsSpotlit")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
@@ -1421,6 +321,17 @@ namespace WineCellar.Infrastructure.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Wineries", (string)null);
+                });
+
+            modelBuilder.Entity("WineCellar.Domain.Entities.Bottle", b =>
+                {
+                    b.HasOne("WineCellar.Domain.Entities.Wine", "Wine")
+                        .WithMany()
+                        .HasForeignKey("WineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Wine");
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.GrapeWine", b =>
@@ -1451,17 +362,6 @@ namespace WineCellar.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("WineCellar.Domain.Entities.UserWine", b =>
-                {
-                    b.HasOne("WineCellar.Domain.Entities.Wine", "Wine")
-                        .WithMany()
-                        .HasForeignKey("WineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Wine");
                 });
 
             modelBuilder.Entity("WineCellar.Domain.Entities.Wine", b =>

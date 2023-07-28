@@ -15,10 +15,7 @@ public class WineryEntityTypeConfiguration : IEntityTypeConfiguration<Winery>
             .HasMaxLength(250);
 
         builder.Property(x => x.Description)
-            .HasMaxLength(2000);
-
-        builder.Property(x => x.IsSpotlit)
-            .HasDefaultValue(false);
+            .HasMaxLength(5000);
 
         builder.HasMany(x => x.Wines)
             .WithOne(x => x.Winery);

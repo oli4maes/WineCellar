@@ -1,7 +1,7 @@
-﻿namespace WineCellar.Domain.Persistence.Repositories;
+namespace WineCellar.Domain.Persistence.Repositories;
 
-public interface IRegionRepository : IGenericRepository<Region>
+public interface IRegionRepository
 {
     Task<List<Region>> GetByCountry(int countryId);
-    Task<bool> ToggleIsSpotlit(int id, string userName);
+    Task<List<Region>> All();
 }

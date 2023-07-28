@@ -14,7 +14,7 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddTransient<IGrapeRepository, GrapeRepository>();
-        services.AddTransient<IUserWineRepository, UserWineRepository>();
+        services.AddTransient<IBottleRepository, BottleRepository>();
         services.AddTransient<IWineRepository, WineRepository>();
         services.AddTransient<IWineryRepository, WineryRepository>();
         services.AddTransient<ICountryRepository, CountryRepository>();

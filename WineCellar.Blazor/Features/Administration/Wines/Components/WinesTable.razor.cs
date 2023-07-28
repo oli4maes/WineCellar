@@ -3,7 +3,6 @@
 public partial class WinesTable : ComponentBase
 {
     [Parameter] public IEnumerable<WineDto> Wines { get; set; }
-    [Parameter] public EventCallback<WineDto> OnToggleIsSpotlit { get; set; }
     [Parameter] public EventCallback<WineDto> OnOpenWine { get; set; }
     [Parameter] public EventCallback<WineDto> OnDeleteWine { get; set; }
 
@@ -20,11 +19,6 @@ public partial class WinesTable : ComponentBase
 
         return false;
     };
-
-    private void ToggleIsSpotlit(WineDto wine)
-    {
-        OnToggleIsSpotlit.InvokeAsync(wine);
-    }
 
     private void OpenWine(WineDto wine)
     {

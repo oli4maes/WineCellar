@@ -15,7 +15,7 @@ public class GrapeEntityTypeConfiguration : IEntityTypeConfiguration<Grape>
             .HasMaxLength(250);
 
         builder.Property(x => x.Description)
-            .HasMaxLength(2000);
+            .HasMaxLength(5000);
 
         builder.Property(x => x.GrapeType)
             .IsRequired();

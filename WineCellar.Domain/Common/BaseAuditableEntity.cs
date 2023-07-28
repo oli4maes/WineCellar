@@ -2,12 +2,12 @@
 
 namespace WineCellar.Domain.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity
+public abstract class BaseAuditableEntity
 {
     public DateTime Created { get; set; } = DateTime.UtcNow;
 
     [MaxLength(250)]
-    public string? CreatedBy { get; set; }
+    public string CreatedBy { get; set; } = String.Empty;
 
     public DateTime? LastModified { get; set; }
 

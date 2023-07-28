@@ -6,15 +6,15 @@ namespace WineCellar.Application.Features.Wines.GetWines;
 internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWinesResponse>
 {
     private readonly IWineRepository _wineRepository;
-    private readonly IUserWineRepository _userWineRepository;
+    private readonly IBottleRepository _bottleRepository;
     private readonly IMemoryCache _memoryCache;
 
     public GetWinesHandler(IWineRepository wineRepository,
-        IUserWineRepository userWineRepository,
+        IBottleRepository bottleRepository,
         IMemoryCache memoryCache)
     {
         _wineRepository = wineRepository;
-        _userWineRepository = userWineRepository;
+        _bottleRepository = bottleRepository;
         _memoryCache = memoryCache;
     }
 
@@ -32,16 +32,11 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
             _memoryCache.Set("wines", wines, cacheEntryOptions);
         }
 
-        var userWines = new List<UserWine>();
+        var userWines = new List<Bottle>();
 
         if (request.Auth0Id is not null)
         {
-            userWines = await _userWineRepository.GetUserWines(request.Auth0Id);
-        }
-
-        if (request.IsSpotlit)
-        {
-            wines = wines?.Where(x => x.IsSpotlit).ToList();
+            userWines = await _bottleRepository.GetUserBottles(request.Auth0Id);
         }
 
         if (request.Query is not null)
@@ -59,7 +54,6 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
                 Id = x.Id,
                 Name = x.Name,
                 WineType = x.WineType,
-                IsSpotlit = x.IsSpotlit,
                 RegionId = x.RegionId,
                 RegionName = x.Region?.Name,
                 WineryName = x.Winery.Name,
