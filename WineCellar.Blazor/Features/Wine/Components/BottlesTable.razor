@@ -35,7 +35,7 @@
                     }
                     @if (bottle.Status is not BottleStatus.Consumed)
                     {
-                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Done" Color="Color.Primary" @onclick="() => ConsumeBottle(bottle)"/>
+                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Done" Color="Color.Success" @onclick="() => ConsumeBottle(bottle)"/>
                     }
                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => EditBottle(bottle)"/>
                     <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteBottle(bottle)"/>

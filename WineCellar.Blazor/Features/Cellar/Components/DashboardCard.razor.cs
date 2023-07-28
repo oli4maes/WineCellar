@@ -2,8 +2,9 @@
 
 public partial class DashboardCard : ComponentBase
 {
-    [Parameter] public string Title { get; set; } = String.Empty;
-    [Parameter] public string Statistic { get; set; } = String.Empty;
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Statistic { get; set; } = string.Empty;
+    [Parameter] public string ToolTip { get; set; } = string.Empty;
     [Parameter] public int? FavouriteWineryId { get; set; }
     [Parameter] public int? FavouriteWineId { get; set; }
     [Parameter] public EventCallback<int> OnNavigateToWineDetail { get; set; }

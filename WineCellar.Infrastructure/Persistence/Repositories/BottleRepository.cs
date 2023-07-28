@@ -60,6 +60,21 @@ public class BottleRepository : IBottleRepository
             .ToListAsync();
     }
 
+    public async Task<List<Bottle>> GetUserBottlesInCellar(string auth0Id)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(auth0Id);
+
+        await using var context = await _dbContextFactory.CreateDbContextAsync();
+
+        return await context.Bottles
+            .Include(x => x.Wine)
+            .ThenInclude(w => w.Winery)
+            .Include(w => w.Wine.Region)
+            .Where(x => x.Auth0Id == auth0Id && x.Status == BottleStatus.InCellar)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public async Task<List<Bottle>> GetByWineId(int wineId, string auth0Id)
     {
         ArgumentNullException.ThrowIfNull(wineId);
