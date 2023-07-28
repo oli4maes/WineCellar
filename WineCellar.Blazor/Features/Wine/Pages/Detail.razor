@@ -37,27 +37,35 @@
 
     </MudTabPanel>
     <MudContainer Fixed="true">
-        @if (_wine?.Grapes.Count > 0)
+        @if (_bottlesConsumed.Any() || _bottlesInCellar.Any())
         {
             <MudTabPanel Text="Cellar" BadgeData="_bottlesInCellar.Count">
-                <MudGrid Class="mt-4">
-                    <MudItem sm="12" md="6">
-                        <BottlesTable
-                            Status="BottleStatus.InCellar"
-                            Bottles="_bottlesInCellar"
-                            OnEditBottle="OnEditBottle"
-                            OnDeleteBottle="OnDeleteBottle"
-                            OnConsumeBottle="OnConsumeBottle"/>
-                    </MudItem>
-                    <MudItem sm="12" md="6">
-                        <BottlesTable
-                            Status="BottleStatus.Consumed"
-                            Bottles="_bottlesConsumed"
-                            OnEditBottle="OnEditBottle"
-                            OnDeleteBottle="OnDeleteBottle"
-                            OnConsumeBottle="OnConsumeBottle"/>
-                    </MudItem>
-                </MudGrid>
+                @if (_bottlesInCellar.Any())
+                {
+                    <MudGrid Class="mt-4">
+                        <MudItem sm="12" md="6">
+                            <BottlesTable
+                                Status="BottleStatus.InCellar"
+                                Bottles="_bottlesInCellar"
+                                OnEditBottle="OnEditBottle"
+                                OnDeleteBottle="OnDeleteBottle"
+                                OnConsumeBottle="OnConsumeBottle"/>
+                        </MudItem>
+                    </MudGrid>
+                }
+                @if (_bottlesConsumed.Any())
+                {
+                    <MudGrid Class="mt-4">
+                        <MudItem sm="12" md="6">
+                            <BottlesTable
+                                Status="BottleStatus.Consumed"
+                                Bottles="_bottlesConsumed"
+                                OnEditBottle="OnEditBottle"
+                                OnDeleteBottle="OnDeleteBottle"
+                                OnConsumeBottle="OnConsumeBottle"/>
+                        </MudItem>
+                    </MudGrid>
+                }
             </MudTabPanel>
         }
     </MudContainer>

@@ -1,6 +1,8 @@
 ﻿<MudLink OnClick="Navigate" Underline="Underline.None">
     <MudPaper MinHeight="120px" Class="pa-2">
-        <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-2" Color="Color.Primary">@Title</MudText>
+        <MudTooltip Text="@ToolTip">
+            <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-2" Color="Color.Primary">@Title</MudText>
+        </MudTooltip>
         @if (string.IsNullOrEmpty(Statistic))
         {
             <MudText Typo="Typo.h6" Align="Align.Center" Class="mt-2">-</MudText>

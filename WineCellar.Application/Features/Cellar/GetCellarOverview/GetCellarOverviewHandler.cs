@@ -15,7 +15,7 @@ internal sealed class GetCellarOverviewHandler : IRequestHandler<GetCellarOvervi
     public async ValueTask<GetCellarOverviewResponse> Handle(GetCellarOverviewRequest request,
         CancellationToken cancellationToken)
     {
-        var bottles = await _bottleRepository.GetUserBottles(request.Auth0Id);
+        var bottles = await _bottleRepository.GetUserBottlesInCellar(request.Auth0Id);
         var groupedByWine = bottles.GroupBy(x => x.WineId);
         var winesInCellar = new List<GetCellarOverviewResponse.CellarOverviewDto>();
 

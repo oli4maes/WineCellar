@@ -60,6 +60,10 @@ public partial class Detail : ComponentBase
 
     private async void HandleValidSubmit()
     {
+        if (_wine.Winery.Id == 0)
+        {
+            return;
+        }
         _wine.WineryId = _wine.Winery.Id;
 
         if (Id is 0)
@@ -73,8 +77,6 @@ public partial class Detail : ComponentBase
             if (_wine.Id is not 0)
             {
                 Id = _wine.Id;
-
-                await GetRegions();
 
                 _editMode = false;
                 _snackbar.Add("Saved", Severity.Success);
