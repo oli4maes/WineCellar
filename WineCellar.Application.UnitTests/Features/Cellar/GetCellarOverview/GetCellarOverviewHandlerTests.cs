@@ -61,14 +61,14 @@ public class GetCellarOverviewHandlerTests
         var request = new GetCellarOverviewRequest(AUTH0ID);
         var SUT = new GetCellarOverviewHandler(_userWineRepositoryMock.Object);
 
-        _userWineRepositoryMock.Setup(x => x.GetUserBottles(request.Auth0Id))
+        _userWineRepositoryMock.Setup(x => x.GetUserBottlesInCellar(request.Auth0Id))
             .ReturnsAsync(userWines);
 
         // Act
         var result = await SUT.Handle(request, default);
 
         // Assert
-        _userWineRepositoryMock.Verify(x => x.GetUserBottles(request.Auth0Id), Times.Once);
+        _userWineRepositoryMock.Verify(x => x.GetUserBottlesInCellar(request.Auth0Id), Times.Once);
 
         result.Should().NotBeNull();
         result.Should().BeOfType<GetCellarOverviewResponse>();
