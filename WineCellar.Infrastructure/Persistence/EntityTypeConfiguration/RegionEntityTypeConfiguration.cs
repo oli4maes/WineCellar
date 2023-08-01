@@ -15,8 +15,5 @@ public class RegionEntityTypeConfiguration : IEntityTypeConfiguration<Region>
 
         builder.Property(x => x.Description)
             .HasMaxLength(5000);
-
-        builder.Property(x => x.IsArchived)
-            .HasDefaultValue(false);
     }
 }

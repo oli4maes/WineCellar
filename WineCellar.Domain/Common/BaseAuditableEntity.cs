@@ -7,7 +7,7 @@ public abstract class BaseAuditableEntity
     public DateTime Created { get; set; } = DateTime.UtcNow;
 
     [MaxLength(250)]
-    public string CreatedBy { get; set; } = String.Empty;
+    public string CreatedBy { get; set; } = string.Empty;
 
     public DateTime? LastModified { get; set; }
 

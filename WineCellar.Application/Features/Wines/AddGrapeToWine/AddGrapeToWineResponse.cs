@@ -2,5 +2,4 @@
 
 public sealed class AddGrapeToWineResponse
 {
-    public string? ErrorMessage { get; set; }
 }

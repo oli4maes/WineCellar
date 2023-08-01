@@ -2,5 +2,4 @@
 
 public class UpdateWineryResponse
 {
-    public string? ErrorMessage { get; set; }
 }

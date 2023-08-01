@@ -11,7 +11,7 @@ public sealed class GetBottlesByWineIdResponse
     {
         public int Id { get; set; }
         public BottleSize BottleSize { get; set; }
-        public string Vintage { get; set; }
+        public string Vintage { get; set; } = string.Empty;
         public DateTime AddedOn { get; set; }
         public BottleStatus Status { get; set; }
         public DateTime? LastModified { get; set; }

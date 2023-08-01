@@ -17,7 +17,7 @@ public static class BottleStatusExtensions
             case BottleStatus.Consumed:
                 return BottleStatus.Consumed.ToString();
             default:
-                throw new Exception("Unsuported bottle status");
+                throw new Exception("Unsupported bottle status");
         }
     }
 }
