@@ -6,7 +6,7 @@ namespace WineCellar.Domain.Entities;
 public class Wine : BaseAuditableEntity
 {
     public int Id { get; set; }
-    public string Name { get; set; } = String.Empty;
+    public string Name { get; set; } = string.Empty;
     public WineType WineType { get; set; }
 
     public int WineryId { get; set; }

@@ -17,9 +17,6 @@ public class CountryEntityTypeConfiguration : IEntityTypeConfiguration<Country>
         builder.Property(x => x.Description)
             .HasMaxLength(5000);
 
-        builder.Property(x => x.IsArchived)
-            .HasDefaultValue(false);
-
         builder.HasMany(x => x.Regions)
             .WithOne(y => y.Country);
     }
