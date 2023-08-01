@@ -9,10 +9,10 @@ public sealed class GetCellarOverviewResponse
     public class CellarOverviewDto
     {
         public int WineId { get; set; }
-        public string WineName { get; set; } = String.Empty;
-        public string WineryName { get; set; } = String.Empty;
-        public string? RegionName { get; set; } = String.Empty;
+        public string WineName { get; set; } = string.Empty;
+        public string WineryName { get; set; } = string.Empty;
+        public string? RegionName { get; set; } = string.Empty;
         public WineType WineType { get; set; }
-        public int Amount { get; set; } = 0;
+        public int Amount { get; set; }
     }
 }

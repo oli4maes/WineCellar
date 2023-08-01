@@ -2,5 +2,10 @@
 
 namespace WineCellar.Application.Features.Grapes.UpdateGrape;
 
-public sealed record UpdateGrapeRequest
-    (int Id, string Name, string? Description, string UserName, GrapeType GrapeType) : IRequest<UpdateGrapeResponse>;
+public sealed record UpdateGrapeRequest(
+        int Id,
+        string Name,
+        string? Description,
+        string UserName,
+        GrapeType GrapeType)
+    : IRequest<UpdateGrapeResponse>;

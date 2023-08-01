@@ -34,7 +34,4 @@
     <_ContentIncludedByDefault Remove="Administration\Pages\Wines\Overview.razor" />
     <_ContentIncludedByDefault Remove="Wine\Pages\Detail.razor" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\Region\Pages\" />
-  </ItemGroup>
 </Project>
