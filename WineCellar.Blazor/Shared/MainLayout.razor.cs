@@ -47,7 +47,7 @@ public partial class MainLayout
                 FontFamily = new[] { "Lato", "Helvetica", "Arial", "sans-serif" },
             }
         },
-        Palette = new Palette()
+        Palette = new PaletteLight
         {
             DrawerBackground = "#fbfbfc",
             TextPrimary = "#5f4d46",
