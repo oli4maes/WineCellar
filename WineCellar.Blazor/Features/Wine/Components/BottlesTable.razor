@@ -20,18 +20,18 @@
         <PropertyColumn Property="x => x.Vintage" Title="Vintage" Sortable="true" Filterable="false"/>
         @if (Status == BottleStatus.InCellar)
         {
-            <PropertyColumn Property="x => x.AddedOn" Title="In cellar since" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.AddedOn.ToShortDateString())" Title="In cellar since" Sortable="true" Filterable="false"/>
         }
         @if (Status == BottleStatus.Consumed)
         {
-            <PropertyColumn Property="x => x.LastModified" Title="Consumed on" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.LastModified)" Title="Consumed on" Sortable="true" Filterable="false"/>
         }
         @if (Status == BottleStatus.InCellar)
         {
             <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
-                <CellTemplate Context="BottleEditContext">
+                <CellTemplate Context="bottleEditContext">
                     @{
-                        var bottle = BottleEditContext.Item;
+                        var bottle = bottleEditContext.Item;
                     }
                     @if (bottle.Status is not BottleStatus.Consumed)
                     {
