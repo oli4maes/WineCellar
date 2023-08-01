@@ -13,9 +13,7 @@ internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, G
 
     public async ValueTask<GetWineriesResponse> Handle(GetWineriesRequest request, CancellationToken cancellationToken)
     {
-        var wineries = Enumerable.Empty<Winery>();
-
-        wineries = await _wineryRepository.All();
+        var wineries = await _wineryRepository.All();
 
         return new GetWineriesResponse()
         {

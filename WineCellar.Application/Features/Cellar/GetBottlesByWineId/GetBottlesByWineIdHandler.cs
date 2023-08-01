@@ -20,7 +20,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
         {
             bottles = bottles.Where(x => x.Status == request.Status).ToList();
         }
-        
+
         foreach (var bottle in bottles)
         {
             if (bottle.Auth0Id != request.Auth0Id)

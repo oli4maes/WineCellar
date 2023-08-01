@@ -99,25 +99,4 @@ public class WineryRepository : IWineryRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
-
-    public async Task<bool> ToggleIsSpotlit(int id, string userName)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        var wineryModel = await context.Wineries.FirstOrDefaultAsync(x => x.Id == id);
-
-        if (wineryModel is not null)
-        {
-            wineryModel.LastModified = DateTime.UtcNow;
-            wineryModel.LastModifiedBy = userName;
-
-            await context.SaveChangesAsync();
-
-            return true;
-        }
-
-        return false;
-    }
 }

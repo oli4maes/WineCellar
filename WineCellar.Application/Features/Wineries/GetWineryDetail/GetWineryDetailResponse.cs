@@ -1,5 +1,3 @@
-using WineCellar.Domain.Enums;
-
 namespace WineCellar.Application.Features.Wineries.GetWineryDetail;
 
 public sealed class GetWineryDetailResponse

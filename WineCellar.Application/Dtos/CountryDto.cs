@@ -11,7 +11,7 @@ public class CountryDto
         return other?.Name == Name;
     }
 
-    public override int GetHashCode() => Name?.GetHashCode() ?? 0;
+    public override int GetHashCode() => Name.GetHashCode();
 
     public override string ToString() => Name;
 }

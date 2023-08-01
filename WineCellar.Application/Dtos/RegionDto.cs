@@ -6,15 +6,13 @@ public class RegionDto
     public string Name { get; set; } = String.Empty;
     public string CountryName { get; set; } =String.Empty;
 
-    public CountryDto Country { get; set; } = new();
-
     public override bool Equals(object o)
     {
         var other = o as RegionDto;
         return other?.Name == Name;
     }
 
-    public override int GetHashCode() => Name?.GetHashCode() ?? 0;
+    public override int GetHashCode() => Name.GetHashCode();
 
     public override string ToString() => Name;
 }
