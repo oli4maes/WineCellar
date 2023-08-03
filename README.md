@@ -1,5 +1,5 @@
 # WineCellar
-WineCellar is a wine cellar management application. It's primary use is to track all wines within a cellar.
+WineCellar is a wine cellar management application. It's primary use is to track bottles within a cellar.
 
 ## Tools
 ### Entity Framework Core
