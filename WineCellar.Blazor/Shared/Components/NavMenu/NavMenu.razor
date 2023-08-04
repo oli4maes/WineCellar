@@ -1,5 +1,7 @@
 ﻿<MudNavMenu Rounded="true" Color="Color.Primary" Class="pa-2" Margin="Margin.Dense">
+    <MudNavLink Href="/Dashboard">Dashboard</MudNavLink>
     <MudNavLink Href="/Cellar">Cellar</MudNavLink>
+    <MudDivider/>
 
     <AuthorizeView Policy="AdminRole">
         <Authorized>
@@ -9,8 +11,9 @@
                 <MudNavLink Href="/Administration/Wines">Wines</MudNavLink>
                 <MudNavLink Href="/Administration/Regions">Regions</MudNavLink>
             </MudNavGroup>
+            <MudDivider/>
         </Authorized>
     </AuthorizeView>
-
+    
     <MudNavLink Icon="@Icons.Material.Filled.Logout" Href="/logout">Logout</MudNavLink>
 </MudNavMenu>

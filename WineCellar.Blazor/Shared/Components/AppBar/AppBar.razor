@@ -1,0 +1,20 @@
+﻿<MudAppBar Elevation="2">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" 
+                   Color="Color.Primary" 
+                   Edge="Edge.Start" 
+                   Class="mt-1 mr-2"
+                   OnClick="@((e) => OnDrawerToggle())"/>
+    
+    <MudLink Href="/Dashboard" 
+             Typo="Typo.h2" 
+             Color="Color.Primary" 
+             Underline="Underline.None" 
+             Class="mt-1">
+        Kave
+    </MudLink>
+
+    <MudSpacer/>
+    <MudItem md="4">
+        <WineSearchInput Dense="true" Margin="Margin.Dense"/>
+    </MudItem>
+</MudAppBar>

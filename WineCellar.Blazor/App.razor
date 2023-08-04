@@ -5,10 +5,13 @@
                 <Authorizing>
                     <p>Determining session state, please wait...</p>
                 </Authorizing>
+                
                 <NotAuthorized>
                     <AppLanding />
                 </NotAuthorized>
+                
             </AuthorizeRouteView>
+            
             <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
         </Found>
         <NotFound>
