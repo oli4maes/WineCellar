@@ -10,8 +10,8 @@ Update database
 `dotnet ef database update --project WineCellar.Infrastructure --startup-project WineCellar.Blazor`
 
 ### Azure SQL Edge Docker container
-This will run a Azure SQL Edge container on localhost port 1401.  
-`docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD={{PASSWORD}}" -p 1401:1433 --name sql --hostname sql -d mcr.microsoft.com/azure-sql-edge:latest`
+This will run a Azure SQL Edge container on localhost port 1433.  
+`docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD={{PASSWORD}}" -p 1433:1433 --name winecellar-sql --hostname sql -d mcr.microsoft.com/azure-sql-edge:latest`
 
 ## Project Structure
 The project's structure is based on the principles of clean architecture with the typical domain, application, infrastructure and frontend (Blazor server in this case) layers.
