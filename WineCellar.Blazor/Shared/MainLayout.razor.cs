@@ -57,6 +57,11 @@ public partial class MainLayout
         }
     };
 
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
     // protected override async Task OnAfterRenderAsync(bool firstRender)
     // {
     //     if (firstRender)
