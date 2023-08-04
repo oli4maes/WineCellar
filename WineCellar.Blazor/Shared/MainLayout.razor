@@ -1,5 +1,4 @@
-﻿@using WineCellar.Blazor.Shared.Components.Inputs
-@using WineCellar.Blazor.Shared.Components.NavMenu
+﻿@using WineCellar.Blazor.Shared.Components.NavMenu
 @inherits LayoutComponentBase
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="_theme"/>
@@ -14,16 +13,7 @@
 <MudLayout>
     <AuthorizeView>
         <Authorized>
-            <MudAppBar Elevation="2">
-                <MudLink Href="/" Typo="Typo.h2" Color="Color.Primary" Underline="Underline.None" Class="mt-1">
-                    Kave
-                </MudLink>
-
-                <MudSpacer/>
-                <MudItem md="4">
-                    <WineSearchInput Dense="true" Margin="Margin.Dense"/>
-                </MudItem>
-            </MudAppBar>
+            <AppBar DrawerToggle="DrawerToggle"/>
             <MudDrawer @bind-Open="_drawerOpen" ClipMode="_clipMode" Elevation="1">
                 <NavMenu/>
             </MudDrawer>
