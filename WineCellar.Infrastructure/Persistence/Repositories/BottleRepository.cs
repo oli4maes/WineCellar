@@ -6,32 +6,19 @@ namespace WineCellar.Infrastructure.Persistence.Repositories;
 public class BottleRepository : IBottleRepository
 {
     private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
+    private readonly ApplicationDbContext _context;
 
     public BottleRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
         _dbContextFactory = dbContextFactory;
-    }
-
-    public async Task<Bottle?> GetById(int id)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles!
-            .Include(x => x.Wine)
-            .ThenInclude(w => w.Winery)
-            .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == id);
+        _context = _dbContextFactory.CreateDbContext();
     }
 
     public async Task<bool> Delete(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        var userWineModel = await context.Bottles!
+        var userWineModel = await _context.Bottles!
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
@@ -39,8 +26,8 @@ public class BottleRepository : IBottleRepository
             return false;
         }
 
-        context.Bottles.Remove(userWineModel);
-        await context.SaveChangesAsync();
+        _context.Bottles.Remove(userWineModel);
+        await _context.SaveChangesAsync();
 
         return true;
     }
@@ -49,9 +36,7 @@ public class BottleRepository : IBottleRepository
     {
         ArgumentException.ThrowIfNullOrEmpty(auth0Id);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles
+        return await _context.Bottles
             .Include(x => x.Wine)
             .ThenInclude(w => w.Winery)
             .Include(w => w.Wine.Region)
@@ -64,9 +49,7 @@ public class BottleRepository : IBottleRepository
     {
         ArgumentException.ThrowIfNullOrEmpty(auth0Id);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles
+        return await _context.Bottles
             .Include(x => x.Wine)
             .ThenInclude(w => w.Winery)
             .Include(w => w.Wine.Region)
@@ -75,27 +58,11 @@ public class BottleRepository : IBottleRepository
             .ToListAsync();
     }
 
-    public async Task<List<Bottle>> GetByWineId(int wineId, string auth0Id)
-    {
-        ArgumentNullException.ThrowIfNull(wineId);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles
-            .Include(x => x.Wine)
-            .ThenInclude(w => w!.Winery)
-            .AsNoTracking()
-            .Where(x => x.Wine.Id == wineId && x.Auth0Id == auth0Id)
-            .ToListAsync();
-    }
-
     public async Task Update(Bottle bottle)
     {
         ArgumentNullException.ThrowIfNull(bottle);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        var userWineModel = await context.Bottles
+        var userWineModel = await _context.Bottles
             .FirstOrDefaultAsync(x => x.Id == bottle.Id);
 
         if (userWineModel == null)
@@ -108,17 +75,15 @@ public class BottleRepository : IBottleRepository
         userWineModel.LastModified = DateTime.UtcNow;
         userWineModel.LastModifiedBy = bottle.LastModifiedBy;
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
     public async Task<Bottle> Create(Bottle entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        await context.Bottles.AddAsync(entity);
-        await context.SaveChangesAsync();
+        await _context.Bottles.AddAsync(entity);
+        await _context.SaveChangesAsync();
 
         return entity;
     }
@@ -127,9 +92,7 @@ public class BottleRepository : IBottleRepository
     {
         ArgumentNullException.ThrowIfNull(id);
 
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        var userWineModel = await context.Bottles
+        var userWineModel = await _context.Bottles
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (userWineModel == null)
@@ -141,6 +104,6 @@ public class BottleRepository : IBottleRepository
         userWineModel.LastModified = DateTime.UtcNow;
         userWineModel.LastModifiedBy = userName;
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 }

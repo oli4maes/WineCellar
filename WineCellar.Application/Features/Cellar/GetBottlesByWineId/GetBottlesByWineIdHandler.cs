@@ -1,40 +1,31 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WineCellar.Domain.Persistence;
 
 namespace WineCellar.Application.Features.Cellar.GetBottlesByWineId;
 
 public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWineIdRequest, GetBottlesByWineIdResponse>
 {
-    private readonly IBottleRepository _bottleRepository;
+    private readonly IQueryFacade _queryFacade;
 
-    public GetBottlesByWineIdHandler(IBottleRepository bottleRepository)
+    public GetBottlesByWineIdHandler(IQueryFacade queryFacade)
     {
-        _bottleRepository = bottleRepository;
+        _queryFacade = queryFacade;
     }
 
     public async ValueTask<GetBottlesByWineIdResponse> Handle(GetBottlesByWineIdRequest request,
         CancellationToken cancellationToken)
     {
-        var bottles = await _bottleRepository.GetByWineId(request.WineId, request.Auth0Id);
+        var bottles = _queryFacade.Bottles
+            .Where(x => x.Wine.Id == request.WineId && x.Auth0Id == request.Auth0Id);
 
         if (request.Status is not null)
         {
-            bottles = bottles.Where(x => x.Status == request.Status).ToList();
-        }
-
-        foreach (var bottle in bottles)
-        {
-            if (bottle.Auth0Id != request.Auth0Id)
-            {
-                return new GetBottlesByWineIdResponse()
-                {
-                    ErrorMessage = "You don't have access to this item."
-                };
-            }
+            bottles = bottles.Where(x => x.Status == request.Status);
         }
 
         return new GetBottlesByWineIdResponse()
         {
-            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
+            Bottles = await bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
             {
                 Id = x.Id,
                 BottleSize = x.BottleSize,
@@ -42,7 +33,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 AddedOn = x.Created,
                 Status = x.Status,
                 LastModified = x.LastModified
-            }).ToList()
+            }).ToListAsync(cancellationToken)
         };
     }
 }
