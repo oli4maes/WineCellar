@@ -63,32 +63,4 @@ public class GrapeRepository :  IGrapeRepository
         
         return entity;
     }
-
-    public async Task<List<Grape>> All()
-    {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Grapes
-            .OrderBy(x => x.Name)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<Grape?> GetById(int id)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-        
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Grapes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<Grape?> GetByName(string name)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        return await context.Grapes.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
-    }
 }
