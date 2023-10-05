@@ -20,6 +20,8 @@ public static class DependencyInjection
         services.AddTransient<ICountryRepository, CountryRepository>();
         services.AddTransient<IRegionRepository, RegionRepository>();
 
+        services.AddTransient<IQueryFacade, QueryFacade>();
+
         return services;
     }
 }

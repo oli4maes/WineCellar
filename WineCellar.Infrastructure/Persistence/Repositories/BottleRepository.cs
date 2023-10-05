@@ -12,19 +12,6 @@ public class BottleRepository : IBottleRepository
         _dbContextFactory = dbContextFactory;
     }
 
-    public async Task<Bottle?> GetById(int id)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles!
-            .Include(x => x.Wine)
-            .ThenInclude(w => w.Winery)
-            .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id == id);
-    }
-
     public async Task<bool> Delete(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
@@ -72,20 +59,6 @@ public class BottleRepository : IBottleRepository
             .Include(w => w.Wine.Region)
             .Where(x => x.Auth0Id == auth0Id && x.Status == BottleStatus.InCellar)
             .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<List<Bottle>> GetByWineId(int wineId, string auth0Id)
-    {
-        ArgumentNullException.ThrowIfNull(wineId);
-
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Bottles
-            .Include(x => x.Wine)
-            .ThenInclude(w => w!.Winery)
-            .AsNoTracking()
-            .Where(x => x.Wine.Id == wineId && x.Auth0Id == auth0Id)
             .ToListAsync();
     }
 
