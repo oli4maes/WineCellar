@@ -1,30 +1,31 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WineCellar.Domain.Persistence;
 
 namespace WineCellar.Application.Features.Wineries.GetWineries;
 
 internal sealed class GetWineriesHandler : IRequestHandler<GetWineriesRequest, GetWineriesResponse>
 {
-    private readonly IWineryRepository _wineryRepository;
+    private readonly IQueryFacade _queryFacade;
 
-    public GetWineriesHandler(IWineryRepository wineryRepository)
+    public GetWineriesHandler(IQueryFacade queryFacade)
     {
-        _wineryRepository = wineryRepository;
+        _queryFacade = queryFacade;
     }
 
     public async ValueTask<GetWineriesResponse> Handle(GetWineriesRequest request, CancellationToken cancellationToken)
     {
-        var wineries = await _wineryRepository.All();
+        var wineries = _queryFacade.Wineries;
 
         return new GetWineriesResponse()
         {
-            Wineries = wineries.Select(x => new WineryDto()
+            Wineries = await wineries.Select(x => new WineryDto()
             {
                 Id = x.Id,
                 Name = x.Name,
                 CountryId = x.CountryId,
-                CountryName = x.Country?.Name,
+                CountryName = x.Country.Name,
                 Description = x.Description
-            }).ToList()
+            }).ToListAsync(cancellationToken)
         };
     }
 }

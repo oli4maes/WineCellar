@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WineCellar.Domain.Persistence;
-using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Cellar.GetBottlesByWineId;
 
@@ -26,7 +25,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
 
         return new GetBottlesByWineIdResponse()
         {
-            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
+            Bottles = await bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
             {
                 Id = x.Id,
                 BottleSize = x.BottleSize,
@@ -34,7 +33,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 AddedOn = x.Created,
                 Status = x.Status,
                 LastModified = x.LastModified
-            }).ToList()
+            }).ToListAsync(cancellationToken)
         };
     }
 }
