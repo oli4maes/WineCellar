@@ -1,28 +1,23 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WineCellar.Domain.Persistence;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Wineries.GetWineryById;
 
 internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdRequest, GetWineryByIdResponse>
 {
-    private readonly IWineryRepository _wineryRepository;
+    private readonly IQueryFacade _queryFacade;
 
-    public GetWineryByIdHandler(IWineryRepository wineryRepository)
+    public GetWineryByIdHandler(IQueryFacade queryFacade)
     {
-        _wineryRepository = wineryRepository;
+        _queryFacade = queryFacade;
     }
 
     public async ValueTask<GetWineryByIdResponse> Handle(GetWineryByIdRequest request,
         CancellationToken cancellationToken)
     {
-        var winery = await _wineryRepository.GetById(request.Id);
-
-        if (winery is null)
-        {
-            return new GetWineryByIdResponse()
-            {
-                ErrorMessage = $"Couldn't find the winery with id: {request.Id}."
-            };
-        }
+        var winery = await _queryFacade.Wineries
+            .SingleAsync(x => x.Id == request.Id, cancellationToken);
 
         var country = new CountryDto();
 
