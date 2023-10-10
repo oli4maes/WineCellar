@@ -5,13 +5,11 @@ namespace WineCellar.Infrastructure.Persistence.Repositories;
 
 public class BottleRepository : IBottleRepository
 {
-    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
     private readonly ApplicationDbContext _context;
 
     public BottleRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
-        _dbContextFactory = dbContextFactory;
-        _context = _dbContextFactory.CreateDbContext();
+        _context = dbContextFactory.CreateDbContext();
     }
 
     public async Task<bool> Delete(int id)
