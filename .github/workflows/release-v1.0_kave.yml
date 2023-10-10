@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'kave'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B374DF92B7614789A4EF52985C1A6E00 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A13CE9D0445446D781D4125927ACE261 }}
           package: .
