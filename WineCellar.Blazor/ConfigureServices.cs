@@ -21,7 +21,12 @@ public static class ConfigureServices
         });
 
         services.AddRazorPages();
-        services.AddServerSideBlazor();
+        services.AddServerSideBlazor()
+            .AddHubOptions(options =>
+            {
+                options.ClientTimeoutInterval = TimeSpan.FromSeconds(60);
+                options.HandshakeTimeout = TimeSpan.FromSeconds(30);
+            });
 
         // MudBlazor
         services.AddMudServices(config =>
