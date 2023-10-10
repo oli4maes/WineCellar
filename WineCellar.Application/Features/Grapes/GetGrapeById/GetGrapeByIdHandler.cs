@@ -1,28 +1,21 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WineCellar.Domain.Persistence;
 
 namespace WineCellar.Application.Features.Grapes.GetGrapeById;
 
 internal sealed class GetGrapeByIdHandler : IRequestHandler<GetGrapeByIdRequest, GetGrapeByIdResponse>
 {
-    private readonly IGrapeRepository _grapeRepository;
+    private readonly IQueryFacade _queryFacade;
 
-    public GetGrapeByIdHandler(IGrapeRepository grapeRepository)
+    public GetGrapeByIdHandler(IQueryFacade queryFacade)
     {
-        _grapeRepository = grapeRepository;
+        _queryFacade = queryFacade;
     }
 
     public async ValueTask<GetGrapeByIdResponse> Handle(GetGrapeByIdRequest request,
         CancellationToken cancellationToken)
     {
-        var grape = await _grapeRepository.GetById(request.Id);
-
-        if (grape is null)
-        {
-            return new GetGrapeByIdResponse()
-            {
-                ErrorMessage = $"Couldn't find the grape with id: {request.Id}."
-            };
-        }
+        var grape = await _queryFacade.Grapes.SingleAsync(x => x.Id == request.Id, cancellationToken);
 
         return new GetGrapeByIdResponse
         {

@@ -4,28 +4,25 @@ namespace WineCellar.Infrastructure.Persistence.Repositories;
 
 public class GrapeRepository :  IGrapeRepository
 {
-    private readonly IDbContextFactory<ApplicationDbContext> _dbContextFactory;
-
+    private readonly ApplicationDbContext _context;
     public GrapeRepository(IDbContextFactory<ApplicationDbContext> dbContextFactory)
     {
-        _dbContextFactory = dbContextFactory;
+        _context = dbContextFactory.CreateDbContext();
     }
 
     public async Task<bool> Delete(int id)
     {
         ArgumentNullException.ThrowIfNull(id);
         
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        var grapeModel = await context.Grapes.FirstOrDefaultAsync(x => x.Id == id);
+        var grapeModel = await _context.Grapes.FirstOrDefaultAsync(x => x.Id == id);
 
         if (grapeModel == null)
         {
             return false;
         }
 
-        context.Grapes.Remove(grapeModel);
-        await context.SaveChangesAsync();
+        _context.Grapes.Remove(grapeModel);
+        await _context.SaveChangesAsync();
 
         return true;
     }
@@ -34,9 +31,7 @@ public class GrapeRepository :  IGrapeRepository
     {
         ArgumentNullException.ThrowIfNull(grape);
         
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        var grapeModel = await context.Grapes.FirstOrDefaultAsync(x => x.Id == grape.Id);
+        var grapeModel = await _context.Grapes.FirstOrDefaultAsync(x => x.Id == grape.Id);
 
         if (grapeModel == null)
         {
@@ -49,46 +44,16 @@ public class GrapeRepository :  IGrapeRepository
         grapeModel.LastModified = DateTime.UtcNow;
         grapeModel.LastModifiedBy = grape.LastModifiedBy;
 
-        await context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
     }
 
     public async Task<Grape> Create(Grape entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        await context.Grapes.AddAsync(entity);
-        await context.SaveChangesAsync();
+        await _context.Grapes.AddAsync(entity);
+        await _context.SaveChangesAsync();
         
         return entity;
-    }
-
-    public async Task<List<Grape>> All()
-    {
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Grapes
-            .OrderBy(x => x.Name)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<Grape?> GetById(int id)
-    {
-        ArgumentNullException.ThrowIfNull(id);
-        
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-
-        return await context.Grapes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
-    }
-
-    public async Task<Grape?> GetByName(string name)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(name);
-        
-        await using var context = await _dbContextFactory.CreateDbContextAsync();
-        
-        return await context.Grapes.AsNoTracking().FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
     }
 }

@@ -1,26 +1,28 @@
-﻿using WineCellar.Domain.Persistence.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using WineCellar.Domain.Persistence;
 
 namespace WineCellar.Application.Features.Wines.GetWineByName;
 
 internal sealed class GetWineByNameHandler : IRequestHandler<GetWineByNameRequest, GetWineByNameResponse>
 {
-    private readonly IWineRepository _wineRepository;
+    private readonly IQueryFacade _queryFacade;
 
-    public GetWineByNameHandler(IWineRepository wineRepository)
+    public GetWineByNameHandler(IQueryFacade queryFacade)
     {
-        _wineRepository = wineRepository;
+        _queryFacade = queryFacade;
     }
 
     public async ValueTask<GetWineByNameResponse> Handle(GetWineByNameRequest request,
         CancellationToken cancellationToken)
     {
-        var wine = await _wineRepository.GetByName(request.Name);
+        var wine = await _queryFacade.Wines
+            .FirstOrDefaultAsync(x => x.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
         if (wine is null)
         {
             return new GetWineByNameResponse();
         }
-        
+
         return new GetWineByNameResponse()
         {
             Wine = new WineDto()
