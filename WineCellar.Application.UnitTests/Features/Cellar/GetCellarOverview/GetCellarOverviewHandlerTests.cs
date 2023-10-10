@@ -11,24 +11,24 @@ public class GetCellarOverviewHandlerTests
 
     public GetCellarOverviewHandlerTests()
     {
-        _userWineRepositoryMock = new();
+        _userWineRepositoryMock = new Mock<IBottleRepository>();
     }
 
     [Fact]
     public async Task Handle_Should_Get_The_User_Wines_And_Return_Response()
     {
         // Arrange
-        const string AUTH0ID = "testUserId";
-        const int WINEID1 = 1;
-        const int WINEID2 = 2;
+        const string auth0Id = "testUserId";
+        const int wineId1 = 1;
+        const int wineId2 = 2;
 
         var expectedUserWine1 = new Bottle()
         {
-            WineId = WINEID1,
-            Auth0Id = AUTH0ID,
+            WineId = wineId1,
+            Auth0Id = auth0Id,
             Wine = new Wine()
             {
-                Id = WINEID1,
+                Id = wineId1,
                 Name = "wine1",
                 WineType = WineType.Red,
                 Winery = new Winery()
@@ -40,11 +40,11 @@ public class GetCellarOverviewHandlerTests
 
         var expectedUserWine2 = new Bottle()
         {
-            WineId = WINEID2,
-            Auth0Id = AUTH0ID,
+            WineId = wineId2,
+            Auth0Id = auth0Id,
             Wine = new Wine()
             {
-                Id = WINEID1,
+                Id = wineId1,
                 Name = "wine2",
                 WineType = WineType.White,
                 Winery = new Winery()
@@ -54,18 +54,20 @@ public class GetCellarOverviewHandlerTests
             }
         };
 
-        var userWines = new List<Bottle>();
-        userWines.Add(expectedUserWine1);
-        userWines.Add(expectedUserWine2);
+        var userWines = new List<Bottle>
+        {
+            expectedUserWine1,
+            expectedUserWine2
+        };
 
-        var request = new GetCellarOverviewRequest(AUTH0ID);
-        var SUT = new GetCellarOverviewHandler(_userWineRepositoryMock.Object);
+        var request = new GetCellarOverviewRequest(auth0Id);
+        var sut = new GetCellarOverviewHandler(_userWineRepositoryMock.Object);
 
         _userWineRepositoryMock.Setup(x => x.GetUserBottlesInCellar(request.Auth0Id))
             .ReturnsAsync(userWines);
 
         // Act
-        var result = await SUT.Handle(request, default);
+        var result = await sut.Handle(request, default);
 
         // Assert
         _userWineRepositoryMock.Verify(x => x.GetUserBottlesInCellar(request.Auth0Id), Times.Once);

@@ -3,41 +3,40 @@ using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Domain.Entities;
 using WineCellar.Domain.Persistence.Repositories;
 
-namespace WineCellar.Application.UnitTests.Features.Cellar.AddWineToCellar;
+namespace WineCellar.Application.UnitTests.Features.Cellar.AddBottleToCellar;
 
-public class AddWineToCellarHandlerTests
+public class AddBottleToCellarHandlerTests
 {
     private readonly Mock<IBottleRepository> _userWineRepositoryMock;
 
-    public AddWineToCellarHandlerTests()
+    public AddBottleToCellarHandlerTests()
     {
-        _userWineRepositoryMock = new();
+        _userWineRepositoryMock = new Mock<IBottleRepository>();
     }
 
     [Fact]
     public async Task Handle_Should_Create_UserWine_And_Return_Response()
     {
         // Arrange
-        const string USERNAME = "test user name";
-        const string AUTH0ID = "test auth 0 id";
-        const int WINEID = 1;
-        const int AMOUNT = 1;
-        const int USERWINEID = 1;
+        const string username = "test user name";
+        const string auth0Id = "test auth 0 id";
+        const int wineId = 1;
+        const int bottleId = 1;
 
         var expectedUserWine = new AddBottleToCellarResponse.BottleDto()
         {
-            Id = USERWINEID,
-            WineId = WINEID,
+            Id = bottleId,
+            WineId = wineId,
             Wine = new WineDto()
         };
 
         var addWineToCellarRequest =
-            new AddBottleToCellarRequest(expectedUserWine.WineId, expectedUserWine.BottleSize, USERNAME, AUTH0ID);
+            new AddBottleToCellarRequest(expectedUserWine.WineId, expectedUserWine.BottleSize, username, auth0Id);
 
-        var SUT = new AddBottleToCellarHandler(_userWineRepositoryMock.Object);
+        var sut = new AddBottleToCellarHandler(_userWineRepositoryMock.Object);
 
         // Act
-        var result = await SUT.Handle(addWineToCellarRequest, default);
+        var result = await sut.Handle(addWineToCellarRequest, default);
 
         // Assert
         _userWineRepositoryMock.Verify(x => x.Create(It.IsAny<Bottle>()), Times.Once);
