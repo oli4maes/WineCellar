@@ -6,28 +6,41 @@ namespace WineCellar.Application.Features.Wineries.GetWineryDetail;
 
 public sealed class GetWineryDetailHandler : IRequestHandler<GetWineryDetailRequest, GetWineryDetailResponse>
 {
-    private readonly IQueryFacade _queryFacade;
+    private readonly IWineryRepository _wineryRepository;
+    private readonly IWineRepository _wineRepository;
+    private readonly IBottleRepository _bottleRepository;
 
-    public GetWineryDetailHandler(IQueryFacade queryFacade)
+    public GetWineryDetailHandler(
+        IWineryRepository wineryRepository,
+        IWineRepository wineRepository,
+        IBottleRepository bottleRepository)
     {
-        _queryFacade = queryFacade;
+        _wineryRepository = wineryRepository;
+        _wineRepository = wineRepository;
+        _bottleRepository = bottleRepository;
     }
 
     public async ValueTask<GetWineryDetailResponse> Handle(GetWineryDetailRequest request,
         CancellationToken cancellationToken)
     {
-        var winery = await _queryFacade.Wineries.SingleAsync(x => x.Id == request.WineryId, cancellationToken);
+        var winery = await _wineryRepository.GetById(request.WineryId);
 
-        var wines = _queryFacade.Wines.Where(x => x.WineryId == request.WineryId);
+        if (winery is null)
+        {
+            return new GetWineryDetailResponse()
+            {
+                ErrorMessage = $"Couldn't find the winery with id: {request.WineryId}."
+            };
+        }
 
-        var bottlesInCellar = await _queryFacade.Bottles.Where(x => x.Auth0Id == request.Auth0Id)
-            .ToListAsync(cancellationToken);
-
+        var wines = await _wineRepository.GetByWineryId(request.WineryId);
+        var userWines = await _bottleRepository.GetUserBottles(request.Auth0Id);
         var wineryWines = new List<WineDto>();
 
         foreach (var wine in wines)
         {
-            bool isWineInUserCellar = bottlesInCellar.Any(x => x.WineId == wine.Id);
+            var enumerable = userWines.ToList();
+            bool isWineInUserCellar = enumerable.Any(x => x.WineId == wine.Id);
 
             wineryWines.Add(new WineDto()
             {
