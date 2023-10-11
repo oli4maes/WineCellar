@@ -1,31 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WineCellar.Domain.Persistence;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Cellar.GetBottlesByWineId;
 
 public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWineIdRequest, GetBottlesByWineIdResponse>
 {
-    private readonly IQueryFacade _queryFacade;
+    private readonly IBottleRepository _bottleRepository;
 
-    public GetBottlesByWineIdHandler(IQueryFacade queryFacade)
+
+    public GetBottlesByWineIdHandler(IBottleRepository bottleRepository)
     {
-        _queryFacade = queryFacade;
+        _bottleRepository = bottleRepository;
     }
 
     public async ValueTask<GetBottlesByWineIdResponse> Handle(GetBottlesByWineIdRequest request,
         CancellationToken cancellationToken)
     {
-        var bottles = _queryFacade.Bottles
-            .Where(x => x.Wine.Id == request.WineId && x.Auth0Id == request.Auth0Id);
+        var bottles = await _bottleRepository.GetByWineId(request.WineId, request.Auth0Id);
 
         if (request.Status is not null)
         {
-            bottles = bottles.Where(x => x.Status == request.Status);
+            bottles = bottles.Where(x => x.Status == request.Status).ToList();
         }
 
         return new GetBottlesByWineIdResponse()
         {
-            Bottles = await bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
+            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
             {
                 Id = x.Id,
                 BottleSize = x.BottleSize,
@@ -33,7 +34,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 AddedOn = x.Created,
                 Status = x.Status,
                 LastModified = x.LastModified
-            }).ToListAsync(cancellationToken)
+            }).ToList()
         };
     }
 }
