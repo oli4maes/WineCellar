@@ -1,29 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WineCellar.Domain.Persistence;
+﻿using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Grapes.GetGrapeByName;
 
 internal sealed class GetGrapeByNameHandler : IRequestHandler<GetGrapeByNameRequest, GetGrapeByNameResponse>
 {
-    private readonly IQueryFacade _queryFacade;
+    private readonly IGrapeRepository _grapeRepository;
 
-    public GetGrapeByNameHandler(IQueryFacade queryFacade)
+    public GetGrapeByNameHandler(IGrapeRepository grapeRepository)
     {
-        _queryFacade = queryFacade;
+        _grapeRepository = grapeRepository;
     }
 
     public async ValueTask<GetGrapeByNameResponse> Handle(GetGrapeByNameRequest request,
         CancellationToken cancellationToken)
     {
-        var grape = await _queryFacade.Grapes
-            .SingleOrDefaultAsync(x =>
-                x.Name.Contains(request.Name, StringComparison.CurrentCultureIgnoreCase), cancellationToken);
+        var grape = await _grapeRepository.GetByName(request.Name);
 
         if (grape is null)
         {
             return new GetGrapeByNameResponse();
         }
-
+        
         return new GetGrapeByNameResponse()
         {
             Grape = new GrapeDto()

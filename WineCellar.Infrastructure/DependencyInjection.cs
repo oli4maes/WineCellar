@@ -17,8 +17,8 @@ public static class DependencyInjection
         services.AddTransient<IBottleRepository, BottleRepository>();
         services.AddTransient<IWineRepository, WineRepository>();
         services.AddTransient<IWineryRepository, WineryRepository>();
-
-        services.AddTransient<IQueryFacade, QueryFacade>();
+        services.AddTransient<ICountryRepository, CountryRepository>();
+        services.AddTransient<IRegionRepository, RegionRepository>();
 
         return services;
     }

@@ -1,18 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using WineCellar.Domain.Persistence;
+﻿using Microsoft.Extensions.Caching.Memory;
+using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Wines.GetWines;
 
 internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWinesResponse>
 {
-    private readonly IQueryFacade _queryFacade;
+    private readonly IWineRepository _wineRepository;
+    private readonly IBottleRepository _bottleRepository;
     private readonly IMemoryCache _memoryCache;
 
-    public GetWinesHandler(IQueryFacade queryFacade,
+    public GetWinesHandler(IWineRepository wineRepository,
+        IBottleRepository bottleRepository,
         IMemoryCache memoryCache)
     {
-        _queryFacade = queryFacade;
+        _wineRepository = wineRepository;
+        _bottleRepository = bottleRepository;
         _memoryCache = memoryCache;
     }
 
@@ -20,7 +22,7 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
     {
         if (!_memoryCache.TryGetValue("wines", out List<Wine>? wines) || request.ClearCache)
         {
-            wines = await _queryFacade.Wines.ToListAsync(cancellationToken);
+            wines = await _wineRepository.All();
 
             var cacheEntryOptions = new MemoryCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromSeconds(60))
@@ -34,21 +36,20 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
 
         if (request.Auth0Id is not null)
         {
-            userWines = await _queryFacade.Bottles.Where(x => x.Auth0Id == request.Auth0Id)
-                .ToListAsync(cancellationToken);
+            userWines = await _bottleRepository.GetUserBottles(request.Auth0Id);
         }
 
         if (request.Query is not null)
         {
-            wines = wines?
+            wines = wines
                 .Where(x => x.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase) ||
                             x.Winery.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
         }
 
-        return new GetWinesResponse
+        return new GetWinesResponse()
         {
-            Wines = wines.Select(x => new WineDto
+            Wines = wines.Select(x => new WineDto()
             {
                 Id = x.Id,
                 Name = x.Name,

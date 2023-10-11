@@ -1,30 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WineCellar.Domain.Persistence;
+﻿using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Regions.GetRegionsByCountry;
 
 internal sealed class
     GetRegionsByCountryHandler : IRequestHandler<GetRegionsByCountryRequest, GetRegionsByCountryResponse>
 {
-    private readonly IQueryFacade _queryFacade;
+    private readonly IRegionRepository _regionRepository;
 
-    public GetRegionsByCountryHandler(IQueryFacade queryFacade)
+
+    public GetRegionsByCountryHandler(IRegionRepository regionRepository)
     {
-        _queryFacade = queryFacade;
+        _regionRepository = regionRepository;
     }
 
     public async ValueTask<GetRegionsByCountryResponse> Handle(GetRegionsByCountryRequest request,
         CancellationToken cancellationToken)
     {
-        var regions = _queryFacade.Regions.Where(x => x.CountryId == request.CountryId);
+        var regions = await _regionRepository.GetByCountry(request.CountryId);
 
         return new GetRegionsByCountryResponse()
         {
-            Regions = await regions.Select(x => new RegionDto()
+            Regions = regions.Select(x => new RegionDto()
             {
                 Id = x.Id,
                 Name = x.Name
-            }).ToListAsync(cancellationToken)
+            }).ToList()
         };
     }
 }
