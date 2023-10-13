@@ -37,19 +37,6 @@ public partial class Detail : ComponentBase
         _navigationManager.NavigateTo("/Cellar");
     }
 
-    private async Task AddWineToCellar(int wineId)
-    {
-        var response =
-            await _mediator.Send(new AddBottleToCellarRequest(wineId, BottleSize.Standard, _userName, _auth0Id));
-
-        if (response.Bottle is not null)
-        {
-            _snackbar.Add($"Added {response.Bottle.Wine?.Name} to your cellar.", Severity.Success);
-            await GetData();
-            StateHasChanged();
-        }
-    }
-
     private async Task GetData()
     {
         var getWineryByIdResponse = await _mediator.Send(new GetWineryDetailRequest(Id, _auth0Id));
