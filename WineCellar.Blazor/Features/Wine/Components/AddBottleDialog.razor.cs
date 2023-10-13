@@ -21,5 +21,6 @@ public partial class AddBottleDialog : ComponentBase
         public int? Vintage { get; set; }
         public int Amount { get; set; } = 1;
         public BottleSize Size { get; set; } = BottleSize.Standard;
+        public DateTime AddedOn { get; set; } = DateTime.UtcNow;
     }
 }

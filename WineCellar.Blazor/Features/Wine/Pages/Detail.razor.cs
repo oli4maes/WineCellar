@@ -61,7 +61,7 @@ public partial class Detail : ComponentBase
         if (!result.Canceled)
         {
             var response = await _mediator.Send(new BulkAddBottleToCellarRequest(
-                _wine.Id, bottles.Size, bottles.Amount, _userName, _auth0Id, bottles.Vintage));
+                _wine.Id, bottles.Size, bottles.Amount, bottles.AddedOn, _userName, _auth0Id, bottles.Vintage));
 
             if (response.AmountFailed is 0)
             {

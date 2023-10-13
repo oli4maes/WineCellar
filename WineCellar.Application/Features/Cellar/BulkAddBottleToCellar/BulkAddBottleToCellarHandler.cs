@@ -21,7 +21,7 @@ public class BulkAddBottleToCellarHandler : IRequestHandler<BulkAddBottleToCella
         for (int i = 0; i < request.Amount; i++)
         {
             var addBottleToCellarRequest = new AddBottleToCellarRequest(
-                request.WineId, request.BottleSize, request.UserName, request.Auth0Id, request.Vintage);
+                request.WineId, request.BottleSize, request.UserName, request.InCellarSince, request.Auth0Id, request.Vintage);
 
             try
             {
