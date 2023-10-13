@@ -26,7 +26,7 @@ public class AddBottleToCellarHandlerTests
         const BottleSize bottleSize = BottleSize.Standard;
 
         var addWineToCellarRequest =
-            new AddBottleToCellarRequest(wineId, bottleSize, username, auth0Id);
+            new AddBottleToCellarRequest(wineId, bottleSize, username, DateTime.UtcNow, auth0Id);
 
         var sut = new AddBottleToCellarHandler(_userWineRepositoryMock.Object);
 
