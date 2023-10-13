@@ -25,15 +25,6 @@ internal sealed class AddBottleToCellarHandler : IRequestHandler<AddBottleToCell
 
         await _bottleRepository.Create(bottle);
 
-        return new AddBottleToCellarResponse()
-        {
-            Bottle = new AddBottleToCellarResponse.BottleDto()
-            {
-                Id = bottle.Id,
-                BottleSize = bottle.BottleSize,
-                Vintage = bottle.Vintage,
-                WineId = bottle.WineId
-            }
-        };
+        return new AddBottleToCellarResponse();
     }
 }
