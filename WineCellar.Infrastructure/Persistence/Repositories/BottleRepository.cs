@@ -124,23 +124,27 @@ public class BottleRepository : IBottleRepository
         return entity;
     }
 
-    public async Task SetStatus(int id, BottleStatus status, string userName)
+    public async Task SetStatus(int id, BottleStatus status, DateTime consumedOn, string userName)
     {
         ArgumentNullException.ThrowIfNull(id);
+        ArgumentNullException.ThrowIfNull(status);
+        ArgumentNullException.ThrowIfNull(consumedOn);
+        ArgumentNullException.ThrowIfNull(userName);
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        var userWineModel = await context.Bottles
+        var bottle = await context.Bottles
             .FirstOrDefaultAsync(x => x.Id == id);
 
-        if (userWineModel == null)
+        if (bottle == null)
         {
             throw new Exception("Couldn't find the user wine to update.");
         }
 
-        userWineModel.Status = status;
-        userWineModel.LastModified = DateTime.UtcNow;
-        userWineModel.LastModifiedBy = userName;
+        bottle.Status = status;
+        bottle.LastModified = DateTime.UtcNow;
+        bottle.ConsumedOn = consumedOn;
+        bottle.LastModifiedBy = userName;
 
         await context.SaveChangesAsync();
     }

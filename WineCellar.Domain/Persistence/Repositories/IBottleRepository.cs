@@ -11,5 +11,5 @@ public interface IBottleRepository
     Task<List<Bottle>> GetByWineId(int wineId, string auth0Id);
     Task Update(Bottle bottle);
     Task<Bottle> Create(Bottle entity);
-    Task SetStatus(int id, BottleStatus status, string userName);
+    Task SetStatus(int id, BottleStatus status, DateTime consumedOn, string userName);
 }

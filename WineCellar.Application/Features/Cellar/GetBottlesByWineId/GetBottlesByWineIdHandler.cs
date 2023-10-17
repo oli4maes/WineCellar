@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WineCellar.Domain.Persistence;
-using WineCellar.Domain.Persistence.Repositories;
+﻿using WineCellar.Domain.Persistence.Repositories;
 
 namespace WineCellar.Application.Features.Cellar.GetBottlesByWineId;
 
@@ -33,6 +31,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 Vintage = x.Vintage == null ? "N.V." : x.Vintage.ToString(),
                 AddedOn = x.AddedOn,
                 Status = x.Status,
+                ConsumedOn = x.ConsumedOn,
                 LastModified = x.LastModified
             }).ToList()
         };

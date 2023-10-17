@@ -1,0 +1,26 @@
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5">Consume bottle</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudDatePicker Label="Consumed on" @bind-Date="Bottle.ConsumedOn"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton ButtonType="ButtonType.Button"
+                   Variant="Variant.Outlined"
+                   StartIcon="@Icons.Material.Outlined.Cancel"
+                   Color="Color.Primary"
+                   OnClick="Cancel"
+                   Class="mt-4">
+            Cancel
+        </MudButton>
+        <MudButton Class="ml-4 mt-4"
+                   ButtonType="ButtonType.Button"
+                   Variant="Variant.Filled"
+                   StartIcon="@Icons.Material.Outlined.NoDrinks"
+                   Color="Color.Primary"
+                   OnClick="ConsumeBottle">
+            Consume
+        </MudButton>
+    </DialogActions>
+</MudDialog>
