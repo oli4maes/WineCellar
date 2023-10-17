@@ -10,7 +10,7 @@ internal sealed class EditBottleHandler : IRequestHandler<EditBottleRequest, Edi
     {
         _bottleRepository = bottleRepository;
     }
-    
+
     public async ValueTask<EditBottleResponse> Handle(EditBottleRequest request, CancellationToken cancellationToken)
     {
         Bottle bottle = new()
@@ -18,11 +18,12 @@ internal sealed class EditBottleHandler : IRequestHandler<EditBottleRequest, Edi
             Id = request.BottleId,
             BottleSize = request.BottleSize,
             Vintage = request.Vintage,
+            AddedOn = request.AddedOn,
             LastModifiedBy = request.UserName
         };
 
         await _bottleRepository.Update(bottle);
-        
+
         return new EditBottleResponse();
     }
 }

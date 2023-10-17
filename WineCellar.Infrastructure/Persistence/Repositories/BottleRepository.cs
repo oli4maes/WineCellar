@@ -95,18 +95,19 @@ public class BottleRepository : IBottleRepository
 
         await using var context = await _dbContextFactory.CreateDbContextAsync();
 
-        var userWineModel = await context.Bottles
+        var bottleModel = await context.Bottles
             .FirstOrDefaultAsync(x => x.Id == bottle.Id);
 
-        if (userWineModel == null)
+        if (bottleModel == null)
         {
             throw new Exception("Couldn't find the user wine to update.");
         }
 
-        userWineModel.BottleSize = bottle.BottleSize;
-        userWineModel.Vintage = bottle.Vintage;
-        userWineModel.LastModified = DateTime.UtcNow;
-        userWineModel.LastModifiedBy = bottle.LastModifiedBy;
+        bottleModel.BottleSize = bottle.BottleSize;
+        bottleModel.Vintage = bottle.Vintage;
+        bottleModel.AddedOn = bottle.AddedOn;
+        bottleModel.LastModified = DateTime.UtcNow;
+        bottleModel.LastModifiedBy = bottle.LastModifiedBy;
 
         await context.SaveChangesAsync();
     }
