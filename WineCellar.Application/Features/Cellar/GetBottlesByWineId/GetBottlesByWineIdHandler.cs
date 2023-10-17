@@ -31,7 +31,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 Id = x.Id,
                 BottleSize = x.BottleSize,
                 Vintage = x.Vintage == null ? "N.V." : x.Vintage.ToString(),
-                AddedOn = x.Created,
+                AddedOn = x.AddedOn,
                 Status = x.Status,
                 LastModified = x.LastModified
             }).ToList()

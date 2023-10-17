@@ -61,7 +61,7 @@ public partial class Detail : ComponentBase
         if (!result.Canceled)
         {
             var response = await _mediator.Send(new BulkAddBottleToCellarRequest(
-                _wine.Id, bottles.Size, bottles.Amount, _userName, _auth0Id, bottles.Vintage));
+                _wine.Id, bottles.Size, bottles.Amount, bottles.AddedOn, _userName, _auth0Id, bottles.Vintage));
 
             if (response.AmountFailed is 0)
             {
@@ -84,12 +84,15 @@ public partial class Detail : ComponentBase
         var dialog = await _dialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
         var result = await dialog.Result;
 
-        int vintage;
-        int.TryParse(bottle.Vintage, out vintage);
+        int.TryParse(bottle.Vintage, out var vintage);
 
         if (!result.Canceled)
         {
-            await _mediator.Send(new EditBottleRequest(bottle.Id, bottle.BottleSize, _userName,
+            await _mediator.Send(new EditBottleRequest(
+                bottle.Id,
+                bottle.BottleSize,
+                bottle.AddedOn ?? DateTime.Today,
+                _userName,
                 vintage == 0 ? null : vintage));
         }
     }
@@ -97,7 +100,7 @@ public partial class Detail : ComponentBase
     private async Task OnDeleteBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
         DialogParameters parameters = new()
-            { { "ItemToDelete", $"{bottle.BottleSize.ToString()} - {bottle.AddedOn.ToShortDateString()}" } };
+            { { "ItemToDelete", $"{bottle.BottleSize.ToString().ToLower()} - {bottle.AddedOn?.ToShortDateString()}" } };
         var dialog = await _dialogService.ShowAsync<DeleteDialog>("Delete", parameters);
         var result = await dialog.Result;
 
