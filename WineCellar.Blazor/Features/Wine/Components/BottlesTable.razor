@@ -20,11 +20,17 @@
         <PropertyColumn Property="x => x.Vintage" Title="Vintage" Sortable="true" Filterable="false"/>
         @if (Status == BottleStatus.InCellar)
         {
-            <PropertyColumn Property="@(x => x.AddedOn.Value.ToString("d/M/yyyy"))" Title="In cellar since" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.AddedOn.Value.ToString("dd/MM/yyyy"))"
+                            Title="In cellar since"
+                            Sortable="true"
+                            Filterable="false"/>
         }
         @if (Status == BottleStatus.Consumed)
         {
-            <PropertyColumn Property="@(x => x.LastModified.Value.ToString("d/M/yyyy"))" Title="Consumed on" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.ConsumedOn.Value.ToString("dd/MM/yyyy"))"
+                            Title="Consumed on"
+                            Sortable="true"
+                            Filterable="false"/>
         }
         @if (Status == BottleStatus.InCellar)
         {
@@ -35,10 +41,19 @@
                     }
                     @if (bottle.Status is not BottleStatus.Consumed)
                     {
-                        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Done" Color="Color.Success" @onclick="() => ConsumeBottle(bottle)"/>
+                        <MudIconButton Size="Size.Small"
+                                       Icon="@Icons.Material.Outlined.NoDrinks"
+                                       Color="Color.Success"
+                                       @onclick="() => ConsumeBottle(bottle)"/>
                     }
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => EditBottle(bottle)"/>
-                    <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteBottle(bottle)"/>
+                    <MudIconButton Size="Size.Small"
+                                   Icon="@Icons.Material.Outlined.Edit"
+                                   Color="Color.Info"
+                                   @onclick="() => EditBottle(bottle)"/>
+                    <MudIconButton Size="Size.Small"
+                                   Icon="@Icons.Material.Outlined.Delete"
+                                   Color="Color.Error"
+                                   @onclick="() => DeleteBottle(bottle)"/>
                 </CellTemplate>
             </TemplateColumn>
         }

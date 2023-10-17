@@ -45,11 +45,11 @@ public partial class Detail : ComponentBase
     {
         GetBottlesByWineIdResponse responseInCellar =
             await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.InCellar));
-        _bottlesInCellar = responseInCellar.Bottles;
+        _bottlesInCellar = responseInCellar.Bottles.OrderByDescending(x => x.AddedOn).ToList();
 
         GetBottlesByWineIdResponse responseConsumed =
             await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.Consumed));
-        _bottlesConsumed = responseConsumed.Bottles;
+        _bottlesConsumed = responseConsumed.Bottles.OrderByDescending(x => x.ConsumedOn).ToList();
     }
 
     private async Task AddBottleToCellar()
@@ -78,8 +78,7 @@ public partial class Detail : ComponentBase
 
     private async Task OnEditBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        var parameters = new DialogParameters<EditBottleDialog>();
-        parameters.Add(x => x.Bottle, bottle);
+        var parameters = new DialogParameters<EditBottleDialog> { { x => x.Bottle, bottle } };
 
         var dialog = await _dialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
         var result = await dialog.Result;
@@ -99,7 +98,7 @@ public partial class Detail : ComponentBase
 
     private async Task OnDeleteBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        DialogParameters parameters = new()
+        var parameters = new DialogParameters()
             { { "ItemToDelete", $"{bottle.BottleSize.ToString().ToLower()} - {bottle.AddedOn?.ToShortDateString()}" } };
         var dialog = await _dialogService.ShowAsync<DeleteDialog>("Delete", parameters);
         var result = await dialog.Result;
@@ -123,7 +122,20 @@ public partial class Detail : ComponentBase
 
     private async Task OnConsumeBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        await _mediator.Send(new SetBottleStatusRequest(bottle.Id, BottleStatus.Consumed, _userName));
+        var parameters = new DialogParameters<ConsumeBottleDialog> { { x => x.Bottle, bottle } };
+
+        var dialog = await _dialogService.ShowAsync<ConsumeBottleDialog>("Consume bottle", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await _mediator.Send(new SetBottleStatusRequest(
+                bottle.Id,
+                BottleStatus.Consumed,
+                bottle.ConsumedOn,
+                _userName));
+        }
+
         await GetBottles();
     }
 
