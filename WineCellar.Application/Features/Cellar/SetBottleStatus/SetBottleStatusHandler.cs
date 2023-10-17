@@ -10,11 +10,16 @@ internal sealed class SetBottleStatusHandler : IRequestHandler<SetBottleStatusRe
     {
         _bottleRepository = bottleRepository;
     }
-    
-    public async ValueTask<SetBottleStatusResponse> Handle(SetBottleStatusRequest request, CancellationToken cancellationToken)
+
+    public async ValueTask<SetBottleStatusResponse> Handle(SetBottleStatusRequest request,
+        CancellationToken cancellationToken)
     {
-        await _bottleRepository.SetStatus(request.BottleId, request.Status, request.UserName);
-        
+        await _bottleRepository.SetStatus(
+            request.BottleId,
+            request.Status,
+            request.ConsumedOn ?? DateTime.Today,
+            request.UserName);
+
         return new SetBottleStatusResponse();
     }
 }
