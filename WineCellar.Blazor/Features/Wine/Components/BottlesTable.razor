@@ -20,11 +20,11 @@
         <PropertyColumn Property="x => x.Vintage" Title="Vintage" Sortable="true" Filterable="false"/>
         @if (Status == BottleStatus.InCellar)
         {
-            <PropertyColumn Property="@(x => x.AddedOn.ToShortDateString())" Title="In cellar since" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.AddedOn.Value.ToString("d/M/yyyy"))" Title="In cellar since" Sortable="true" Filterable="false"/>
         }
         @if (Status == BottleStatus.Consumed)
         {
-            <PropertyColumn Property="@(x => x.LastModified)" Title="Consumed on" Sortable="true" Filterable="false"/>
+            <PropertyColumn Property="@(x => x.LastModified.Value.ToString("d/M/yyyy"))" Title="Consumed on" Sortable="true" Filterable="false"/>
         }
         @if (Status == BottleStatus.InCellar)
         {
