@@ -41,15 +41,20 @@ internal sealed class GetWinesHandler : IRequestHandler<GetWinesRequest, GetWine
 
         if (request.Query is not null)
         {
-            wines = wines
+            wines = wines?
                 .Where(x => x.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase) ||
                             x.Winery.Name.Contains(request.Query, StringComparison.InvariantCultureIgnoreCase))
                 .ToList();
         }
 
-        return new GetWinesResponse()
+        if (request.WineryId is not null)
         {
-            Wines = wines.Select(x => new WineDto()
+            wines = wines?.Where(x => x.WineryId == request.WineryId).ToList();
+        }
+
+        return new GetWinesResponse
+        {
+            Wines = wines!.Select(x => new WineDto
             {
                 Id = x.Id,
                 Name = x.Name,

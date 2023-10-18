@@ -1,6 +1,7 @@
 using WineCellar.Application.Features.Grapes.GetGrapes;
 using WineCellar.Application.Features.Regions.GetRegionsByCountry;
 using WineCellar.Application.Features.Wineries.GetWineries;
+using WineCellar.Application.Features.Wineries.GetWineryById;
 using WineCellar.Application.Features.Wines.AddGrapeToWine;
 using WineCellar.Application.Features.Wines.CreateWine;
 using WineCellar.Application.Features.Wines.GetWineById;
@@ -12,6 +13,7 @@ namespace WineCellar.Blazor.Features.Administration.Wines.Pages;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
+    [Parameter] public int WineryId { get; set; }
 
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
@@ -19,10 +21,10 @@ public partial class Detail : ComponentBase
     [Inject] private ISnackbar _snackbar { get; set; }
 
     private WineDto _wine { get; set; } = new();
+    private WineryDto _winery { get; set; } = new();
     private bool _editMode { get; set; }
     private string _userName { get; set; } = string.Empty;
 
-    private List<WineryDto> _wineries { get; set; } = new();
     private List<GrapeDto> _grapes { get; set; } = new();
     private List<RegionDto> _regions { get; set; } = new();
     private GrapeDto? _selectedGrape { get; set; }
@@ -37,18 +39,17 @@ public partial class Detail : ComponentBase
         if (Id is not 0)
         {
             var response = await _mediator.Send(new GetWineByIdRequest(Id));
-            _wine = response.Wine ?? new WineDto();
-
-            if (_wine.Winery.CountryId is not null)
-            {
-                await GetRegions();
-            }
+            _wine = response.Wine!;
         }
         else
         {
-            _wine = new();
-            _wine.WineType = WineType.White;
-            _wine.Grapes = new();
+            _wine = new()
+            {
+                WineType = WineType.White,
+                Grapes = new(),
+                WineryId = WineryId
+            };
+
             _editMode = true;
         }
     }
@@ -60,12 +61,6 @@ public partial class Detail : ComponentBase
 
     private async void HandleValidSubmit()
     {
-        if (_wine.Winery.Id == 0)
-        {
-            return;
-        }
-        _wine.WineryId = _wine.Winery.Id;
-
         if (Id is 0)
         {
             var response =
@@ -91,7 +86,11 @@ public partial class Detail : ComponentBase
         else
         {
             await _mediator.Send(
-                new UpdateWineRequest(_wine.Id, _wine.Name, _wine.WineType, _wine.WineryId, _userName,
+                new UpdateWineRequest(
+                    _wine.Id,
+                    _wine.Name,
+                    _wine.WineType,
+                    _userName,
                     _wine.Region?.Id));
 
             _editMode = false;
@@ -103,15 +102,7 @@ public partial class Detail : ComponentBase
 
     private void Back()
     {
-        _navManager.NavigateTo("/Administration/Wines");
-    }
-
-    private async Task<IEnumerable<WineryDto>> SearchWinery(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return new List<WineryDto>();
-
-        return _wineries.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        _navManager.NavigateTo($"/Administration/Wineries/{WineryId}");
     }
 
     private async Task<IEnumerable<GrapeDto>> SearchGrape(string value)
@@ -141,19 +132,13 @@ public partial class Detail : ComponentBase
 
     private async Task GetInitialData()
     {
-        var getWineriesResponse = await _mediator.Send(new GetWineriesRequest());
-        _wineries = getWineriesResponse.Wineries.ToList();
+        var getWineryResponse = await _mediator.Send(new GetWineryByIdRequest(WineryId));
+        _winery = getWineryResponse.Winery;
 
         var getGrapesResponse = await _mediator.Send(new GetGrapesRequest());
         _grapes = getGrapesResponse.Grapes;
-    }
 
-    private async Task GetRegions()
-    {
-        if (_wine.Winery.CountryId is not null)
-        {
-            var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_wine.Winery.CountryId));
-            _regions = regionsResponse.Regions;
-        }
+        var regionsResponse = await _mediator.Send(new GetRegionsByCountryRequest((int)_winery.CountryId!));
+        _regions = regionsResponse.Regions;
     }
 }

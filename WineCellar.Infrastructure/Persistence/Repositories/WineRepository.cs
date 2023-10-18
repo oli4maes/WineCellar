@@ -71,7 +71,6 @@ public class WineRepository : IWineRepository
         }
 
         wineModel.Name = wine.Name;
-        wineModel.WineryId = wine.WineryId;
         wineModel.WineType = wine.WineType;
         wineModel.RegionId = wine.RegionId;
         wineModel.LastModified = DateTime.UtcNow;

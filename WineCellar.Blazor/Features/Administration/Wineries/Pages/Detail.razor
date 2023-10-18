@@ -5,7 +5,6 @@
 
 <AuthorizeView Policy="AdminRole">
     <Authorized>
-
         <MudContainer Fixed="true">
             <MudGrid>
                 <MudItem md="11">
@@ -25,19 +24,18 @@
 
         <MudContainer Fixed="true" Class="pt-4">
             <EditForm Model="@_winery" OnValidSubmit="HandleValidSubmit" Context="editContext">
+                <MudTextField @bind-Value="_winery.Name"
+                              Label="Name"
+                              Disabled="!_editMode"
+                              For="@(() => _winery.Name)"
+                              Class="mt-3"/>
 
-                <!-- Name -->
-                <MudTextField @bind-Value="_winery.Name" Label="Name" Disabled="!_editMode" For="@(() => _winery.Name)" Class="mt-3"/>
-
-                <!-- Description -->
                 <MudTextField @bind-Value="_winery.Description" Label="Description" Disabled="!_editMode" Class="mt-3"/>
 
-                <!-- Country -->
-                <MudSelect
-                    @bind-Value="_winery.Country"
-                    Label="Country"
-                    Disabled="!_editMode"
-                    Class="mt-5">
+                <MudSelect @bind-Value="_winery.Country"
+                           Label="Country"
+                           Disabled="!_editMode"
+                           Class="mt-5">
                     @foreach (var item in _countries)
                     {
                         <MudSelectItem T="CountryDto" Value="item">@item.Name</MudSelectItem>
@@ -45,13 +43,23 @@
                 </MudSelect>
 
                 <div class="mt-4">
-                    <MudButton ButtonType="ButtonType.Button"
-                               Variant="Variant.Outlined"
-                               StartIcon="@Icons.Material.Outlined.ArrowBack"
-                               Color="Color.Primary"
-                               OnClick="Back">
-                        Back
-                    </MudButton>
+                    @if (!_editMode)
+                    {
+                        <MudButton ButtonType="ButtonType.Button"
+                                   Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Outlined.ArrowBack"
+                                   Color="Color.Primary"
+                                   OnClick="Back">
+                            Back
+                        </MudButton>
+                        <MudButton ButtonType="ButtonType.Button"
+                                   Variant="Variant.Outlined"
+                                   StartIcon="@Icons.Material.Outlined.Add"
+                                   Color="Color.Primary"
+                                   OnClick="AddWine">
+                            Add wine
+                        </MudButton>
+                    }
                     @if (_editMode)
                     {
                         <MudButton Class="ml-4"
@@ -64,7 +72,13 @@
                     }
                 </div>
             </EditForm>
-        </MudContainer>
 
+            @if (!_editMode)
+            {
+                <div class="mt-4">
+                    <WinesTable Wines="_wines" OnDeleteWine="DeleteWine" OnOpenWine="OpenWine"/>
+                </div>
+            }
+        </MudContainer>
     </Authorized>
 </AuthorizeView>
