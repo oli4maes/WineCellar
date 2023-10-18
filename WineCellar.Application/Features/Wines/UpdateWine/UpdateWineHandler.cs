@@ -18,7 +18,6 @@ internal sealed class UpdateWineHandler : IRequestHandler<UpdateWineRequest, Upd
             Id = request.Id,
             Name = request.Name,
             WineType = request.WineType,
-            WineryId = request.WineryId,
             RegionId = request.RegionId,
             LastModifiedBy = request.UserName
         };
