@@ -1,4 +1,4 @@
-﻿@page "/Administration/Wines/{id:int}"
+﻿@page "/Administration/Wines/{wineryId:int}/{id:int}"
 @using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Kave - Administration - Wine Detail</PageTitle>
@@ -43,20 +43,7 @@
                 </MudSelect>
 
                 <!-- Winery -->
-                <MudAutocomplete T="WineryDto"
-                                 Label="Winery"
-                                 @bind-Value="_wine.Winery"
-                                 SearchFunc="@SearchWinery"
-                                 ResetValueOnEmptyText=true
-                                 CoerceText=false
-                                 CoerceValue=false
-                                 AdornmentIcon="@Icons.Material.Filled.Search"
-                                 AdornmentColor="Color.Primary"
-                                 ToStringFunc="@(e => e == null ? null : $"{e.Name}")"
-                                 Disabled="!_editMode"
-                                 For="@(() => _wine.Winery)"
-                                 Class="mt-3"
-                                 TextChanged="GetRegions"/>
+                <MudTextField @bind-Value="_winery.Name" Label="Winery" Disabled="true" For="@(() => _winery.Name)" Class="mt-3"/>
 
                 <!-- Region -->
                 @if (_regions.Any())
