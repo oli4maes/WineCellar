@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.AddBottleToCellar;
+using WineCellar.Application.Features.Cellar.BulkAddBottleToCellar;
 using WineCellar.Application.Features.Cellar.DeleteBottle;
 using WineCellar.Application.Features.Cellar.EditBottle;
 using WineCellar.Application.Features.Cellar.GetBottlesByWineId;
@@ -39,54 +40,66 @@ public partial class Detail : ComponentBase
 
         await GetBottles();
     }
+
     private async Task GetBottles()
     {
-        GetBottlesByWineIdResponse responseInCellar = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.InCellar));
-        _bottlesInCellar = responseInCellar.Bottles;
-        
-        GetBottlesByWineIdResponse responseConsumed = await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.Consumed));
-        _bottlesConsumed = responseConsumed.Bottles;
+        GetBottlesByWineIdResponse responseInCellar =
+            await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.InCellar));
+        _bottlesInCellar = responseInCellar.Bottles.OrderByDescending(x => x.AddedOn).ToList();
+
+        GetBottlesByWineIdResponse responseConsumed =
+            await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.Consumed));
+        _bottlesConsumed = responseConsumed.Bottles.OrderByDescending(x => x.ConsumedOn).ToList();
     }
 
     private async Task AddBottleToCellar()
     {
         var dialog = await _dialogService.ShowAsync<AddBottleDialog>();
         var result = await dialog.Result;
-        AddBottleDialog.Bottle bottle = (AddBottleDialog.Bottle)result.Data;
+        AddBottleDialog.BottlesToAdd bottles = (AddBottleDialog.BottlesToAdd)result.Data;
 
         if (!result.Canceled)
         {
-            var response = await _mediator.Send(
-                new AddBottleToCellarRequest(_wine.Id, bottle.Size, _userName, _auth0Id, bottle.Vintage));
+            var response = await _mediator.Send(new BulkAddBottleToCellarRequest(
+                _wine.Id, bottles.Size, bottles.Amount, bottles.AddedOn, _userName, _auth0Id, bottles.Vintage));
 
-            if (response.Bottle is not null)
+            if (response.AmountFailed is 0)
             {
-                await GetBottles();
-                _snackbar.Add($"Added bottle to your cellar.", Severity.Success);
+                _snackbar.Add($"Added {response.AmountSucceeded} bottle(s) to your cellar.", Severity.Success);
             }
+            else
+            {
+                _snackbar.Add($"Failed to add {response.AmountFailed} bottle(s) to your cellar.", Severity.Error);
+            }
+
+            await GetBottles();
         }
     }
 
     private async Task OnEditBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        var parameters = new DialogParameters<EditBottleDialog>();
-        parameters.Add(x => x.Bottle, bottle);
+        var parameters = new DialogParameters<EditBottleDialog> { { x => x.Bottle, bottle } };
 
         var dialog = await _dialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
         var result = await dialog.Result;
 
-        int vintage;
-        int.TryParse(bottle.Vintage, out vintage);
+        int.TryParse(bottle.Vintage, out var vintage);
 
         if (!result.Canceled)
         {
-            await _mediator.Send(new EditBottleRequest(bottle.Id, bottle.BottleSize, _userName, vintage == 0 ? null : vintage));
+            await _mediator.Send(new EditBottleRequest(
+                bottle.Id,
+                bottle.BottleSize,
+                bottle.AddedOn ?? DateTime.Today,
+                _userName,
+                vintage == 0 ? null : vintage));
         }
     }
 
     private async Task OnDeleteBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        DialogParameters parameters = new() { { "ItemToDelete", $"{bottle.BottleSize.ToString()} - {bottle.AddedOn.ToShortDateString()}" } };
+        var parameters = new DialogParameters()
+            { { "ItemToDelete", $"{bottle.BottleSize.ToString().ToLower()} - {bottle.AddedOn?.ToShortDateString()}" } };
         var dialog = await _dialogService.ShowAsync<DeleteDialog>("Delete", parameters);
         var result = await dialog.Result;
 
@@ -109,7 +122,20 @@ public partial class Detail : ComponentBase
 
     private async Task OnConsumeBottle(GetBottlesByWineIdResponse.BottleDto bottle)
     {
-        await _mediator.Send(new SetBottleStatusRequest(bottle.Id, BottleStatus.Consumed, _userName));
+        var parameters = new DialogParameters<ConsumeBottleDialog> { { x => x.Bottle, bottle } };
+
+        var dialog = await _dialogService.ShowAsync<ConsumeBottleDialog>("Consume bottle", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await _mediator.Send(new SetBottleStatusRequest(
+                bottle.Id,
+                BottleStatus.Consumed,
+                bottle.ConsumedOn,
+                _userName));
+        }
+
         await GetBottles();
     }
 

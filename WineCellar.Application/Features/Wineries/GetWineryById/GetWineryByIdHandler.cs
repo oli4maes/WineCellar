@@ -32,9 +32,9 @@ internal sealed class GetWineryByIdHandler : IRequestHandler<GetWineryByIdReques
             country.Name = winery.Country.Name;
         }
 
-        return new GetWineryByIdResponse()
+        return new GetWineryByIdResponse
         {
-            Winery = new WineryDto()
+            Winery = new WineryDto
             {
                 Id = winery.Id,
                 Name = winery.Name,

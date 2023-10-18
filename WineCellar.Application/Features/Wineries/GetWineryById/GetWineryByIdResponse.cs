@@ -3,5 +3,5 @@
 public sealed class GetWineryByIdResponse
 {
     public string? ErrorMessage { get; set; }
-    public WineryDto? Winery { get; set; }
+    public WineryDto Winery { get; set; } = new();
 }
