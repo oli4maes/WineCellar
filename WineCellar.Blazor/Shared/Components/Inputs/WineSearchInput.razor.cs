@@ -14,7 +14,7 @@ public partial class WineSearchInput : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await _mediator.Send(new GetWinesRequest(null, null));
+        var response = await _mediator.Send(new GetWinesRequest(null, null, null));
         _wines = response.Wines;
     }
 
