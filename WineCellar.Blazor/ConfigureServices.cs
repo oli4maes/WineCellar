@@ -1,5 +1,6 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using MudBlazor.Services;
+using WineCellar.Blazor.Helpers;
 
 namespace WineCellar.Blazor;
 
@@ -42,6 +43,9 @@ public static class ConfigureServices
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Text;
             }
         );
+
+        // MudBlazor Theme
+        services.AddMudBlazorThemeHelper<MudBlazorThemeHelper>();
 
         return services;
     }
