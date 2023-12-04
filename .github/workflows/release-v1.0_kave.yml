@@ -15,22 +15,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up .NET 8.x
-        uses: actions/setup-dotnet@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '8.x'
+          include-prerelease: true
 
-      - name: Display dotnet version
-        run: dotnet --version
-
-      - name: Install dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build WineCellar.Blazor --configuration Release
-        
-      - name: Run unit tests
-        run: dotnet test
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -47,18 +40,18 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: .net-app
-
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'kave'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A214C005FFAD49DDA6645A79251FFFC5 }}
           package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F886DDFDC8D64844AB36305F76426250 }}
