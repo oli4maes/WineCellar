@@ -25,5 +25,9 @@ public class BottleEntityTypeConfiguration : IEntityTypeConfiguration<Bottle>
 
         builder.Property(x => x.AddedOn)
             .IsRequired();
+
+        builder.Property(x => x.Price)
+            .HasDefaultValue(0d)
+            .IsRequired();
     }
 }

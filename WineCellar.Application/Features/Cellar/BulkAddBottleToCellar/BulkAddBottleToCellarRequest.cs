@@ -9,4 +9,5 @@ public sealed record BulkAddBottleToCellarRequest(
     DateTime? AddedOn,
     string UserName,
     string Auth0Id,
+    double PricePerBottle,
     int? Vintage = null) : IRequest<BulkAddBottleToCellarResponse>;

@@ -16,5 +16,6 @@ public sealed class GetBottlesByWineIdResponse
         public BottleStatus Status { get; set; }
         public DateTime? LastModified { get; set; }
         public DateTime? ConsumedOn { get; set; }
+        public double Price { get; set; } = 0d;
     }
 }

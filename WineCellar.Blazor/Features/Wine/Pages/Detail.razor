@@ -29,7 +29,7 @@
                 @if (_wine?.Grapes.Count > 0)
                 {
                     <MudItem xs="12" md="6">
-                        <GrapesList Grapes="_wine.Grapes"/>
+                        <GrapesList Grapes="_wine?.Grapes"/>
                     </MudItem>
                 }
             </MudGrid>
@@ -37,29 +37,29 @@
 
     </MudTabPanel>
     <MudContainer Fixed="true">
-        @if (_bottlesConsumed.Any() || _bottlesInCellar.Any())
+        @if (BottlesConsumed.Any() || BottlesInCellar.Any())
         {
-            <MudTabPanel Text="Cellar" BadgeData="_bottlesInCellar.Count">
-                @if (_bottlesInCellar.Any())
+            <MudTabPanel Text="Cellar" BadgeData="BottlesInCellar.Count">
+                @if (BottlesInCellar.Any())
                 {
                     <MudGrid Class="mt-4">
                         <MudItem sm="12" md="6">
                             <BottlesTable
                                 Status="BottleStatus.InCellar"
-                                Bottles="_bottlesInCellar"
+                                Bottles="BottlesInCellar"
                                 OnEditBottle="OnEditBottle"
                                 OnDeleteBottle="OnDeleteBottle"
                                 OnConsumeBottle="OnConsumeBottle"/>
                         </MudItem>
                     </MudGrid>
                 }
-                @if (_bottlesConsumed.Any())
+                @if (BottlesConsumed.Any())
                 {
                     <MudGrid Class="mt-4">
                         <MudItem sm="12" md="6">
                             <BottlesTable
                                 Status="BottleStatus.Consumed"
-                                Bottles="_bottlesConsumed"
+                                Bottles="BottlesConsumed"
                                 OnEditBottle="OnEditBottle"
                                 OnDeleteBottle="OnDeleteBottle"
                                 OnConsumeBottle="OnConsumeBottle"/>
