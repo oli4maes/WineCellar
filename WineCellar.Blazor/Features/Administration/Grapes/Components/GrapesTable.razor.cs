@@ -4,11 +4,11 @@ namespace WineCellar.Blazor.Features.Administration.Grapes.Components;
 
 public partial class GrapesTable : ComponentBase
 {
-    [Parameter] public IEnumerable<GrapeDto> Grapes { get; set; }
+    [Parameter] public IEnumerable<GrapeDto> Grapes { get; set; } = [];
     [Parameter] public EventCallback<GrapeDto> OnOpenGrape { get; set; }
     [Parameter] public EventCallback<GrapeDto> OnDeleteGrape { get; set; }
     
-    private string _searchString = String.Empty;
+    private string _searchString = string.Empty;
     
     // Quick filter - filter globally across multiple columns (Name) with the same input
     private Func<GrapeDto, bool> QuickFilter => x =>

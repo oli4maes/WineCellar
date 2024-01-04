@@ -18,10 +18,11 @@ public class BulkAddBottleToCellarHandler : IRequestHandler<BulkAddBottleToCella
         var failedRequests = new ConcurrentBag<AddBottleToCellarRequest>();
         var succeededRequests = new ConcurrentBag<AddBottleToCellarRequest>();
 
-        for (int i = 0; i < request.Amount; i++)
+        for (var i = 0; i < request.Amount; i++)
         {
             var addBottleToCellarRequest = new AddBottleToCellarRequest(
-                request.WineId, request.BottleSize, request.UserName, request.AddedOn, request.Auth0Id, request.Vintage);
+                request.WineId, request.BottleSize, request.UserName, request.AddedOn, request.Auth0Id,
+                request.PricePerBottle, request.Vintage);
 
             try
             {

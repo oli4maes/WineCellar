@@ -3,15 +3,17 @@
         <MudText Typo="Typo.h5">Add this wine to your cellar</MudText>
     </TitleContent>
     <DialogContent>
-        <MudNumericField @bind-Value="_bottle.Amount" Label="Amount" Min="1"/>
+        <MudNumericField @bind-Value="Bottle.Amount" Label="Amount" Min="1"/>
 
-        <MudNumericField @bind-Value="@_bottle.Vintage" Label="Vintage" Class="mt-4"/>
+        <MudNumericField @bind-Value="@Bottle.Vintage" Label="Vintage" Class="mt-4"/>
+        
+        <MudNumericField @bind-Value="@Bottle.PricePerBottle" Format="N2" Label="Price per bottle" Class="mt-4"/>
 
         <MudSelect T="BottleSize"
-                   @bind-Value="_bottle.Size"
+                   @bind-Value="Bottle.Size"
                    Placeholder="Select bottle size"
                    Label="Bottle size"
-                   For="@(() => _bottle.Size)"
+                   For="@(() => Bottle.Size)"
                    Class="mt-5">
             @foreach (var item in Enum.GetValues(typeof(BottleSize)))
             {
@@ -19,7 +21,7 @@
             }
         </MudSelect>
 
-        <MudDatePicker Label="In cellar since" @bind-Date="_bottle.AddedOn" Class="mt-4"/>
+        <MudDatePicker Label="In cellar since" @bind-Date="Bottle.AddedOn" Class="mt-4"/>
     </DialogContent>
     <DialogActions>
         <MudButton ButtonType="ButtonType.Button"

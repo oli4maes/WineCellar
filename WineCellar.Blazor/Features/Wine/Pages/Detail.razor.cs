@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using WineCellar.Application.Features.Cellar.AddBottleToCellar;
 using WineCellar.Application.Features.Cellar.BulkAddBottleToCellar;
 using WineCellar.Application.Features.Cellar.DeleteBottle;
 using WineCellar.Application.Features.Cellar.EditBottle;
@@ -14,28 +13,28 @@ namespace WineCellar.Blazor.Features.Wine.Pages;
 public partial class Detail : ComponentBase
 {
     [Parameter] public int Id { get; set; }
-    [Inject] private IMediator _mediator { get; set; }
-    [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
-    [Inject] private ISnackbar _snackbar { get; set; }
-    [Inject] private NavigationManager _navigationManager { get; set; }
-    [Inject] private IDialogService _dialogService { get; set; }
+    [Inject] private IMediator Mediator { get; set; } = default!;
+    [Inject] private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+    [Inject] private ISnackbar Snackbar { get; set; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+    [Inject] private IDialogService DialogService { get; set; } = default!;
 
-    private WineDto _wine;
-    private List<GetBottlesByWineIdResponse.BottleDto> _bottlesInCellar { get; set; } = new();
-    private List<GetBottlesByWineIdResponse.BottleDto> _bottlesConsumed { get; set; } = new();
-    private string _userName { get; set; } = string.Empty;
-    private string _auth0Id { get; set; } = string.Empty;
+    private WineDto? _wine;
+    private List<GetBottlesByWineIdResponse.BottleDto> BottlesInCellar { get; set; } = [];
+    private List<GetBottlesByWineIdResponse.BottleDto> BottlesConsumed { get; set; } = [];
+    private string UserName { get; set; } = string.Empty;
+    private string Auth0Id { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        _userName = authState.User.Identity?.Name ?? string.Empty;
-        _auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        UserName = authState.User.Identity?.Name ?? string.Empty;
+        Auth0Id = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        var getWineByIdResponse = await _mediator.Send(new GetWineByIdRequest(Id));
+        var getWineByIdResponse = await Mediator.Send(new GetWineByIdRequest(Id));
         _wine = getWineByIdResponse.Wine ?? new();
 
         await GetBottles();
@@ -43,33 +42,34 @@ public partial class Detail : ComponentBase
 
     private async Task GetBottles()
     {
-        GetBottlesByWineIdResponse responseInCellar =
-            await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.InCellar));
-        _bottlesInCellar = responseInCellar.Bottles.OrderByDescending(x => x.AddedOn).ToList();
+        var responseInCellar =
+            await Mediator.Send(new GetBottlesByWineIdRequest(Auth0Id, _wine!.Id, BottleStatus.InCellar));
+        BottlesInCellar = responseInCellar.Bottles!.OrderByDescending(x => x.AddedOn).ToList();
 
-        GetBottlesByWineIdResponse responseConsumed =
-            await _mediator.Send(new GetBottlesByWineIdRequest(_auth0Id, _wine.Id, BottleStatus.Consumed));
-        _bottlesConsumed = responseConsumed.Bottles.OrderByDescending(x => x.ConsumedOn).ToList();
+        var responseConsumed =
+            await Mediator.Send(new GetBottlesByWineIdRequest(Auth0Id, _wine.Id, BottleStatus.Consumed));
+        BottlesConsumed = responseConsumed.Bottles!.OrderByDescending(x => x.ConsumedOn).ToList();
     }
 
     private async Task AddBottleToCellar()
     {
-        var dialog = await _dialogService.ShowAsync<AddBottleDialog>();
+        var dialog = await DialogService.ShowAsync<AddBottleDialog>();
         var result = await dialog.Result;
-        AddBottleDialog.BottlesToAdd bottles = (AddBottleDialog.BottlesToAdd)result.Data;
+        var bottles = (AddBottleDialog.BottlesToAdd)result.Data;
 
         if (!result.Canceled)
         {
-            var response = await _mediator.Send(new BulkAddBottleToCellarRequest(
-                _wine.Id, bottles.Size, bottles.Amount, bottles.AddedOn, _userName, _auth0Id, bottles.Vintage));
+            var response = await Mediator.Send(new BulkAddBottleToCellarRequest(
+                _wine.Id, bottles.Size, bottles.Amount, bottles.AddedOn, UserName, Auth0Id, bottles.PricePerBottle,
+                bottles.Vintage));
 
             if (response.AmountFailed is 0)
             {
-                _snackbar.Add($"Added {response.AmountSucceeded} bottle(s) to your cellar.", Severity.Success);
+                Snackbar.Add($"Added {response.AmountSucceeded} bottle(s) to your cellar.", Severity.Success);
             }
             else
             {
-                _snackbar.Add($"Failed to add {response.AmountFailed} bottle(s) to your cellar.", Severity.Error);
+                Snackbar.Add($"Failed to add {response.AmountFailed} bottle(s) to your cellar.", Severity.Error);
             }
 
             await GetBottles();
@@ -80,18 +80,18 @@ public partial class Detail : ComponentBase
     {
         var parameters = new DialogParameters<EditBottleDialog> { { x => x.Bottle, bottle } };
 
-        var dialog = await _dialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
+        var dialog = await DialogService.ShowAsync<EditBottleDialog>("Edit bottle", parameters);
         var result = await dialog.Result;
 
         int.TryParse(bottle.Vintage, out var vintage);
 
         if (!result.Canceled)
         {
-            await _mediator.Send(new EditBottleRequest(
+            await Mediator.Send(new EditBottleRequest(
                 bottle.Id,
                 bottle.BottleSize,
                 bottle.AddedOn ?? DateTime.Today,
-                _userName,
+                UserName,
                 vintage == 0 ? null : vintage));
         }
     }
@@ -100,22 +100,22 @@ public partial class Detail : ComponentBase
     {
         var parameters = new DialogParameters()
             { { "ItemToDelete", $"{bottle.BottleSize.ToString().ToLower()} - {bottle.AddedOn?.ToShortDateString()}" } };
-        var dialog = await _dialogService.ShowAsync<DeleteDialog>("Delete", parameters);
+        var dialog = await DialogService.ShowAsync<DeleteDialog>("Delete", parameters);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            var response = await _mediator.Send(new DeleteBottleRequest(bottle.Id));
+            var response = await Mediator.Send(new DeleteBottleRequest(bottle.Id));
 
             if (response.SuccessfulDelete)
             {
-                _snackbar.Add($"Bottle deleted.", Severity.Warning);
+                Snackbar.Add($"Bottle deleted.", Severity.Warning);
 
                 await GetBottles();
             }
             else
             {
-                _snackbar.Add($"Could not delete bottle.", Severity.Error);
+                Snackbar.Add($"Could not delete bottle.", Severity.Error);
             }
         }
     }
@@ -124,16 +124,16 @@ public partial class Detail : ComponentBase
     {
         var parameters = new DialogParameters<ConsumeBottleDialog> { { x => x.Bottle, bottle } };
 
-        var dialog = await _dialogService.ShowAsync<ConsumeBottleDialog>("Consume bottle", parameters);
+        var dialog = await DialogService.ShowAsync<ConsumeBottleDialog>("Consume bottle", parameters);
         var result = await dialog.Result;
 
         if (!result.Canceled)
         {
-            await _mediator.Send(new SetBottleStatusRequest(
+            await Mediator.Send(new SetBottleStatusRequest(
                 bottle.Id,
                 BottleStatus.Consumed,
                 bottle.ConsumedOn,
-                _userName));
+                UserName));
         }
 
         await GetBottles();
@@ -141,6 +141,6 @@ public partial class Detail : ComponentBase
 
     private void NavigateToWinery()
     {
-        _navigationManager.NavigateTo($"/Wineries/{_wine.Winery.Id}");
+        NavigationManager.NavigateTo($"/Wineries/{_wine.Winery.Id}");
     }
 }

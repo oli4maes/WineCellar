@@ -21,6 +21,7 @@ internal sealed class AddBottleToCellarHandler : IRequestHandler<AddBottleToCell
             BottleSize = request.BottleSize,
             Vintage = request.Vintage,
             CreatedBy = request.UserName,
+            Price = request.PricePerBottle,
             AddedOn = request.AddedOn ?? DateTime.Today
         };
 
