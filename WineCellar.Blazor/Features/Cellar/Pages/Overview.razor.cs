@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Forms;
 using WineCellar.Application.Features.Cellar.GetCellarOverview;
 
 namespace WineCellar.Blazor.Features.Cellar.Pages;
@@ -9,10 +10,12 @@ public partial class Overview : ComponentBase
     [Inject] private AuthenticationStateProvider _authenticationStateProvider { get; set; }
     [Inject] private NavigationManager _navManager { get; set; }
 
-    private IEnumerable<GetCellarOverviewResponse.CellarOverviewDto> _userWines { get; set; }
-    private string _userId { get; set; } = String.Empty;
-    private string _userName { get; set; } = String.Empty;
+    private IEnumerable<GetCellarOverviewResponse.CellarOverviewDto>? _userWines { get; set; }
+    private string _userId { get; set; } = string.Empty;
+    private string _userName { get; set; } = string.Empty;
     private bool _loading { get; set; } = true;
+    private List<IBrowserFile> _files = [];
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,5 +36,11 @@ public partial class Overview : ComponentBase
     private void OpenWine(GetCellarOverviewResponse.CellarOverviewDto userWine)
     {
         _navManager.NavigateTo($"/Wines/{userWine.WineId}");
+    }
+    
+    private void UploadFiles(IBrowserFile file)
+    {
+        _files.Add(file);
+        //TODO upload the files to the server
     }
 }

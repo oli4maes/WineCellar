@@ -1,9 +1,28 @@
 ﻿@page "/Cellar"
+@using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Kave - Cellar</PageTitle>
 
 <MudContainer Fixed="true">
-    <MudText Typo="Typo.h4" Class="mt-3 mb-2">Cellar</MudText>
+    <div class="d-flex flex-row justify-space-between">
+        <MudText Typo="Typo.h4" Class="mt-5 mb-4">Cellar</MudText>
+
+        <div>
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept=".csv" MaximumFileCount="1">
+                <ButtonTemplate>
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Outlined.UploadFile"
+                               for="@context.Id"
+                               Class="mt-4">
+                        Import cellar tracker csv
+                    </MudButton>
+                </ButtonTemplate>
+            </MudFileUpload>
+        </div>
+
+    </div>
 </MudContainer>
 
 <MudDivider/>
