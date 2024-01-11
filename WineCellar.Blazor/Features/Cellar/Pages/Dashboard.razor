@@ -41,18 +41,29 @@
 
         @if (_dashboardResponse.AmountOfBottlesInCellar > 0)
         {
-            <MudPaper Class="pa-2 mt-4">
-                <MudGrid>
-                    <MudItem xs="12" md="6">
-                        <WineTypeStatistics AmountOfBottlesPerWineType="@_dashboardResponse.AmountOfBottlesPerWineType"/>
-                    </MudItem>
-                    <MudItem xs="12" md="6">
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudPaper Class="pa-2 mt-4 mb-4">
+                        <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-2 mb-2" Color="Color.Primary">Amount of bottles in cellar</MudText>
+                        <MudChart ChartType="ChartType.Line"
+                                  ChartSeries="_series"
+                                  @bind-SelectedIndex="_index"
+                                  XAxisLabels="_xAxisLabels"
+                                  Width="100%"
+                                  Height="350px"
+                                  ChartOptions="_chartOptions"/>
+                    </MudPaper>
+                </MudItem>
+
+                <MudItem xs="12" md="6">
+                    <MudPaper Class="pa-2 mt-4 mb-4">
+                        <MudText Typo="Typo.h5" Align="Align.Center" Class="mt-2 mb-2" Color="Color.Primary">Amount of bottles per type</MudText>
                         <WineTypeDonut AmountOfBottlesInCellar="@_dashboardResponse.AmountOfBottlesInCellar"
                                        AmountOfBottlesPerWineTypeData="@_dashboardResponse.AmountOfBottlesPerWineTypeData"
                                        AmountOfBottlesPerWineTypeLabels="@_dashboardResponse.AmountOfBottlesPerWineTypeLabels"/>
-                    </MudItem>
-                </MudGrid>
-            </MudPaper>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
         }
     }
 </MudContainer>

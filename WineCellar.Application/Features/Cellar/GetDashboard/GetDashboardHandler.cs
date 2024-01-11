@@ -56,7 +56,7 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             favouriteWine = GetFavouriteWine(bottles);
         }
 
-        var favouriteWineName = favouriteWine.Name;
+        var favouriteWineName = $"{favouriteWine.Winery.Name} - {favouriteWine.Name}";
 
         var groupedByWinery = bottles.GroupBy(x => x.Wine.WineryId);
         var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
@@ -71,9 +71,11 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
 
         var amountOfBottlesInCellarPerMonth = GetAmountOfBottlesInCellarPerMonth(bottles);
 
-        var winesInCellarLineChart = new GetDashboardResponse.LineChartDto()
+        var winesInCellarLineChart = new GetDashboardResponse.LineChartDto
         {
-            Name = "Bottles in cellar"
+            Name = "Bottles in cellar",
+            Values = amountOfBottlesInCellarPerMonth.Values.ToList(),
+            XAxisLabels = amountOfBottlesInCellarPerMonth.Keys.ToList()
         };
 
         return new GetDashboardResponse
@@ -141,12 +143,16 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
         var amountOfBottlesPerMonth = new Dictionary<string, double>();
         var startDate = DateTime.Now.AddMonths(1).AddDays(-DateTime.Now.Day + 1);
 
-        for (var i = 0; i < AMOUNT_OF_MONTHS_FOR_LINECHART; i++)
+        for (var i = AMOUNT_OF_MONTHS_FOR_LINECHART - 1; i >= 0; i--)
         {
             var dateRoundedToMonth = startDate.AddMonths(-i);
+            var dateOnlyRoundedToMonth = DateOnly.FromDateTime(dateRoundedToMonth);
 
-            var amountOfBottlesForCurrentMonth = bottles.Count(x => x.AddedOn < dateRoundedToMonth);
-            var month = dateRoundedToMonth.ToString();
+            var amountOfBottlesForCurrentMonth = bottles.Count(x =>
+                DateOnly.FromDateTime(x.AddedOn) < dateOnlyRoundedToMonth
+                && (x.ConsumedOn >= dateRoundedToMonth || x.ConsumedOn == null));
+
+            var month = dateRoundedToMonth.AddMonths(-1).ToString("MMM");
 
             amountOfBottlesPerMonth.Add(month, amountOfBottlesForCurrentMonth);
         }
