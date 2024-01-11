@@ -7,5 +7,6 @@ public sealed record EditBottleRequest(
         BottleSize BottleSize,
         DateTime AddedOn,
         string UserName,
+        double Price,
         int? Vintage)
     : IRequest<EditBottleResponse>;
