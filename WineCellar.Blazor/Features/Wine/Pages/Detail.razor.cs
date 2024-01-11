@@ -92,6 +92,7 @@ public partial class Detail : ComponentBase
                 bottle.BottleSize,
                 bottle.AddedOn ?? DateTime.Today,
                 UserName,
+                bottle.Price,
                 vintage == 0 ? null : vintage));
         }
     }

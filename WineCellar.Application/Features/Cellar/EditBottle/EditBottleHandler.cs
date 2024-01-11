@@ -13,11 +13,12 @@ internal sealed class EditBottleHandler : IRequestHandler<EditBottleRequest, Edi
 
     public async ValueTask<EditBottleResponse> Handle(EditBottleRequest request, CancellationToken cancellationToken)
     {
-        Bottle bottle = new()
+        var bottle = new Bottle
         {
             Id = request.BottleId,
             BottleSize = request.BottleSize,
             Vintage = request.Vintage,
+            Price = request.Price,
             AddedOn = request.AddedOn,
             LastModifiedBy = request.UserName
         };
