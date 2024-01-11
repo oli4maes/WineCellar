@@ -14,9 +14,10 @@ public partial class Dashboard : ComponentBase
     private string[] _xAxisLabels { get; set; } = [];
     private List<ChartSeries> _series = [];
 
-    private ChartOptions _chartOptions = new()
+    private readonly ChartOptions _chartOptions = new()
     {
-        InterpolationOption = InterpolationOption.NaturalSpline
+        InterpolationOption = InterpolationOption.Straight,
+        YAxisTicks = 10
     };
 
     private GetDashboardResponse _dashboardResponse { get; set; }
@@ -37,8 +38,6 @@ public partial class Dashboard : ComponentBase
                 Data = _dashboardResponse.WinesInCellarLineChart.Values.ToArray()
             }
         };
-
-        _chartOptions.YAxisTicks = 10;
     }
 
     private void NavigateToWineryDetail(int id)

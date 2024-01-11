@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Forms;
 using WineCellar.Application.Features.Cellar.GetCellarOverview;
+using WineCellar.Application.Features.Cellar.IngestCellarTrackerCsv;
 
 namespace WineCellar.Blazor.Features.Cellar.Pages;
 
@@ -54,7 +55,17 @@ public partial class Overview : ComponentBase
             await fileStream.CopyToAsync(targetStream);
             targetStream.Close();
 
-            _snackbar.Add($"File {file.Name} was uploaded.", Severity.Success);
+            var response = await _mediator.Send(new IngestCellarTrackerCsvRequest(targetFilePath, _userName, _userId));
+
+            if (response.Success)
+            {
+                _snackbar.Add($"File {file.Name} was uploaded.", Severity.Success);
+                await GetUserWines();
+            }
+            else
+            {
+                _snackbar.Add($"Encountered an error while reading file: {file.Name}.", Severity.Success);
+            }
         }
         catch (Exception ex)
         {
