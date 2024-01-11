@@ -83,7 +83,7 @@ public class BottleRepository : IBottleRepository
 
         return await context.Bottles
             .Include(x => x.Wine)
-            .ThenInclude(w => w!.Winery)
+            .ThenInclude(w => w.Winery)
             .AsNoTracking()
             .Where(x => x.Wine.Id == wineId && x.Auth0Id == auth0Id)
             .ToListAsync();

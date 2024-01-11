@@ -32,6 +32,7 @@
                             Sortable="true"
                             Filterable="false"/>
         }
+        <PropertyColumn Property="@(x => $"\u20ac{x.Price:N2}")" Title="Price" Sortable="true" Filterable="false"/>
         @if (Status == BottleStatus.InCellar)
         {
             <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">

@@ -14,7 +14,7 @@
     <ToolBarContent>
         <MudText Typo="Typo.h5" Color="Color.Primary">Wines</MudText>
         <MudSpacer/>
-        <MudTextField @bind-Value="_searchString"
+        <MudTextField @bind-Value="SearchString"
                       Placeholder="Search"
                       Adornment="Adornment.Start"
                       AdornmentIcon="@Icons.Material.Outlined.Search"
@@ -37,7 +37,7 @@
             <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.CellarOverviewDto, object>(x => x.WineType)">Type</MudTableSortLabel>
         </MudTh>
         <MudTh>
-            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.CellarOverviewDto, object>(x => x.RegionName)">Region</MudTableSortLabel>
+            <MudTableSortLabel SortBy="new Func<GetCellarOverviewResponse.CellarOverviewDto, object>(x => x.RegionName!)">Region</MudTableSortLabel>
         </MudTh>
         <MudTh>Amount</MudTh>
     </HeaderContent>

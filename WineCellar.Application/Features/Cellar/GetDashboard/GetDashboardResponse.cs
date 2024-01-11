@@ -9,8 +9,16 @@ public sealed class GetDashboardResponse
     public string[]? AmountOfBottlesPerWineTypeLabels { get; set; }
     public WineType? FavouriteWineType { get; set; }
     public Dictionary<WineType, double>? AmountOfBottlesPerWineType { get; set; }
-    public string FavouriteWine { get; set; } = String.Empty;
+    public string FavouriteWine { get; set; } = string.Empty;
     public int? FavouriteWineId { get; set; }
-    public string FavouriteWinery { get; set; } = String.Empty;
+    public string FavouriteWinery { get; set; } = string.Empty;
     public int? FavouriteWineryId { get; set; }
+    public LineChartDto WinesInCellarLineChart { get; set; } = new();
+
+    public sealed class LineChartDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public List<double> Values { get; set; } = [];
+        public List<string> XAxisLabels { get; set; } = [];
+    }
 }

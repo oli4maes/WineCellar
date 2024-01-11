@@ -14,4 +14,5 @@ public class Bottle : BaseAuditableEntity
     public BottleStatus Status { get; set; }
     public DateTime AddedOn { get; set; }
     public DateTime? ConsumedOn { get; set; }
+    public double Price { get; set; }
 }

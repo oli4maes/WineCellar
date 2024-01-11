@@ -8,5 +8,6 @@ public sealed record AddBottleToCellarRequest(
         string UserName,
         DateTime? AddedOn,
         string Auth0Id,
+        double PricePerBottle,
         int? Vintage = null)
     : IRequest<AddBottleToCellarResponse>;

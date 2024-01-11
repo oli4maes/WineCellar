@@ -24,7 +24,7 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
 
         return new GetBottlesByWineIdResponse()
         {
-            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto()
+            Bottles = bottles.Select(x => new GetBottlesByWineIdResponse.BottleDto
             {
                 Id = x.Id,
                 BottleSize = x.BottleSize,
@@ -32,7 +32,8 @@ public sealed class GetBottlesByWineIdHandler : IRequestHandler<GetBottlesByWine
                 AddedOn = x.AddedOn,
                 Status = x.Status,
                 ConsumedOn = x.ConsumedOn,
-                LastModified = x.LastModified
+                LastModified = x.LastModified,
+                Price = x.Price
             }).ToList()
         };
     }

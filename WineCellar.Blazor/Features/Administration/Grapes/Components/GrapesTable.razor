@@ -2,7 +2,7 @@
              Items="Grapes"
              SortMode="SortMode.Single"
              QuickFilter="QuickFilter"
-             Hideable=true
+             Hideable="true"
              LoadingProgressColor="Color.Primary"
              Dense="true">
     <ToolBarContent>
@@ -20,9 +20,9 @@
     <Columns>
         <PropertyColumn Property="x => x.Name" Title="Name" Sortable="true" Filterable="false"/>
         <TemplateColumn Filterable="false" Sortable="false" CellClass="d-flex justify-end">
-            <CellTemplate Context="GrapeEditContext">
+            <CellTemplate Context="grapeEditContext">
                 @{
-                    var grape = GrapeEditContext.Item;
+                    var grape = grapeEditContext.Item;
                 }
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Edit" Color="Color.Info" @onclick="() => OpenGrape(grape)"/>
                 <MudIconButton Size="Size.Small" Icon="@Icons.Material.Outlined.Delete" Color="Color.Error" @onclick="() => DeleteGrape(grape)"/>

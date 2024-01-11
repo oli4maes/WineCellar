@@ -1,5 +1,4 @@
-﻿
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using WineCellar.Application.Features.Cellar.GetDashboard;
 
 namespace WineCellar.Blazor.Features.Cellar.Pages;
@@ -10,7 +9,16 @@ public partial class Dashboard : ComponentBase
     [Inject] private IMediator _mediator { get; set; }
     [Inject] private NavigationManager _navigationManager { get; set; }
 
-    private string _userId { get; set; } = String.Empty;
+    private string _userId { get; set; } = string.Empty;
+    private int _index = -1;
+    private string[] _xAxisLabels { get; set; } = [];
+    private List<ChartSeries> _series = [];
+
+    private readonly ChartOptions _chartOptions = new()
+    {
+        InterpolationOption = InterpolationOption.Straight,
+        YAxisTicks = 10
+    };
 
     private GetDashboardResponse _dashboardResponse { get; set; }
 
@@ -20,6 +28,16 @@ public partial class Dashboard : ComponentBase
         _userId = authState.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
 
         _dashboardResponse = await _mediator.Send(new GetDashboardRequest(_userId));
+
+        _xAxisLabels = _dashboardResponse.WinesInCellarLineChart.XAxisLabels.ToArray();
+        _series = new List<ChartSeries>
+        {
+            new()
+            {
+                Name = _dashboardResponse.WinesInCellarLineChart.Name,
+                Data = _dashboardResponse.WinesInCellarLineChart.Values.ToArray()
+            }
+        };
     }
 
     private void NavigateToWineryDetail(int id)
