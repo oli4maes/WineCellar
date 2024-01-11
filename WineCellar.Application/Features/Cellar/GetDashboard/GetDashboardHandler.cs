@@ -51,12 +51,12 @@ internal sealed class GetDashboardHandler : IRequestHandler<GetDashboardRequest,
             { nameof(WineType.White), nameof(WineType.Rosé), nameof(WineType.Red), nameof(WineType.Sparkling) };
 
         var favouriteWine = new Wine();
+        string favouriteWineName = null;
         if (bottles.Any())
         {
             favouriteWine = GetFavouriteWine(bottles);
+            favouriteWineName = $"{favouriteWine.Winery.Name} - {favouriteWine.Name}";
         }
-
-        var favouriteWineName = $"{favouriteWine.Winery.Name} - {favouriteWine.Name}";
 
         var groupedByWinery = bottles.GroupBy(x => x.Wine.WineryId);
         var favouriteWineryId = GetFavouriteWinery(groupedByWinery);
