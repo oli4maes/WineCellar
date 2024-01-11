@@ -105,6 +105,7 @@ public class BottleRepository : IBottleRepository
 
         bottleModel.BottleSize = bottle.BottleSize;
         bottleModel.Vintage = bottle.Vintage;
+        bottleModel.Price = bottle.Price;
         bottleModel.AddedOn = bottle.AddedOn;
         bottleModel.LastModified = DateTime.UtcNow;
         bottleModel.LastModifiedBy = bottle.LastModifiedBy;

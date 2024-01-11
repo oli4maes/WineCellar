@@ -4,6 +4,8 @@
     </TitleContent>
     <DialogContent>
         <MudTextField @bind-Value="@Bottle.Vintage" Label="Vintage"/>
+        
+        <MudNumericField @bind-Value="@Bottle.Price" Format="N2" Label="Price" Class="mt-4"/>
 
         <MudSelect T="BottleSize"
                    @bind-Value="Bottle.BottleSize"
